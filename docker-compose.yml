@@ -5,4 +5,5 @@ services:
     container_name: danandmarc
     restart: unless-stopped
     ports:
-      - "8080:80"   # point your reverse proxy at this
+      # Host port defaults to 8484; override with DM_PORT=xxxx in .env or the shell
+      - "${DM_PORT:-8484}:80"

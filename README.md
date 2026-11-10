@@ -65,10 +65,10 @@ ffmpeg -i in.gif -vframes 1 out-poster.jpg
 ## Deploy (Unraid / any Docker host)
 
 ```sh
-docker compose up -d --build     # serves on :8080
+docker compose up -d --build     # serves on :8484 (override: DM_PORT=9000 docker compose up -d)
 ```
 
-Point your reverse proxy (NPM, SWAG, Traefik, Caddy) at `http://<host>:8080`. TLS is terminated at the proxy. `/healthz` returns 200.
+Point your reverse proxy (NPM, SWAG, Traefik, Caddy) at `http://<host>:8484`. TLS is terminated at the proxy. `/healthz` returns 200.
 
 `deploy/nginx.conf` 301-redirects the old Squarespace URLs (`/work/unignorable-29ejk`, `/contact-1`, etc.) to the new paths and strips trailing slashes. Hashed assets under `/_astro/` are cached as immutable.
 
