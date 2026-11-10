@@ -230,14 +230,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
   }
   .fs-cover:hover .fs-art img { transform: scale(1.03); }
 
-  /* Desktop: image takes the right ~two-thirds under the title; year sits bottom-left */
-  @media (min-width: 900px) {
-    .fs-cover {
-      grid-template-columns: minmax(0, 0.34fr) minmax(0, 1fr);
-      grid-template-rows: auto auto minmax(0, 1fr);
-      grid-template-areas: 'meta meta' 'title title' 'edition art';
-    }
-  }
   .fs-tail { height: 30vh; }
 
   .fs-next {
