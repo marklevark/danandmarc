@@ -27,9 +27,11 @@ while read -r slug id; do
   mkdir -p "$OUT/$slug"
   if [ -f "$OUT/$slug/$id.mp4" ]; then ok=$((ok + 1)); continue; fi
   echo "==> $slug / $id"
-  # Embed player URL (what the site uses). Domain-locked videos only play when the
-  # request looks like it came from an allowed site, so try a few referers.
-  for ref in https://danandmarc.ca/ https://www.danandmarc.ca/ https://danandmarc.squarespace.com/ ""; do
+  # Try the public page first, then the embed player (what the site uses) with a few referers,
+  # since some videos are public on vimeo.com but domain-locked as embeds, and vice versa.
+  for try in "page|" "player|https://danandmarc.ca/" "player|https://www.danandmarc.ca/" "player|https://danandmarc.squarespace.com/" "player|"; do
+    kind=${try%%|*}; ref=${try#*|}
+    if [ "$kind" = page ]; then url="https://vimeo.com/$id"; else url="https://player.vimeo.com/video/$id"; fi
     yt-dlp \
       ${ref:+--referer "$ref"} \
       --impersonate chrome \
@@ -37,9 +39,9 @@ while read -r slug id; do
       --write-thumbnail --convert-thumbnails jpg \
       --no-overwrites --continue --no-progress --no-warnings \
       -o "$OUT/$slug/$id.%(ext)s" \
-      "https://player.vimeo.com/video/$id" 2>&1 | grep -E "ERROR|Merging|Destination" || true
+      "$url" 2>&1 | grep -E "ERROR|Merging|Destination" || true
     [ -f "$OUT/$slug/$id.mp4" ] && break
-    echo "    (no luck with referer: ${ref:-none})"
+    echo "    (no luck: $url ${ref:+referer $ref})"
   done
   if [ -f "$OUT/$slug/$id.mp4" ]; then ok=$((ok + 1)); else fail=$((fail + 1)); failed="$failed $slug/$id"; fi
 done < "$LIST"
