@@ -76,9 +76,8 @@ async function palette(file: string | undefined) {
   }
 }
 
-const work = (await getWork()).sort(
-  (a, b) => (b.data.year ?? 0) - (a.data.year ?? 0) || a.data.order - b.data.order,
-);
+// Same order as the main work grid (the `order` field in each project file)
+const work = await getWork();
 const cards = await Promise.all(
   work.map(async (w) => {
     const d = w.data;
