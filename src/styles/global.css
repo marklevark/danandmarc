@@ -63,6 +63,7 @@ p { margin: 0 0 1.1em; text-wrap: pretty; }
 p:last-child { margin-bottom: 0; }
 
 .page { padding-inline: var(--pad); }
+main { padding-bottom: 60px; }
 .label { color: var(--muted); }
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;

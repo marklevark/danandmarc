@@ -69,14 +69,6 @@ const isActive = (href: string) =>
       matchMedia('(min-width: 641px)').addEventListener('change', () => set(false));
     </script>
 
-    <footer class="site-footer page">
-      {site.people.map((p) => (
-        <span class="person">
-          <span>{p.first}</span>
-          <a href={p.linkedin} rel="noopener" target="_blank">LinkedIn</a>
-        </span>
-      ))}
-    </footer>
   </body>
 </html>
 
@@ -95,14 +87,6 @@ const isActive = (href: string) =>
   }
   nav a[aria-current='page'] { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; }
 
-  .site-footer {
-    display: flex; flex-wrap: wrap; gap: 0.5rem 2.5rem;
-    padding-block: 80px 24px;
-    font-family: var(--display); font-weight: 700; font-size: 14.7px;
-    letter-spacing: 0.11em; text-transform: uppercase;
-  }
-  .person { display: inline-flex; gap: 0.9rem; }
-  .person a { color: var(--muted); }
 
   /* Degular is narrower than the fallback; don't over-tighten it */
   :global(body.has-degular) { --display-tracking: 0em; --text-tracking: 0em; }
