@@ -1,109 +1,43 @@
 ---
-import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
 
 const order = ['international', 'canadian'];
 const regions = (await getCollection('awards'))
   .sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id))
   .map((r) => r.data);
-
-const LEVELS = ['Gold', 'Silver', 'Bronze', 'Wood Pencil', 'Merit', 'Shortlist', 'Finalist', 'Nominee', 'Campaign of the Year'];
-function split(award: string) {
-  const level = LEVELS.find((l) => award.startsWith(l));
-  if (!level) return { level: undefined, rest: award };
-  return { level, rest: award.slice(level.length).replace(/^\s*[-–|,]\s*/, '') };
-}
-const total = regions.reduce((n, r) => n + r.shows.reduce((m, s) => m + s.entries.length, 0), 0);
-const count = (lvl: string) =>
-  regions.flatMap((r) => r.shows.flatMap((s) => s.entries)).filter((e) => e.award.startsWith(lvl)).length;
-const stats = [
-  ['Gold', count('Gold')],
-  ['Silver', count('Silver')],
-  ['Bronze', count('Bronze') + count('Wood Pencil')],
-  ['Entries', total],
-] as const;
 ---
 <Base title="Awards" description="Some say a list of all your awards is a bit overkill. Anyways, here's ours.">
-  <section class="wrap head">
+  <div class="page">
     <h1>Some say a list of all your awards is a bit overkill. Anyways, here’s ours:</h1>
-    <dl class="stats">
-      {stats.map(([k, v]) => <div><dd>{v}</dd><dt>{k}</dt></div>)}
-    </dl>
-  </section>
-
-  {regions.map((r) => (
-    <section class="wrap region" aria-labelledby={`r-${r.region}`}>
-      <h2 id={`r-${r.region}`}>{r.region}</h2>
-      <div class="shows">
-        {r.shows.map((s) => (
-          <details>
-            <summary>
-              <span class="show">{s.show}</span>
-              {s.tally && <span class="tally">{s.tally}</span>}
-              <span class="n">{s.entries.length}</span>
-            </summary>
-            <ul>
-              {s.entries.map((e) => {
-                const { level, rest } = split(e.award);
-                return (
-                  <li>
-                    <span class="year">{e.year ?? ''}</span>
-                    <span class:list={['lvl', level?.toLowerCase().replace(/\s+/g, '-')]}>{level ?? ''}</span>
-                    <span class="what">{rest}</span>
-                  </li>
-                );
-              })}
-            </ul>
-          </details>
-        ))}
-      </div>
-    </section>
-  ))}
+    <div class="regions">
+      {regions.map((r) => (
+        <section>
+          <h2>{r.region}</h2>
+          {r.shows.map((s) => (
+            <div class="show">
+              <p><strong>{s.show}</strong>{s.tally && ` (${s.tally})`}</p>
+              <ul>
+                {s.entries.map((e) => <li>{e.year ? `${e.year} - ` : ''}{e.award}</li>)}
+              </ul>
+            </div>
+          ))}
+        </section>
+      ))}
+    </div>
+  </div>
 </Base>
 
 <style>
-  .head { padding-block: clamp(2.5rem, 8vw, 6rem) clamp(1.5rem, 4vw, 3rem); }
-  h1 { font-size: var(--step-3); letter-spacing: -0.045em; line-height: 0.98; max-width: 22ch; }
-  .stats { display: flex; flex-wrap: wrap; gap: 1.5rem clamp(2rem, 6vw, 5rem); margin: clamp(2rem, 5vw, 3.5rem) 0 0; }
-  .stats div { display: flex; flex-direction: column-reverse; }
-  .stats dd { margin: 0; font-size: var(--step-4); font-weight: 800; letter-spacing: -0.05em; line-height: 0.9; font-variant-numeric: tabular-nums; }
-  .stats dt { font-size: var(--step--1); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-top: 0.4rem; }
-
-  .region { margin-top: clamp(2.5rem, 6vw, 4.5rem); }
-  .region h2 { font-size: var(--step-2); padding-bottom: 0.75rem; border-bottom: 1px solid var(--ink); }
-  details { border-bottom: 1px solid var(--line); }
-  summary {
-    display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.25rem 1rem; align-items: baseline;
-    padding-block: 1rem; cursor: pointer; list-style: none;
-  }
-  summary::-webkit-details-marker { display: none; }
-  .show { grid-column: 1; font-size: var(--step-1); font-weight: 700; letter-spacing: -0.02em; }
-  .tally { grid-column: 1; grid-row: 2; color: var(--muted); font-size: var(--step--1); }
-  .n {
-    grid-column: 2; grid-row: 1 / span 2; align-self: center; display: inline-flex; align-items: center; gap: 0.6rem;
-    font-variant-numeric: tabular-nums; color: var(--muted); font-weight: 600;
-  }
-  .n::after { content: '+'; font-size: 1.4em; line-height: 1; color: var(--ink); transition: transform 0.2s; }
-  details[open] .n::after { transform: rotate(45deg); }
-  summary:hover .show { color: var(--accent); }
-
-  ul { list-style: none; margin: 0; padding: 0 0 1.25rem; }
-  li {
-    display: grid; grid-template-columns: 3.2rem 5.5rem minmax(0, 1fr); gap: 0.75rem;
-    padding-block: 0.4rem; font-size: var(--step--1); border-top: 1px dashed var(--line);
-  }
-  .year { font-variant-numeric: tabular-nums; color: var(--muted); }
-  .lvl { font-weight: 700; }
-  .lvl.gold::before, .lvl.silver::before, .lvl.bronze::before, .lvl.wood-pencil::before {
-    content: ''; display: inline-block; width: 0.6em; height: 0.6em; border-radius: 50%; margin-right: 0.4em;
-    vertical-align: 0.05em;
-  }
-  .lvl.gold::before { background: #d4a72c; }
-  .lvl.silver::before { background: #a8a9ad; }
-  .lvl.bronze::before { background: #b0703c; }
-  .lvl.wood-pencil::before { background: #8a6a43; }
-  @media (max-width: 520px) {
-    li { grid-template-columns: 2.8rem minmax(0, 1fr); }
-    .what { grid-column: 2; }
+  h1 { font-size: var(--fs-hero); line-height: 0.8; max-width: 7.6em; padding-top: clamp(96px, 29vw, 425px); }
+  .regions { display: grid; gap: 40px 3rem; grid-template-columns: 1fr; padding-top: 36px; }
+  h2 { font-size: var(--fs-title); line-height: 0.83; margin-bottom: 1.6rem; }
+  .regions section:last-child h2 { margin-top: 0; }
+  .show { margin-bottom: 1.6rem; }
+  .show p { margin-bottom: 1.1em; }
+  strong { font-weight: 700; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  @media (min-width: 768px) {
+    .regions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
 </style>

@@ -1,30 +1,35 @@
 @import '@fontsource-variable/inter-tight';
 
+/*
+ * Matches the original Squarespace theme: cool light grey, black type, tight 10px edges.
+ * Fonts: the original uses Degular (Adobe Fonts). Add an Adobe Fonts kit ID in
+ * src/data/site.ts and it's used automatically; Inter Tight is the fallback.
+ */
 :root {
-  --bg: #f5f3ee;
-  --surface: #ebe8e1;
-  --ink: #0d0d0d;
-  --muted: #5f5c57;
-  --line: #d4d0c8;
-  /* The #UNIGNORABLE coral */
-  --accent: #ff5a3c;
-  --accent-ink: #0d0d0d;
+  --bg: #f3f3f3;
+  --surface: #e8e8e8;
+  --ink: #000;
+  --muted: #9b9b9b;
+  --line: #d6d6d6;
 
-  --font: 'Inter Tight Variable', 'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --gutter: clamp(16px, 4vw, 48px);
-  --max: 1440px;
-  --radius: 4px;
+  --display: 'degular-display', 'Inter Tight Variable', 'Inter Tight', system-ui, sans-serif;
+  --text: 'degular-text', 'Inter Tight Variable', 'Inter Tight', system-ui, sans-serif;
 
-  --step--1: clamp(0.8rem, 0.78rem + 0.1vw, 0.875rem);
-  --step-0: clamp(1rem, 0.98rem + 0.1vw, 1.0625rem);
-  --step-1: clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem);
-  --step-2: clamp(1.5rem, 1.3rem + 1vw, 2.25rem);
-  --step-3: clamp(2rem, 1.5rem + 2.5vw, 3.75rem);
-  --step-4: clamp(2.75rem, 1.6rem + 5.5vw, 7.5rem);
+  /* page edge: 10px desktop like the original */
+  --pad: 10px;
+  --gap: 10px;
+
+  --fs-body: clamp(14px, 13.4px + 0.1vw, 15px);
+  --fs-lead: clamp(15px, 14.4px + 0.15vw, 16.5px);
+  --fs-hero: clamp(44px, 5.35vw, 96px);   /* home + awards headline */
+  --fs-title: clamp(32px, 3.2vw, 58px);   /* project / section titles */
+  --fs-card: clamp(19px, 1.6vw, 24px);
 
   color-scheme: light;
 }
 
+/* Fallback font is a touch wider than Degular; pull it in so headlines set the same */
+:root { --display-tracking: -0.035em; --text-tracking: 0.005em; }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
@@ -32,44 +37,39 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--font);
-  font-size: var(--step-0);
-  line-height: 1.55;
-  font-feature-settings: 'ss01', 'cv11';
+  font-family: var(--text);
+  font-weight: 500;
+  font-size: var(--fs-body);
+  line-height: 1.2;
+  letter-spacing: var(--text-tracking);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 img, video, iframe { display: block; max-width: 100%; }
 img, video { height: auto; }
-a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
-a:hover { color: var(--accent); }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-::selection { background: var(--accent); color: var(--accent-ink); }
+a { color: inherit; text-decoration: none; }
+a:hover { opacity: 0.6; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
 h1, h2, h3, h4 {
   margin: 0;
-  font-weight: 800;
-  line-height: 0.98;
-  letter-spacing: -0.035em;
+  font-family: var(--display);
+  font-weight: 700;
+  line-height: 0.85;
+  letter-spacing: var(--display-tracking);
   text-wrap: balance;
 }
-p { margin: 0 0 1em; text-wrap: pretty; }
+p { margin: 0 0 1.1em; text-wrap: pretty; }
 p:last-child { margin-bottom: 0; }
 
-.wrap { width: 100%; max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter); }
-.eyebrow {
-  font-size: var(--step--1);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
+.page { padding-inline: var(--pad); }
+.label { color: var(--muted); }
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
 .skip {
-  position: absolute; left: var(--gutter); top: -100px; z-index: 100;
+  position: absolute; left: var(--pad); top: -100px; z-index: 100;
   background: var(--ink); color: var(--bg); padding: 0.5em 1em;
 }
 .skip:focus { top: 12px; }

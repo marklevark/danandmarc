@@ -1,5 +1,11 @@
 export const site = {
   name: 'Dan and Marc',
+  /**
+   * Adobe Fonts (Typekit) project ID for Degular, the original site's typeface, e.g. 'abc1def'.
+   * fonts.adobe.com → Web Projects → add "degular-display" + "degular-text", domain danandmarc.ca.
+   * Leave empty to use the bundled fallback (Inter Tight).
+   */
+  adobeFontsKit: '',
   description: 'Dan Cantelon and Marc Levesque: an award-winning freelance creative team based out of Toronto.',
   email: 'marcanddan@danandmarc.ca',
   people: [

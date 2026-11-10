@@ -2,14 +2,13 @@
 import Base from '../layouts/Base.astro';
 ---
 <Base title="Not found">
-  <section class="wrap nf">
-    <p class="eyebrow">404</p>
+  <section class="page nf">
     <h1>This page is ignorable.</h1>
     <p><a href="/">Back to the work →</a></p>
   </section>
 </Base>
 <style>
-  .nf { padding-block: clamp(4rem, 14vw, 10rem); }
-  h1 { font-size: var(--step-4); letter-spacing: -0.05em; margin-block: 0.75rem 2rem; max-width: 12ch; }
-  a { font-weight: 700; font-size: var(--step-1); }
+  .nf { padding-top: clamp(120px, 25vw, 340px); }
+  h1 { font-size: var(--fs-hero); line-height: 0.8; margin-bottom: 1.5rem; max-width: 8em; }
+  a { font-weight: 700; }
 </style>

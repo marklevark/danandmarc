@@ -33,6 +33,8 @@ const work = defineCollection({
       order: z.number(),
       cover: image(),
       coverLoop: z.string().optional(),
+      /** CSS object-position for the square home-grid crop, e.g. '50% 13%' */
+      coverPosition: z.string().default('50% 50%'),
       draft: z.boolean().default(false),
       ...credits.shape,
       awards: z.array(z.object({ show: z.string(), result: z.string() })).optional(),

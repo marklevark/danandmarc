@@ -7,64 +7,105 @@ import { paragraphs } from '../lib/text';
 
 interface Props { entry: CollectionEntry<'work'> }
 const { entry } = Astro.props;
-const { title, blocks } = entry.data;
+const d = entry.data;
+type Block = (typeof d.blocks)[number];
+type Credits = { agency?: string; client?: string; role?: string };
 
-type Media = { src: { width: number; height: number }; loop?: string };
-/** Pick a column count from how many images there are and their shape. */
-function columns(items: Media[]) {
-  const n = items.length;
-  if (n === 1) return 1;
-  const portrait = items.filter((i) => i.src.height > i.src.width * 1.1).length >= n / 2;
-  if (portrait) return n % 4 === 0 || n > 4 ? 4 : Math.min(n, 3);
-  if (n === 3) return 3;
-  return 2;
+/*
+ * Group the flat block list the way the original site laid pages out:
+ *  - intro: big heading + Agency/Client on the left, copy on the right
+ *  - label: small heading above media (Case Study, OOH, ...)
+ *  - media: images / videos, edge to edge
+ */
+type Intro = { kind: 'intro'; heading?: string; credits?: Credits; texts: string[] };
+type Item =
+  | Intro
+  | { kind: 'label'; text: string }
+  | { kind: 'images'; block: Extract<Block, { images: unknown }> }
+  | { kind: 'videos'; block: Extract<Block, { videos: unknown }> };
+
+const items: Item[] = [];
+let cur: Intro | undefined;
+for (const b of d.blocks) {
+  if ('heading' in b) {
+    if (b.level >= 4) { items.push({ kind: 'label', text: b.heading }); cur = undefined; }
+    else { cur = { kind: 'intro', heading: b.heading, texts: [] }; items.push(cur); }
+  } else if ('credits' in b) {
+    if (!cur || cur.texts.length) { cur = { kind: 'intro', texts: [] }; items.push(cur); }
+    cur.credits = b.credits;
+  } else if ('text' in b) {
+    if (!cur) { cur = { kind: 'intro', texts: [] }; items.push(cur); }
+    cur.texts.push(b.text);
+  } else if ('images' in b) { items.push({ kind: 'images', block: b }); cur = undefined; }
+  else if ('videos' in b) { items.push({ kind: 'videos', block: b }); cur = undefined; }
 }
-let section = title;
+// The first intro is the page hero: it carries the title and the page-level credits.
+let hero = items[0]?.kind === 'intro' ? (items[0] as Intro) : undefined;
+if (!hero) { hero = { kind: 'intro', texts: [] }; items.unshift(hero); }
+hero.heading ??= d.title;
+hero.credits ??= { agency: d.agency, client: d.client, role: d.role };
+
+const creditRows = (c?: Credits) =>
+  c ? ([['Role', c.role], ['Agency', c.agency], ['Client', c.client]].filter(([, v]) => v) as [string, string][]) : [];
+
+let section = d.title;
 ---
 <div class="blocks">
-  {blocks.map((b) => {
-    if ('heading' in b) {
-      section = b.heading;
-      const Tag = (b.level <= 2 ? 'h2' : 'h3') as 'h2' | 'h3';
-      return <Tag class:list={['block-heading', b.level <= 2 ? 'major' : b.level === 3 ? 'mid' : 'minor']}>{b.heading}</Tag>;
-    }
-    if ('text' in b) {
-      return <div class="block-text">{paragraphs(b.text).map((p) => <p set:html={p} />)}</div>;
-    }
-    if ('credits' in b) {
+  {items.map((it, idx) => {
+    if (it.kind === 'intro') {
+      section = it.heading ?? section;
+      const Tag = idx === 0 ? 'h1' : 'h2';
       return (
-        <dl class="block-credits">
-          {b.credits.agency && <div><dt>Agency</dt><dd>{b.credits.agency}</dd></div>}
-          {b.credits.client && <div><dt>Client</dt><dd>{b.credits.client}</dd></div>}
-          {b.credits.role && <div><dt>Role</dt><dd>{b.credits.role}</dd></div>}
-        </dl>
+        <section class:list={['intro', { hero: idx === 0 }]}>
+          <div class="left">
+            {it.heading && <Tag class="title">{it.heading}</Tag>}
+            {creditRows(it.credits).length > 0 && (
+              <dl class="credits">
+                {creditRows(it.credits).map(([k, v]) => <div><dt>{k}:</dt><dd>{v}</dd></div>)}
+              </dl>
+            )}
+          </div>
+          <div class="right">
+            {it.texts.map((t) => paragraphs(t).map((p) => <p set:html={p} />))}
+          </div>
+        </section>
       );
     }
-    if ('images' in b) {
-      const cols = columns(b.images);
-      const sizes = cols === 1 ? '(min-width: 1440px) 1344px, 100vw' : `(min-width: 860px) ${Math.round(100 / cols)}vw, ${cols >= 4 ? 50 : 100}vw`;
+    if (it.kind === 'label') {
+      section = it.text;
+      return <h3 class="media-label">{it.text}</h3>;
+    }
+    if (it.kind === 'images') {
+      const imgs = it.block.images;
+      const n = imgs.length;
+      const portrait = imgs.filter((i) => i.src.height > i.src.width * 1.1).length > n / 2;
+      // Like the original: one image runs full width; groups go two-up, odd one out spans the top.
+      const cols = n === 1 ? 1 : portrait && n >= 6 && n % 4 === 0 ? 4 : 2;
       return (
-        <div class="block-media" style={`--cols:${cols}`}>
-          {b.images.map((img, i) =>
-            img.loop ? (
-              <Loop src={img.loop} poster={img.src} label={img.alt ?? `${section}, animation ${i + 1}`} class="m" />
+        <div class="media" style={`--cols:${cols}`}>
+          {imgs.map((img, i) => {
+            const wide = cols > 1 && n % cols === 1 && i === 0;
+            const sizes = cols === 1 || wide ? '100vw' : `(min-width: 768px) ${Math.round(100 / cols)}vw, 100vw`;
+            return img.loop ? (
+              <Loop src={img.loop} poster={img.src} label={img.alt ?? `${section}, animation ${i + 1}`} class:list={['m', { wide }]} />
             ) : (
               <Image
                 src={img.src}
                 alt={img.alt ?? `${section}, image ${i + 1}`}
-                widths={cols === 1 ? [640, 1024, 1600, 2400] : [400, 640, 1024, 1400]}
+                widths={cols === 1 || wide ? [640, 1024, 1600, 2400] : [400, 720, 1100, 1500]}
                 sizes={sizes}
-                class="m"
+                class:list={['m', { wide }]}
               />
-            ),
-          )}
+            );
+          })}
         </div>
       );
     }
-    if ('videos' in b) {
+    if (it.kind === 'videos') {
+      const v = it.block.videos;
       return (
-        <div class="block-videos" style={`--cols:${b.videos.length >= 3 ? 3 : 1}`}>
-          {b.videos.map((v) => <VideoEmbed {...v} fallbackTitle={`${section} video`} />)}
+        <div class="media" style={`--cols:${v.length >= 3 ? 3 : v.length}`}>
+          {v.map((x) => <VideoEmbed {...x} fallbackTitle={`${section} video`} />)}
         </div>
       );
     }
@@ -72,32 +113,32 @@ let section = title;
 </div>
 
 <style>
-  .blocks { display: grid; gap: clamp(1.25rem, 3vw, 2.5rem); }
-  .block-heading.major {
-    font-size: var(--step-3); margin-top: clamp(2rem, 6vw, 5rem);
-    padding-top: clamp(1.25rem, 3vw, 2rem); border-top: 1px solid var(--line);
-  }
-  .block-heading.mid { font-size: var(--step-2); margin-top: clamp(1.5rem, 4vw, 3rem); }
-  .block-heading.minor {
-    font-size: var(--step--1); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--muted); margin-top: clamp(1rem, 3vw, 2rem);
-  }
-  .blocks > :first-child { margin-top: 0; }
-  .block-heading + .block-text, .block-heading + .block-credits { margin-top: -0.5rem; }
-  .block-text { max-width: 64ch; font-size: var(--step-0); line-height: 1.6; }
-  .block-credits { display: flex; flex-wrap: wrap; gap: 0.5rem 2.5rem; margin: 0; }
-  .block-credits dt { font-size: var(--step--1); color: var(--muted); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
-  .block-credits dd { margin: 0; font-weight: 700; }
+  .blocks { display: grid; gap: var(--gap); }
 
-  .block-media {
-    display: grid; gap: clamp(8px, 1.2vw, 16px); align-items: start;
-    grid-template-columns: repeat(min(var(--cols), 2), minmax(0, 1fr));
+  .intro {
+    display: grid; gap: 28px 3rem; grid-template-columns: 1fr;
+    padding-top: 72px; padding-bottom: 30px;
   }
-  .block-media[style*='--cols:1'] { grid-template-columns: 1fr; }
-  .block-media :global(.m) { width: 100%; height: auto; border-radius: var(--radius); background: var(--surface); }
-  .block-videos { display: grid; gap: clamp(8px, 1.2vw, 16px); grid-template-columns: 1fr; }
-  @media (min-width: 860px) {
-    .block-media { grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); }
-    .block-videos { grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); }
+  .intro.hero { padding-top: clamp(96px, 22vw, 320px); }
+  .title { font-size: var(--fs-title); line-height: 0.83; max-width: 14em; }
+  .credits { margin: 1.9rem 0 0; display: grid; gap: 1.1rem; }
+  .credits dt { color: var(--muted); }
+  .credits dd { margin: 0; }
+  .right { max-width: 37rem; }
+  .right:empty { display: none; }
+
+  .media-label {
+    font-size: var(--fs-lead); line-height: 1; padding-top: 50px; padding-bottom: 6px;
+  }
+
+  .media {
+    display: grid; gap: var(--gap); align-items: start;
+    grid-template-columns: 1fr;
+  }
+  .media :global(.m) { width: 100%; height: auto; border-radius: 3px; background: var(--surface); }
+  @media (min-width: 768px) {
+    .intro { grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); }
+    .media { grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); }
+    .media :global(.wide) { grid-column: 1 / -1; }
   }
 </style>

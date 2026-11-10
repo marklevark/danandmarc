@@ -6,49 +6,27 @@ import { getWork } from '../lib/work';
 const work = await getWork();
 ---
 <Base>
-  <section class="wrap hero">
-    <h1>
-      We’re <span class="swap" aria-hidden="true"><span>Dan and Marc.</span><span>Marc and Dan.</span></span><span class="sr-only">Dan and Marc.</span>
-      <span class="but">But you can call us Marc and Dan.</span>
-    </h1>
-    <p class="lede">An award-winning freelance creative team based out of Toronto.</p>
+  <section class="hero page">
+    <h1>We’re Dan and Marc.<br />But you can call us Marc and Dan.</h1>
+    <p>We’re an award-winning freelance creative team based out of Toronto.</p>
   </section>
 
-  <section class="wrap" aria-labelledby="work-h">
-    <h2 id="work-h" class="eyebrow section-label">Selected work</h2>
-    <ul class="grid">
-      {work.map((entry, i) => (
-        <li><WorkCard entry={entry} index={i} eager={i < 2} /></li>
-      ))}
-    </ul>
-  </section>
+  <h2 class="sr-only">Work</h2>
+  <ul class="grid">
+    {work.map((entry, i) => (
+      <li><WorkCard entry={entry} eager={i < 3} /></li>
+    ))}
+  </ul>
 </Base>
 
 <style>
-  .hero { padding-block: clamp(3rem, 10vw, 8rem) clamp(2.5rem, 7vw, 6rem); }
-  h1 { font-size: var(--step-4); max-width: 14ch; letter-spacing: -0.05em; line-height: 0.92; }
-  .but { display: block; color: var(--muted); }
-  .swap { display: inline-grid; vertical-align: top; }
-  .swap > span { grid-area: 1 / 1; animation: swap 6s cubic-bezier(0.7, 0, 0.2, 1) infinite; }
-  .swap > span:last-child { animation-delay: -3s; }
-  @keyframes swap {
-    0%, 42% { opacity: 1; transform: none; }
-    50%, 92% { opacity: 0; transform: translateY(-0.25em); }
-    100% { opacity: 1; transform: none; }
-  }
-  .lede { margin-top: clamp(1.25rem, 3vw, 2rem); font-size: var(--step-0); max-width: 40ch; }
-  .lede::before { content: ''; display: inline-block; width: 0.6em; height: 0.6em; margin-right: 0.5em; border-radius: 50%; background: var(--accent); }
+  .hero { padding-top: clamp(64px, 23.5vw, 340px); padding-bottom: 14px; }
+  h1 { font-size: var(--fs-hero); line-height: 0.8; max-width: 9em; }
+  .hero p { margin-top: 0.9rem; font-size: var(--fs-lead); }
 
-  .section-label { margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--line); }
   .grid {
-    list-style: none; margin: 0; padding: 0;
-    display: grid; grid-template-columns: 1fr; gap: clamp(2rem, 4vw, 3.5rem) clamp(1rem, 2.5vw, 2rem);
+    list-style: none; margin: 0; padding: 0 clamp(33px, 3.7vw, 53px);
+    display: grid; gap: var(--gap); grid-template-columns: 1fr;
   }
-  @media (min-width: 860px) {
-    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .swap > span:last-child { display: none; }
-    .swap > span { animation: none; }
-  }
+  @media (min-width: 768px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 </style>
