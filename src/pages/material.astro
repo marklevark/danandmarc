@@ -99,7 +99,7 @@ const code = (s: string) => s.toUpperCase();
           <span class="sr-only">{s.it.title}</span>
         </a>
       ) : (
-        <section class="mt-pair mt-wrap">
+        <section class="mt-pair">
           {[s.a, s.b].map((it) => (
             <article class="mt-col" data-caption={`${code(it.title)} — ${code(it.credit)}`}>
               <a class="mt-col__img" href={`/work/${it.slug}`} tabindex="-1" aria-hidden="true">
@@ -213,8 +213,10 @@ const code = (s: string) => s.toUpperCase();
   .mt-full { display: block; width: 100%; max-height: 100svh; overflow: hidden; margin: 0 0 160px; background: var(--graphite); }
 
   /* two-column showcase: image, label, text, button — left-aligned */
-  .mt-pair { display: grid; grid-template-columns: 1fr; gap: 72px 24px; margin-bottom: 160px; }
+  /* two-column pair, edge to edge: images butt together and touch the page sides */
+  .mt-pair { display: grid; grid-template-columns: 1fr; gap: 72px 0; margin-bottom: 160px; }
   .mt-col { display: grid; gap: 24px; align-content: start; justify-items: start; }
+  .mt-col > :not(.mt-col__img) { margin-inline: 24px; }
   .mt-col__img { display: block; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; background: var(--graphite); }
   .mt-body { font-size: 15px; line-height: 1.2; max-width: 30em; margin-top: -12px; }
   .mt-col .mt-label { margin-top: -8px; }
