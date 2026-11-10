@@ -1,0 +1,218 @@
+---
+/**
+ * Alternate homepage: every project as a full-width "folio" card that pins and recedes
+ * as the next one scrolls over it. Adapted from Subframe's "Folio stack" motion example
+ * (https://www.subframe.com/motion/folio-stack) — rebuilt for whole-page scroll in plain Astro.
+ *
+ * MIT License
+ *
+ * Copyright (c) 2026 Subframe
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+import { getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { getWork } from '../lib/work';
+
+// Card colours + ink from the original example, cycled across the projects.
+const colors = ['#e33427', '#eeece6', '#1d3bc5'];
+const inks = ['#211511', '#1b1b1b', '#f1f0e5'];
+const STEP = 6; // px each pinned card sits below the previous one (12 in the original; 13 cards here)
+
+const work = (await getWork()).sort(
+  (a, b) => (b.data.year ?? 0) - (a.data.year ?? 0) || a.data.order - b.data.order,
+);
+const cards = await Promise.all(
+  work.map(async (w, i) => {
+    const d = w.data;
+    const img = await getImage({ src: d.cover, width: 1400, format: 'webp', quality: 80 });
+    return {
+      slug: w.id,
+      title: d.title,
+      client: d.client ?? d.agency ?? '',
+      agency: d.client && d.agency && d.agency !== d.client ? d.agency : '',
+      when: d.years ?? (d.year ? String(d.year) : ''),
+      src: img.src,
+      pos: d.coverPosition,
+      bg: colors[i % 3],
+      ink: inks[i % 3],
+    };
+  }),
+);
+const N = cards.length;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<Base title="Work" description="Dan and Marc: selected work, newest first.">
+  <meta name="robots" content="noindex" slot="head" />
+  <section class="fs" aria-label="Selected work">
+    <div class="fs-bar">
+      <span>Selected work / {cards.at(-1)?.when.slice(0, 4)}–{cards[0]?.when.slice(0, 4)}</span>
+      <span aria-live="polite"><b data-page>01</b> — {pad(N)}</span>
+    </div>
+
+    <div class="fs-list">
+      {cards.map((c, i) => (
+        <>
+          <span class="fs-anchor" aria-hidden="true" />
+          <article class="fs-slot" style={`top:${44 + 10 + i * STEP}px;z-index:${i + 1}`}>
+            <a class="fs-cover" href={`/work/${c.slug}`} style={`--bg:${c.bg};--ink:${c.ink}`}>
+              <div class="fs-meta">
+                <span>{c.client}{c.agency && ` / ${c.agency}`}</span>
+                <span>Nº {pad(i + 1)}</span>
+              </div>
+              <strong>{c.title}</strong>
+              <span class="fs-art">
+                <img src={c.src} alt="" loading={i < 2 ? 'eager' : 'lazy'} decoding="async" style={`object-position:${c.pos}`} />
+              </span>
+              <span class="fs-edition">{c.when} · View project →</span>
+            </a>
+          </article>
+        </>
+      ))}
+      <div class="fs-tail" />
+    </div>
+
+    <button class="fs-next" type="button" aria-label="Next project">↓</button>
+  </section>
+</Base>
+
+<script>
+  const STEP = 6;
+  const BAR = 44;
+  const slots = [...document.querySelectorAll<HTMLElement>('.fs-slot')];
+  const anchors = [...document.querySelectorAll<HTMLElement>('.fs-anchor')];
+  const covers = slots.map((s) => s.firstElementChild as HTMLElement);
+  const pageEl = document.querySelector<HTMLElement>('[data-page]')!;
+  const next = document.querySelector<HTMLButtonElement>('.fs-next')!;
+  const N = slots.length;
+
+  const mq = matchMedia('(prefers-reduced-motion: reduce)');
+  let reduced = mq.matches;
+  let page = -1;
+
+  const anchorY = (i: number) => anchors[i].getBoundingClientRect().top + scrollY;
+
+  // Recede: as the next card's top approaches the pinned card, scale it down and dim it.
+  const update = () => {
+    const h = innerHeight;
+    let selected = 0;
+    for (let i = 0; i < N; i++) {
+      const top = i < N - 1 ? anchors[i + 1].getBoundingClientRect().top : h;
+      const depth = i < N - 1 ? Math.max(0, Math.min(1, (h - 30 - top) / (h - 55))) : 0;
+      covers[i].style.transform = reduced ? '' : `scale(${1 - depth * 0.09})`;
+      covers[i].style.filter = reduced || depth === 0 ? '' : `brightness(${1 - depth * 0.2})`;
+      if (scrollY >= anchorY(i) - BAR - i * STEP - 20) selected = i;
+    }
+    if (selected !== page) {
+      page = selected;
+      pageEl.textContent = String(selected + 1).padStart(2, '0');
+      const last = selected === N - 1;
+      next.textContent = last ? '↑' : '↓';
+      next.setAttribute('aria-label', last ? 'Back to the newest project' : 'Next project');
+    }
+  };
+
+  let queued = false;
+  const schedule = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; update(); });
+  };
+  addEventListener('scroll', schedule, { passive: true });
+  addEventListener('resize', schedule);
+  mq.addEventListener('change', () => { reduced = mq.matches; update(); });
+  update();
+
+  next.addEventListener('click', (e) => {
+    const target = (page + 1) % N;
+    scrollTo({
+      top: anchorY(target) - BAR - 10 - target * STEP,
+      behavior: !reduced && e.detail !== 0 ? 'smooth' : 'instant',
+    });
+  });
+</script>
+
+<style>
+  /* Dark slate page like the original; header/nav pick up the light ink */
+  :global(body) { --bg: #262a30; --ink: #eceae4; --muted: #9aa0a6; }
+  :global(main) { padding-bottom: 0 !important; }
+
+  .fs { position: relative; padding-top: 43px; }
+  .fs-bar {
+    position: sticky; top: 0; z-index: 100; height: 44px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 var(--pad); background: var(--bg); color: #d7d9d9;
+    font: 500 11px/1 ui-monospace, 'SF Mono', Menlo, monospace; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .fs-bar b { font-weight: 500; color: #fff; }
+
+  .fs-list { padding: 0 var(--pad); }
+  .fs-anchor { display: block; height: 0; width: 0; }
+  .fs-slot { position: sticky; height: calc(100svh - 120px); min-height: 360px; margin-bottom: 26px; }
+
+  .fs-cover {
+    display: block; position: relative; height: 100%; overflow: hidden;
+    padding: clamp(18px, 3vw, 44px) clamp(18px, 3.2vw, 46px);
+    background: var(--bg); color: var(--ink); transform-origin: 50% 0;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2); will-change: transform, filter;
+  }
+  .fs-cover:hover { opacity: 1; }
+  .fs-cover:focus-visible { outline: 2px solid #fff; outline-offset: -4px; }
+
+  .fs-meta {
+    display: flex; justify-content: space-between; gap: 1rem;
+    font: 500 clamp(10px, 0.9vw, 13px)/1.2 ui-monospace, 'SF Mono', Menlo, monospace;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  strong {
+    display: block; position: relative; z-index: 1; max-width: 9em; margin-top: clamp(14px, 2.5vw, 34px);
+    font-family: var(--display); font-weight: 800; font-size: clamp(42px, 8.6vw, 150px);
+    line-height: 0.86; letter-spacing: -0.06em; text-transform: uppercase; text-wrap: balance;
+  }
+  .fs-art {
+    position: absolute; right: clamp(18px, 3.2vw, 46px); bottom: clamp(44px, 6vw, 80px);
+    width: 52%; height: 50%; overflow: hidden; background: rgba(0, 0, 0, 0.1);
+  }
+  .fs-art img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .fs-cover:hover .fs-art img { transform: scale(1.03); }
+  .fs-edition {
+    position: absolute; left: clamp(18px, 3.2vw, 46px); bottom: clamp(16px, 2.2vw, 30px);
+    font: 500 clamp(9px, 0.8vw, 12px)/1 ui-monospace, 'SF Mono', Menlo, monospace;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .fs-tail { height: 30vh; }
+
+  .fs-next {
+    position: fixed; right: 16px; bottom: 16px; z-index: 200;
+    width: 52px; height: 52px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.18);
+    background: #262a30; color: #eee; font: 24px/1 Arial, sans-serif; cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .fs-next:hover { background: #343941; }
+  .fs-next:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+  @media (max-width: 700px) {
+    .fs-slot { height: calc(100svh - 110px); }
+    strong { font-size: clamp(34px, 11vw, 60px); }
+    .fs-art { left: 18px; right: 18px; width: auto; height: 46%; bottom: 46px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fs-art img { transition: none; }
+  }
+</style>
