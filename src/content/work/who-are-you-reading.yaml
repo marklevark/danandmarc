@@ -4,6 +4,7 @@ year: 2023   # estimated; used to order the /timeline page
 order: 1
 coverPosition: 51% 13%
 cover: ../../assets/work/who-are-you-reading/giller-posters---11x173.jpg
+keyImage: ../../assets/work/who-are-you-reading/cover-mockup.jpg   # landscape image for the /stack page
 agency: Rethink
 client: Scotiabank
 blocks:

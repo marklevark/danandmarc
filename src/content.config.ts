@@ -41,6 +41,8 @@ const work = defineCollection({
       years: z.string().optional(),
       cover: image(),
       coverLoop: z.string().optional(),
+      /** Landscape key image for the /stack page (defaults to the cover). */
+      keyImage: image().optional(),
       /** CSS object-position for the square home-grid crop, e.g. '50% 13%' */
       coverPosition: z.string().default('50% 50%'),
       draft: z.boolean().default(false),

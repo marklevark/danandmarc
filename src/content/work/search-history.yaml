@@ -3,6 +3,7 @@ title: Search History
 year: 2017   # estimated; used to order the /timeline page
 order: 6
 cover: ../../assets/work/search-history/posters.jpg
+keyImage: ../../assets/work/search-history/wide-cov.jpg   # landscape image for the /stack page
 awards:
 - show: ADCC
   result: 2 x Gold, 2 x Silver, 4 x Merit
