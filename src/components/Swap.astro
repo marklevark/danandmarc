@@ -1,0 +1,21 @@
+---
+/** Two phrases that trade places on a loop. Every Swap on a page runs in sync. */
+interface Props { a: string; b: string }
+const { a, b } = Astro.props;
+---
+<span class="swap"><span class="sr-only">{a}</span><span class="s" aria-hidden="true">{a}</span><span class="s" aria-hidden="true">{b}</span></span>
+
+<style>
+  .swap { display: inline-grid; vertical-align: top; }
+  .s { grid-area: 1 / 1; white-space: nowrap; animation: swap 6s cubic-bezier(0.7, 0, 0.2, 1) infinite; }
+  .s:last-child { animation-delay: -3s; }
+  @keyframes swap {
+    0%, 42% { opacity: 1; transform: none; }
+    50%, 92% { opacity: 0; transform: translateY(-0.25em); }
+    100% { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .s { animation: none; }
+    .s:last-child { visibility: hidden; }
+  }
+</style>

@@ -8,6 +8,8 @@ const work = defineCollection({
     const media = z.object({
       src: image(),
       alt: z.string().optional(),
+      /** Force full page width. If any image in a group sets this, automatic layout is off for that group. */
+      wide: z.boolean().optional(),
       /** Path to an .mp4 loop (converted from GIF). `src` is used as its poster. */
       loop: z.string().optional(),
     });

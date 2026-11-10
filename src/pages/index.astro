@@ -1,13 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
 import WorkCard from '../components/WorkCard.astro';
+import Swap from '../components/Swap.astro';
 import { getWork } from '../lib/work';
 
 const work = await getWork();
 ---
 <Base>
   <section class="hero page">
-    <h1>We’re Dan and Marc.<br />But you can call us Marc and Dan.</h1>
+    <h1>We’re <Swap a="Dan and Marc" b="Marc and Dan" />.<br />But you can call us <Swap a="Marc and Dan" b="Dan and Marc" />.</h1>
     <p>We’re an award-winning freelance creative team based out of Toronto.</p>
   </section>
 

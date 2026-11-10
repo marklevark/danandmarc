@@ -51,13 +51,12 @@ const og = await getImage({ src: d.cover, width: 1200, format: 'jpg' });
 </Base>
 
 <style>
-  .extra {
-    display: grid; gap: 1rem 3rem; grid-template-columns: 1fr; padding-top: 60px;
-  }
+  /* Matches the original: label | show | result, three even-ish columns */
+  .extra { display: grid; gap: 1.2rem 0; grid-template-columns: 1fr; padding-top: 80px; }
   .extra h2 { font-size: var(--fs-lead); line-height: 1; }
-  .extra > div, .awards { max-width: 37rem; }
-  .awards { margin: 0; display: grid; gap: 0.35rem; }
-  .awards div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; }
+  .extra > div { max-width: 24rem; line-height: 1.35; }
+  .awards { margin: 0; display: grid; gap: 1.05em 0; }
+  .awards div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
   .awards dd { margin: 0; }
 
   .pager {
@@ -67,6 +66,8 @@ const og = await getImage({ src: d.cover, width: 1200, format: 'jpg' });
     letter-spacing: var(--display-tracking);
   }
   @media (min-width: 768px) {
-    .extra { grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); }
+    .extra { grid-template-columns: 31% minmax(0, 1fr); }
+    .awards { max-width: 62rem; }
+    .awards div { gap: 2rem; }
   }
 </style>

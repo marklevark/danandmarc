@@ -44,7 +44,10 @@ const isActive = (href: string) =>
     <a class="skip" href="#main">Skip to content</a>
     <header class="site-header">
       <a href="/" class="home" aria-label="Dan and Marc, home"><Wordmark size="20px" /></a>
-      <nav aria-label="Main">
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="sr-only">Menu</span><span class="bars" aria-hidden="true"></span>
+      </button>
+      <nav id="site-nav" aria-label="Main">
         <ul>
           {site.nav.map((n) => (
             <li><a href={n.href} aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a></li>
@@ -54,6 +57,17 @@ const isActive = (href: string) =>
     </header>
 
     <main id="main"><slot /></main>
+
+    <script>
+      const btn = document.querySelector<HTMLButtonElement>('.menu-btn')!;
+      const set = (open: boolean) => {
+        btn.setAttribute('aria-expanded', String(open));
+        document.documentElement.classList.toggle('menu-open', open);
+      };
+      btn.addEventListener('click', () => set(btn.getAttribute('aria-expanded') !== 'true'));
+      document.addEventListener('keydown', (e) => e.key === 'Escape' && set(false));
+      matchMedia('(min-width: 641px)').addEventListener('change', () => set(false));
+    </script>
 
     <footer class="site-footer page">
       {site.people.map((p) => (
@@ -93,9 +107,32 @@ const isActive = (href: string) =>
   /* Degular is narrower than the fallback; don't over-tighten it */
   :global(body.has-degular) { --display-tracking: 0em; --text-tracking: 0em; }
 
+  .menu-btn { display: none; }
+
   @media (max-width: 640px) {
-    .site-header { height: 57px; padding-inline: 13px; }
-    nav ul { gap: 14px; }
-    nav a { font-size: 13px; letter-spacing: 0.08em; }
+    .site-header { height: 57px; padding-inline: 13px 16px; }
+    .home { position: relative; z-index: 2; }
+    .menu-btn {
+      position: relative; z-index: 2; display: block; width: 36px; height: 36px; margin-right: -4px;
+      background: none; border: 0; padding: 0; cursor: pointer; color: var(--ink);
+    }
+    .bars, .bars::before {
+      position: absolute; left: 1px; right: 1px; height: 1.5px; background: currentColor;
+      transition: transform 0.25s ease, top 0.25s ease;
+    }
+    .bars { top: 13px; }
+    .bars::before { content: ''; left: 0; right: 0; top: 8px; }
+    :global(.menu-open) .bars { top: 17px; transform: rotate(45deg); }
+    :global(.menu-open) .bars::before { top: 0; transform: rotate(-90deg); }
+
+    nav {
+      position: fixed; inset: 0; z-index: 1; background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden; transition: opacity 0.25s ease, visibility 0s 0.25s;
+    }
+    :global(.menu-open) nav { opacity: 1; visibility: visible; transition: opacity 0.25s ease; }
+    :global(.menu-open) body { overflow: hidden; }
+    nav ul { flex-direction: column; align-items: center; gap: 1.6rem; }
+    nav a { font-size: 22px; }
   }
 </style>

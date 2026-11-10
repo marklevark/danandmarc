@@ -51,7 +51,9 @@ blocks:
   level: 4
 - images:
   - src: ../../assets/work/the-unignorable-tower/notice-board.jpg
+    wide: true
   - src: ../../assets/work/the-unignorable-tower/uw---unignorable-tower-launch-05386.jpg
+    wide: true
   - src: ../../assets/work/the-unignorable-tower/uw---unignorable-tower-launch-04945.jpg
 - heading: The Tower
   level: 4

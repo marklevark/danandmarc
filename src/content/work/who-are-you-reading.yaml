@@ -16,7 +16,9 @@ blocks:
     It’s called fashion - look it up! (is something we’ve heard said)
 - images:
   - src: ../../assets/work/who-are-you-reading/screenshot-2024-12-20-131253.png
+    wide: true
   - src: ../../assets/work/who-are-you-reading/cover-mockup.jpg
+    wide: true
   - src: ../../assets/work/who-are-you-reading/giller-posters---11x17.jpg
   - src: ../../assets/work/who-are-you-reading/giller-posters---11x172.jpg
   - src: ../../assets/work/who-are-you-reading/giller-posters---11x173-2.jpg
