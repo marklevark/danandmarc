@@ -10,9 +10,8 @@ import Base from '../layouts/Base.astro';
 import { getWork } from '../lib/work';
 import { site } from '../data/site';
 
-const work = (await getWork()).sort(
-  (a, b) => (b.data.year ?? 0) - (a.data.year ?? 0) || a.data.order - b.data.order,
-);
+// Same order as the main work grid (the `order` field in each project file)
+const work = await getWork();
 
 const items = await Promise.all(
   work.map(async (w) => {
