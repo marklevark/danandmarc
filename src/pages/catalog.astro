@@ -1,0 +1,249 @@
+---
+/**
+ * Alternate homepage, styled after a merch-catalogue layout (big condensed headline, filter chips,
+ * light-grey product cards, small bold uppercase UI type).
+ * Display font: Anton (free stand-in for a heavy condensed grotesk). UI font: the site's Inter Tight.
+ */
+import '@fontsource/anton/400.css';
+import { getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { getWork } from '../lib/work';
+import { site } from '../data/site';
+
+const work = (await getWork()).sort(
+  (a, b) => (b.data.year ?? 0) - (a.data.year ?? 0) || a.data.order - b.data.order,
+);
+
+const items = await Promise.all(
+  work.map(async (w) => {
+    const d = w.data;
+    const key = d.keyImage ?? d.cover;
+    const img = await getImage({ src: key, width: 900, format: 'webp', quality: 80 });
+    const agencies = [
+      ...new Set([d.agency, ...d.blocks.flatMap((b) => ('credits' in b && b.credits.agency ? [b.credits.agency] : []))].filter(Boolean) as string[]),
+    ];
+    return {
+      slug: w.id,
+      title: d.title,
+      client: d.client ?? (agencies.length > 1 ? 'Various' : d.agency ?? ''),
+      agencies,
+      when: d.years ?? (d.year ? String(d.year) : ''),
+      src: img.src,
+    };
+  }),
+);
+
+// Filter chips: agencies, most projects first.
+const counts = new Map<string, number>();
+items.forEach((it) => it.agencies.forEach((a) => counts.set(a, (counts.get(a) ?? 0) + 1)));
+const chips = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([a]) => a);
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+// Two wide "feature" cards break up the grid, like the reference.
+const FEATURE = new Set(['unignorable', 'the-unignorable-tower']);
+---
+<Base title="Work" description="Dan and Marc: all the work.">
+  <meta name="robots" content="noindex" slot="head" />
+
+  <div class="cx-dock">
+    <nav class="cx-pill" aria-label="Main">
+      <details class="cx-menu">
+        <summary aria-label="Menu"><span class="cx-burger" aria-hidden="true"></span></summary>
+        <ul>
+          {site.nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+        </ul>
+      </details>
+      <a class="cx-logo" href="/catalog">Dan&amp;Marc</a>
+      <a class="cx-icon" href={`mailto:${site.email}`} aria-label="Email us">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="1.5" /><path d="m3.5 6.5 8.5 6.5 8.5-6.5" /></svg>
+      </a>
+    </nav>
+    <a class="cx-bar" href={`mailto:${site.email}`}>
+      <span>Say hi</span>
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+
+  <div class="cx">
+    <header class="cx-head">
+      <h1>All work</h1>
+      <div class="cx-chips" role="group" aria-label="Filter by agency">
+        <button type="button" class="cx-chip" aria-pressed="true" data-filter="all">All</button>
+        {chips.map((c) => <button type="button" class="cx-chip" aria-pressed="false" data-filter={slug(c)}>{c}</button>)}
+      </div>
+    </header>
+
+    <ul class="cx-grid">
+      {items.map((it, i) => (
+        <li class:list={['cx-item', { wide: FEATURE.has(it.slug) }]} data-agencies={it.agencies.map(slug).join(' ')}>
+          <a href={`/work/${it.slug}`} class="cx-card">
+            <span class="cx-tile">
+              {it.when && <span class="cx-badge">{it.when}</span>}
+              <img src={it.src} alt="" loading={i < 4 ? 'eager' : 'lazy'} decoding="async" />
+            </span>
+            <span class="cx-name">{it.title}</span>
+            <span class="cx-sub">{it.client}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="cx-empty" hidden>Nothing here yet.</p>
+  </div>
+
+  <section class="cx-foot">
+    <h2>Say hi</h2>
+    <ul>
+      <li><span>Both of us</span><a href={`mailto:${site.email}`}>{site.email}</a></li>
+      {site.people.map((p) => <li><span>Just {p.first}</span><a href={`mailto:${p.email}`}>{p.email}</a></li>)}
+    </ul>
+  </section>
+</Base>
+
+<script>
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('.cx-chip')];
+  const items = [...document.querySelectorAll<HTMLElement>('.cx-item')];
+  const empty = document.querySelector<HTMLElement>('.cx-empty')!;
+  chips.forEach((chip) => chip.addEventListener('click', () => {
+    const f = chip.dataset.filter!;
+    chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+    let shown = 0;
+    items.forEach((it) => {
+      const on = f === 'all' || it.dataset.agencies!.split(' ').includes(f);
+      it.hidden = !on;
+      if (on) shown++;
+    });
+    // feature cards only span two columns in the full, unfiltered grid
+    document.querySelector('.cx-grid')!.classList.toggle('is-filtered', f !== 'all');
+    empty.hidden = shown > 0;
+  }));
+  // close the menu when clicking elsewhere
+  const menu = document.querySelector<HTMLDetailsElement>('.cx-menu')!;
+  document.addEventListener('click', (e) => { if (!menu.contains(e.target as Node)) menu.open = false; });
+</script>
+
+<style>
+  /* White page, black type; hide the regular site header on this page */
+  :global(body) { --bg: #fff; --ink: #000; --muted: #6b6b6b; --tile: #f2f2f2; }
+  :global(.site-header) { display: none !important; }
+  :global(main) { padding-bottom: 0 !important; }
+
+  .cx, .cx-foot { --cond: 'Anton', 'Impact', 'Arial Narrow', sans-serif; }
+  .cx-dock { --cond: 'Anton', 'Impact', 'Arial Narrow', sans-serif; }
+
+  /* small UI type: bold, uppercase, tight */
+  .cx-chip, .cx-bar, .cx-badge, .cx-menu a {
+    font-family: var(--text); font-weight: 700; font-size: 12px; line-height: 1;
+    letter-spacing: -0.01em; text-transform: uppercase;
+  }
+
+  /* ---------- floating nav pill + black bar ---------- */
+  .cx-dock {
+    position: fixed; z-index: 60; top: 36px; left: 50%; transform: translateX(-50%);
+    width: min(350px, calc(100vw - 40px));
+  }
+  .cx-pill {
+    position: relative; display: grid; grid-template-columns: 40px 1fr 40px; align-items: center;
+    height: 50px; padding: 0 6px; background: #fff; border: 1px solid #e6e6e6;
+  }
+  .cx-menu summary { list-style: none; display: grid; place-items: center; width: 40px; height: 40px; cursor: pointer; }
+  .cx-menu summary::-webkit-details-marker { display: none; }
+  .cx-burger, .cx-burger::before { display: block; width: 24px; height: 1.5px; background: #000; position: relative; }
+  .cx-burger { top: -3px; }
+  .cx-burger::before { content: ''; top: 6px; }
+  .cx-menu ul {
+    position: absolute; left: -1px; right: -1px; top: 100%; z-index: 2; list-style: none; margin: 0; padding: 8px 0;
+    background: #fff; border: 1px solid #e6e6e6; border-top: 0;
+  }
+  .cx-menu a { display: block; padding: 12px 16px; }
+  .cx-logo {
+    justify-self: start; padding-left: 6px;
+    font-family: var(--cond); font-size: 24px; line-height: 1; letter-spacing: 0.01em; text-transform: uppercase;
+  }
+  .cx-icon { justify-self: end; display: grid; place-items: center; width: 40px; height: 40px; }
+  .cx-icon svg { width: 20px; height: 20px; fill: none; stroke: #000; stroke-width: 1.5; }
+  .cx-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    height: 50px; padding: 0 16px; background: #000; color: #fff;
+  }
+  .cx-bar:hover, .cx-logo:hover, .cx-icon:hover { opacity: 1; }
+  .cx-bar:hover span:last-child { transform: translateX(3px); }
+  .cx-bar span:last-child { transition: transform 0.15s ease; }
+
+  /* ---------- headline + chips ---------- */
+  .cx { padding: 0 30px; }
+  .cx-head {
+    display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 40px;
+    padding-top: clamp(170px, 19vw, 270px); padding-bottom: clamp(30px, 4.5vw, 70px);
+  }
+  h1, .cx-foot h2 {
+    margin: 0; font-family: var(--cond); font-weight: 400; text-transform: uppercase;
+    font-size: clamp(76px, 11.1vw, 160px); line-height: 0.8; letter-spacing: -0.01em;
+  }
+  .cx-chips { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; padding-bottom: 6px; }
+  .cx-chip {
+    appearance: none; cursor: pointer; padding: 6px 8px; border: 1px solid #e6e6e6; border-radius: 2px;
+    background: #fff; color: #000; transition: background 0.15s ease, color 0.15s ease;
+  }
+  .cx-chip:hover { border-color: #000; }
+  .cx-chip[aria-pressed='true'] { background: #000; color: #fff; border-color: #000; }
+  .cx-chip:focus-visible, .cx-card:focus-visible { outline: 2px solid #000; outline-offset: 3px; }
+
+  /* ---------- product-style grid ---------- */
+  .cx-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 30px 4px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .cx-item.wide { grid-column: span 2; }
+  .cx-grid.is-filtered .cx-item.wide { grid-column: auto; }
+  .cx-item[hidden] { display: none; }
+  .cx-card { display: block; text-align: center; }
+  .cx-card:hover { opacity: 1; }
+  .cx-tile {
+    position: relative; display: grid; place-items: center; aspect-ratio: 1;
+    padding: 11%; overflow: hidden; border-radius: 6px; background: var(--tile);
+  }
+  /* a wide card is exactly two tiles + the gap wide, and one tile tall */
+  .wide .cx-tile { aspect-ratio: auto; height: calc((100% - 4px) / 2); }
+  .cx-item.wide .cx-tile { aspect-ratio: 2.012; height: auto; padding: 8% 18%; }
+  .cx-grid.is-filtered .cx-item.wide .cx-tile { aspect-ratio: 1; padding: 11%; }
+  .cx-tile img {
+    width: 100%; height: auto; max-height: 100%; object-fit: contain;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12); transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .cx-card:hover .cx-tile img { transform: scale(1.04); }
+  .cx-badge {
+    position: absolute; top: 24px; left: 24px; padding: 2px 4px 1px; border: 1px solid #000; background: transparent;
+  }
+  .cx-name {
+    display: block; margin-top: 22px; font-size: 14px; line-height: 1.2; letter-spacing: -0.01em; text-transform: uppercase;
+  }
+  .cx-sub { display: block; margin-top: 2px; font-size: 14px; line-height: 1.2; color: var(--muted); }
+  .cx-empty { padding: 60px 0; text-align: center; font-weight: 700; text-transform: uppercase; }
+
+  /* ---------- black footer block ---------- */
+  .cx-foot { margin-top: 110px; padding: 60px 30px 70px; background: #000; color: #fff; }
+  .cx-foot h2 { font-size: clamp(56px, 7vw, 110px); }
+  .cx-foot ul { list-style: none; margin: 32px 0 0; padding: 0; display: grid; gap: 10px; }
+  .cx-foot li { display: flex; flex-wrap: wrap; gap: 4px 18px; align-items: baseline; text-transform: uppercase; font-size: 14px; }
+  .cx-foot li span { min-width: 110px; color: #8a8a8a; font-weight: 700; font-size: 12px; }
+  .cx-foot a { font-family: var(--cond); font-size: clamp(24px, 2.6vw, 38px); letter-spacing: 0.01em; text-transform: uppercase; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 1000px) {
+    .cx-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cx-item.wide { grid-column: auto; }
+    .cx-item.wide .cx-tile { aspect-ratio: 1; padding: 11%; }
+  }
+  @media (max-width: 700px) {
+    .cx { padding: 0 20px; }
+    .cx-dock { top: 20px; }
+    .cx-head { padding-top: 150px; flex-direction: column; align-items: flex-start; gap: 18px; }
+    .cx-chips { justify-content: flex-start; }
+    .cx-grid { gap: 26px 6px; }
+    .cx-tile { padding: 12%; }
+    .cx-badge { top: 12px; left: 12px; font-size: 10px; }
+    .cx-name { margin-top: 14px; font-size: 12px; }
+    .cx-sub { font-size: 12px; }
+    .cx-foot { padding: 44px 20px 54px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cx-tile img, .cx-chip, .cx-bar span:last-child { transition: none; }
+  }
+</style>
