@@ -1,0 +1,407 @@
+---
+/**
+ * Alternate homepage: warm editorial style. Cream/linen canvases, cocoa ink, a soft ionic serif
+ * that slips into italic mid-line, hairline oval buttons, photos masked into ovals and arches,
+ * no bold and no shadows. Serif: Bitter (stand-in for Caslon Ionic). Sans: Inter (stand-in for Fakt).
+ */
+import '@fontsource/bitter/400.css';
+import '@fontsource/bitter/400-italic.css';
+import '@fontsource-variable/inter';
+import '@fontsource/anton/400.css';
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { getWork } from '../lib/work';
+import { site, roster } from '../data/site';
+
+import heroImg from '../assets/work/marc-before-dan-and-marc/tims-house.jpg';
+import ovGiller from '../assets/work/who-are-you-reading/giller-posters---11x174.jpg';
+import ovUnig from '../assets/work/unignorable/domestic.jpg';
+import ovTjff from '../assets/work/dan-before-marc-and-dan/tjff---curls---poster_1000-1.jpg';
+import plumBg from '../assets/work/the-unignorable-tower/www.kelseyhorne.com669steal_this_page_19.jpg';
+import plumOval from '../assets/work/the-unignorable-tower/uw---unignorable-tower-launch-04945.jpg';
+import mTopComic from '../assets/work/top-comic/tc_posters_fedora.png';
+import mSearch from '../assets/work/search-history/covhouse_addiction_digitalproof_applied.jpg';
+import mMoustache from '../assets/work/dan-before-marc-and-dan/drano-log_1000_1000_1000-1.jpg';
+import mRoom from '../assets/work/unignorable/gal_1--1-.jpg';
+import mTims from '../assets/work/unignorable/hoarding_2.jpg';
+import cBp from '../assets/work/the-bp-wish-list/bp-wishlist-1.jpg';
+import cDog from '../assets/work/top-comic/top-comic_year-one2.jpg';
+
+const work = await getWork();
+const tileColours = ['#fcce1e', '#ffb159', '#d7a9e3']; // marigold, apricot, lavender
+const tiles = await Promise.all(
+  work.map(async (w, i) => {
+    const d = w.data;
+    const img = await getImage({ src: d.keyImage ?? d.cover, width: 1000, format: 'webp', quality: 78 });
+    return {
+      slug: w.id,
+      title: d.title,
+      sub: [d.client, d.agency && d.agency !== d.client ? d.agency : undefined].filter(Boolean).join(' / ') || d.agency || '',
+      src: img.src,
+      pos: d.keyImage ? '50% 50%' : d.coverPosition,
+      fill: tileColours[i % 3],
+    };
+  }),
+);
+
+// Real award lines from src/data/awards.yaml, picked as "review" cards.
+const honours = [
+  { quote: 'Bronze, Mobile Technology — AR', who: 'Cannes Lions 2021 · The #UNIGNORABLE Tower' },
+  { quote: 'Wood Pencil, Poster Campaign', who: 'D&AD 2019 · #UNIGNORABLE' },
+  { quote: 'Campaign of the Year', who: 'Strategy Agency of the Year 2019 · #UNIGNORABLE' },
+  { quote: 'Silver, Digital Craft — Creative Use of Data', who: 'The One Show 2020 · The #UNIGNORABLE Tower' },
+  { quote: 'Cover image', who: 'Lürzer’s Archive 2016 · Top Comic' },
+  { quote: 'Gold, Print — “Curls”', who: 'ADCC 2012 · Toronto Jewish Film Festival' },
+];
+---
+<Base title="Dan and Marc" description={site.description}>
+  <meta name="robots" content="noindex" slot="head" />
+
+  <div class="ed">
+    <!-- ============================== overlay nav -->
+    <header class="ed-nav">
+      <button class="ed-burger" type="button" aria-expanded="false" aria-controls="ed-menu"><span class="sr-only">Menu</span><i></i><i></i></button>
+      <a class="ed-oval ed-oval--sm ed-oval--cream" href={`mailto:${site.email}`}>Say hi</a>
+    </header>
+    <nav id="ed-menu" class="ed-menu" aria-label="Main" hidden>
+      <ul>
+        <li><a href="/">Work</a></li>
+        <li><a href="/contact"><em>Contact</em></a></li>
+        <li><a href="/awards">Awards</a></li>
+      </ul>
+    </nav>
+
+    <!-- ============================== hero -->
+    <section class="ed-hero">
+      <Image src={heroImg} alt="The Tims Next Door: a Calgary house turned into a Tim Hortons overnight" widths={[800, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" class="ed-hero__img" />
+      <div class="ed-hero__shade" aria-hidden="true"></div>
+      <svg class="ed-hero__mark" viewBox="0 0 1000 260" aria-hidden="true">
+        <path class="arc" d="M-40 230 C 260 20, 740 20, 1040 230" />
+        <text x="500" y="190" text-anchor="middle">DAN&amp;MARC</text>
+      </svg>
+      <h1 class="sr-only">Dan and Marc</h1>
+      <p class="ed-hero__line">An award-winning freelance creative team, <em>based out of Toronto.</em></p>
+    </section>
+
+    <!-- ============================== who we are (cream) -->
+    <section class="ed-who">
+      <p class="ed-eyebrow">Who we are</p>
+      <h2 class="ed-display">We’re Dan and Marc. <em>But you can call us Marc and Dan.</em></h2>
+
+      <div class="ed-ovals" aria-hidden="true">
+        <span class="o"></span>
+        <span class="o"><Image src={ovGiller} alt="" widths={[400, 700]} sizes="20vw" /></span>
+        <span class="o"><Image src={ovUnig} alt="" widths={[400, 700]} sizes="20vw" /></span>
+        <span class="o"><Image src={ovTjff} alt="" widths={[400, 700]} sizes="20vw" /></span>
+        <span class="o"></span>
+      </div>
+
+      <div class="ed-cols">
+        <p>A freelance creative team with a combined 25+ years of industry experience, as well as a combined height of 12'5". We’ve spent our careers at top-tier agencies, making strategic, results-driven work across every discipline.</p>
+        <p>Our work has been recognized at every major international and national award show. Agencies and clients, in absolutely no order: {roster.slice(0, 12).join(', ')}, and more. Dan’s the one that’s tall.</p>
+      </div>
+      <a class="ed-oval" href="#work">See the work</a>
+    </section>
+
+    <!-- ============================== work tiles (linen) -->
+    <section class="ed-work" id="work">
+      <p class="ed-eyebrow">Selected work</p>
+      <h2 class="ed-title">Thirteen campaigns, <em>give or take a pizzeria.</em></h2>
+      <ul class="ed-tiles">
+        {tiles.map((t) => (
+          <li>
+            <a class="ed-tile" href={`/work/${t.slug}`} style={`--fill:${t.fill}`}>
+              <span class="ed-tile__img"><img src={t.src} alt="" loading="lazy" decoding="async" style={`object-position:${t.pos}`} /></span>
+              <span class="ed-tile__text">
+                <span class="ed-tile__name">{t.title}</span>
+                <span class="ed-tile__role">{t.sub}</span>
+              </span>
+              <span class="ed-tile__plus" aria-hidden="true">+</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- ============================== plum awards panel -->
+    <section class="ed-split">
+      <div class="ed-split__photo"><Image src={plumBg} alt="" widths={[800, 1400]} sizes="(min-width: 900px) 50vw, 100vw" /></div>
+      <div class="ed-split__plum">
+        <p class="ed-split__mark">Awards</p>
+        <span class="ed-split__oval"><Image src={plumOval} alt="" widths={[400, 700]} sizes="240px" /></span>
+        <p class="ed-split__line">Cannes, One Show, D&amp;AD, the Clios — <em>and a few more than that.</em></p>
+        <a class="ed-round" href="/awards" aria-label="See all awards">→</a>
+      </div>
+    </section>
+
+    <!-- ============================== honours masonry (linen) -->
+    <section class="ed-reviews">
+      <p class="ed-eyebrow">Kind words, mostly from juries</p>
+      <h2 class="ed-title">Some say a list of awards is overkill. <em>Here’s a short one.</em></h2>
+      <div class="ed-masonry">
+        <div class="col">
+          <figure class="ed-card"><blockquote>{honours[0].quote}</blockquote><figcaption>{honours[0].who}</figcaption></figure>
+          <span class="ph arch"><Image src={mTopComic} alt="Top Comic poster" widths={[400, 700]} sizes="30vw" /></span>
+          <figure class="ed-card"><blockquote>{honours[3].quote}</blockquote><figcaption>{honours[3].who}</figcaption></figure>
+        </div>
+        <div class="col col--down">
+          <span class="ph round bw"><Image src={mMoustache} alt="Drano print ad" widths={[400, 700]} sizes="30vw" /></span>
+          <figure class="ed-card"><blockquote>{honours[1].quote}</blockquote><figcaption>{honours[1].who}</figcaption></figure>
+          <span class="ph circle"><Image src={mTims} alt="#UNIGNORABLE posters on a construction hoarding" widths={[400, 700]} sizes="30vw" /></span>
+          <figure class="ed-card"><blockquote>{honours[4].quote}</blockquote><figcaption>{honours[4].who}</figcaption></figure>
+        </div>
+        <div class="col col--up">
+          <figure class="ed-card"><blockquote>{honours[2].quote}</blockquote><figcaption>{honours[2].who}</figcaption></figure>
+          <span class="ph arch bw"><Image src={mSearch} alt="Search History poster" widths={[400, 700]} sizes="30vw" /></span>
+          <figure class="ed-card"><blockquote>{honours[5].quote}</blockquote><figcaption>{honours[5].who}</figcaption></figure>
+          <span class="ph round"><Image src={mRoom} alt="#UNIGNORABLE gallery opening" widths={[400, 700]} sizes="30vw" /></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== butter card over cocoa footer -->
+    <footer class="ed-foot">
+      <div class="ed-book">
+        <div class="ed-book__collage" aria-hidden="true">
+          <span class="c1"><Image src={cBp} alt="" widths={[400, 700]} sizes="25vw" /></span>
+          <span class="c2"><Image src={cDog} alt="" widths={[300, 500]} sizes="18vw" /></span>
+        </div>
+        <div class="ed-book__text">
+          <p class="ed-eyebrow">Say hi</p>
+          <p class="ed-book__line"><em>Got a brief?</em> <span>We’d love to read it, and we’re quick to reply.</span></p>
+          <a class="ed-oval" href={`mailto:${site.email}`}>Email us</a>
+        </div>
+      </div>
+
+      <div class="ed-foot__inner">
+        <p class="ed-foot__tag">Dan Cantelon and Marc Levesque. <em>Freelance creative team, Toronto.</em></p>
+        <div class="ed-foot__row">
+          <p class="ed-foot__mark">Dan&amp;Marc</p>
+          <ul class="ed-foot__links">
+            <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+            {site.people.map((p) => <li><a href={p.linkedin} rel="noopener" target="_blank">{p.first} on LinkedIn</a></li>)}
+          </ul>
+        </div>
+        <p class="ed-foot__giant" aria-hidden="true">Dan&amp;Marc</p>
+        <p class="ed-foot__legal">© {new Date().getFullYear()} Dan Cantelon &amp; Marc Levesque</p>
+      </div>
+    </footer>
+  </div>
+</Base>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.ed-burger')!;
+  const menu = document.getElementById('ed-menu')!;
+  const set = (open: boolean) => {
+    btn.setAttribute('aria-expanded', String(open));
+    menu.hidden = !open;
+    document.documentElement.classList.toggle('ed-locked', open);
+  };
+  btn.addEventListener('click', () => set(menu.hidden));
+  addEventListener('keydown', (e) => e.key === 'Escape' && set(false));
+</script>
+
+<style>
+  :global(.site-header) { display: none !important; }
+  :global(main) { padding-bottom: 0 !important; }
+  :global(html.ed-locked), :global(html.ed-locked body) { overflow: hidden; }
+  :global(body) { --bg: #f3edda; }
+
+  .ed {
+    --cocoa: #421e10; --cream: #f3edda; --linen: #fbfaf2; --ink: #000; --marigold: #fcce1e;
+    --butter: #f7e399; --plum: #9a389c; --serif: 'Bitter', Georgia, serif; --sans: 'Inter Variable', 'Helvetica Neue', Arial, sans-serif;
+    --gut: clamp(20px, 5vw, 80px);
+    background: var(--cream); color: var(--cocoa);
+    font-family: var(--serif); font-weight: 400; letter-spacing: -0.04em;
+  }
+  .ed :global(*) { font-weight: 400; }
+  .ed em { font-style: italic; }
+  .ed h2, .ed p { margin: 0; }
+  .ed a:hover { opacity: 1; }
+
+  /* ---------- shared pieces ---------- */
+  .ed-eyebrow { font-size: 16px; line-height: 1.1; text-transform: uppercase; text-align: center; letter-spacing: -0.04em; }
+  .ed-display, .ed-title {
+    font-family: var(--serif); letter-spacing: -0.04em; line-height: 1.1; text-align: center; text-wrap: balance;
+    margin: 32px auto 0 !important;
+  }
+  .ed-display { font-size: clamp(38px, 4.2vw, 60px); max-width: 15em; }
+  .ed-title { font-size: clamp(32px, 3.4vw, 48px); max-width: 17em; }
+
+  .ed-oval {
+    display: inline-block; padding: 32px 56px; border: 1px solid var(--cocoa); border-radius: 50%;
+    font-family: var(--serif); font-style: italic; font-size: 18px; line-height: 1.2; letter-spacing: -0.04em;
+    color: var(--cocoa); background: transparent; transition: background 0.2s ease, color 0.2s ease;
+  }
+  .ed-oval:hover { background: var(--cocoa); color: var(--cream); }
+  .ed-oval--sm { padding: 20px 32px; }
+  .ed-oval--cream { border-color: var(--cream); color: var(--cream); }
+  .ed-oval--cream:hover { background: var(--cream); color: var(--cocoa); }
+
+  /* ---------- nav ---------- */
+  .ed-nav {
+    position: absolute; z-index: 20; top: 0; left: 0; right: 0; height: 112px; padding: 24px var(--gut);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .ed-burger { position: relative; z-index: 31; width: 40px; height: 40px; border: 0; background: none; cursor: pointer; padding: 0; }
+  .ed-burger i { position: absolute; left: 4px; right: 4px; height: 1px; background: var(--cream); transition: transform 0.25s ease, top 0.25s ease; }
+  .ed-burger i:first-of-type { top: 15px; }
+  .ed-burger i:last-of-type { top: 25px; }
+  .ed-burger[aria-expanded='true'] i:first-of-type { top: 20px; transform: rotate(45deg); }
+  .ed-burger[aria-expanded='true'] i:last-of-type { top: 20px; transform: rotate(-45deg); }
+  .ed-menu {
+    position: fixed; inset: 0; z-index: 30; background: var(--cocoa);
+    display: grid; place-items: center;
+  }
+  .ed-menu[hidden] { display: none; }
+  .ed-menu ul { list-style: none; margin: 0; padding: 0; text-align: center; }
+  .ed-menu a { display: block; padding: 10px; font-size: clamp(40px, 6vw, 72px); line-height: 1.1; color: var(--cream); letter-spacing: -0.04em; }
+  .ed-menu a:hover { color: var(--marigold); }
+
+  /* ---------- hero ---------- */
+  .ed-hero { position: relative; height: min(1000px, 100svh); min-height: 560px; overflow: hidden; color: var(--linen); }
+  .ed-hero__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
+  .ed-hero__shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.05) 45%, rgba(0, 0, 0, 0.2)); }
+  .ed-hero__mark { position: absolute; left: var(--gut); right: var(--gut); top: 50%; transform: translateY(-55%); width: calc(100% - 2 * var(--gut)); height: auto; overflow: visible; }
+  .ed-hero__mark text {
+    font-family: var(--serif); font-size: 172px; letter-spacing: -0.04em;
+    fill: transparent; stroke: var(--cream); stroke-width: 1.1;
+  }
+  .ed-hero__mark .arc { fill: none; stroke: var(--cream); stroke-width: 1; }
+  .ed-hero__line {
+    position: absolute; left: var(--gut); right: var(--gut); bottom: clamp(48px, 8vh, 96px);
+    text-align: center; font-size: clamp(24px, 2.5vw, 36px); line-height: 1.3; letter-spacing: -0.04em; text-wrap: balance;
+  }
+
+  /* ---------- who we are ---------- */
+  .ed-who { padding: 120px var(--gut) 112px; text-align: center; background: var(--cream); }
+  /* five ovals overlapping by a quarter = 4 oval-widths total, so they always fit the row */
+  .ed-ovals { --ow: min(250px, calc((100vw - 2 * var(--gut)) / 4)); display: flex; justify-content: center; margin: 72px auto 80px; max-width: 1100px; }
+  .ed-ovals .o {
+    flex: 0 0 auto; width: var(--ow); aspect-ratio: 0.62; border: 1px solid var(--cocoa); border-radius: 50%;
+    overflow: hidden; margin-left: calc(var(--ow) * -0.25);
+  }
+  .ed-ovals .o:first-child { margin-left: 0; }
+  .ed-ovals .o :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .ed-cols {
+    display: grid; grid-template-columns: 1fr; gap: 24px 32px; max-width: 1100px; margin: 0 auto 64px; text-align: left;
+    font-family: var(--sans); font-size: clamp(19px, 1.6vw, 24px); line-height: 1.3; letter-spacing: -0.04em;
+  }
+
+  /* ---------- work tiles ---------- */
+  .ed-work { padding: 112px 0 0; background: var(--linen); }
+  .ed-work .ed-eyebrow, .ed-work .ed-title { padding: 0 var(--gut); }
+  .ed-tiles { list-style: none; margin: 80px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ed-tile { position: relative; display: block; aspect-ratio: 533 / 682; overflow: hidden; background: var(--fill); color: var(--cocoa); }
+  .ed-tile__img { position: absolute; inset: 0; overflow: hidden; transition: inset 0.45s cubic-bezier(0.2, 0.7, 0.2, 1), border-radius 0.45s, transform 0.45s; }
+  .ed-tile__img img { width: 100%; height: 100%; object-fit: cover; }
+  .ed-tile__text { position: absolute; left: 0; right: 0; bottom: 64px; padding: 0 24px; text-align: center; opacity: 0; transition: opacity 0.3s ease; }
+  .ed-tile__name { display: block; font-size: 28px; line-height: 1.1; letter-spacing: -0.04em; text-wrap: balance; }
+  .ed-tile__role { display: block; margin-top: 8px; font-size: 18px; line-height: 1.3; letter-spacing: 0; }
+  .ed-tile__plus {
+    position: absolute; top: 20px; right: 20px; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--cocoa); color: var(--cream); font-family: var(--sans); font-size: 22px; opacity: 0; transition: opacity 0.3s ease;
+  }
+  @media (hover: hover) {
+    .ed-tile:hover .ed-tile__img, .ed-tile:focus-visible .ed-tile__img { inset: 13% 18% 32%; border-radius: 50%; transform: rotate(-7deg); }
+    .ed-tile:hover .ed-tile__text, .ed-tile:hover .ed-tile__plus, .ed-tile:focus-visible .ed-tile__text, .ed-tile:focus-visible .ed-tile__plus { opacity: 1; }
+  }
+  /* touch: show the oval state always */
+  @media (hover: none) {
+    .ed-tile__img { inset: 13% 18% 32%; border-radius: 50%; transform: rotate(-7deg); }
+    .ed-tile__text, .ed-tile__plus { opacity: 1; }
+  }
+
+  /* ---------- plum split ---------- */
+  .ed-split { display: grid; grid-template-columns: 1fr; }
+  .ed-split__photo { min-height: 420px; position: relative; }
+  .ed-split__photo :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .ed-split__plum {
+    background: var(--plum); color: var(--cream); padding: 48px var(--gut) 64px;
+    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 36px;
+  }
+  .ed-split__mark {
+    font-family: 'Anton', Impact, 'Arial Narrow', sans-serif; text-transform: uppercase; letter-spacing: 0;
+    font-size: clamp(72px, 9vw, 150px); line-height: 0.85;
+  }
+  .ed-split__oval { width: min(240px, 55vw); aspect-ratio: 0.72; border-radius: 50%; overflow: hidden; border: 1px solid var(--cream); }
+  .ed-split__oval :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .ed-split__line { font-size: 20px; line-height: 1.5; max-width: 22em; letter-spacing: -0.04em; }
+  .ed-round {
+    width: 56px; height: 56px; border-radius: 9999px; display: grid; place-items: center;
+    background: #fff; color: var(--cocoa); font-family: var(--sans); font-size: 22px;
+  }
+
+  /* ---------- honours masonry ---------- */
+  .ed-reviews { padding: 112px var(--gut) 160px; background: var(--linen); }
+  .ed-masonry { display: grid; grid-template-columns: 1fr; gap: 32px; max-width: 1472px; margin: 80px auto 0; }
+  .ed-masonry .col { display: grid; gap: 32px; align-content: start; }
+  .ed-card { margin: 0; padding: 64px 48px; border-radius: 16px; background: var(--cream); text-align: center; }
+  .ed-card blockquote { margin: 0; font-style: italic; font-size: 20px; line-height: 1.5; letter-spacing: -0.04em; }
+  .ed-card blockquote::before { content: '“'; }
+  .ed-card blockquote::after { content: '”'; }
+  .ed-card figcaption { margin-top: 32px; font-size: 14px; line-height: 1.3; text-transform: uppercase; letter-spacing: -0.04em; }
+  .ph { display: block; overflow: hidden; }
+  .ph :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .ph.arch { aspect-ratio: 0.78; border-radius: 999px 999px 24px 24px; }
+  .ph.round { aspect-ratio: 1.2; border-radius: 24px; }
+  .ph.circle { aspect-ratio: 1; border-radius: 50%; }
+  .ph.bw :global(img) { filter: grayscale(1); }
+
+  /* ---------- butter card + cocoa footer ---------- */
+  .ed-foot { background: var(--cocoa); color: var(--cream); padding: 0 var(--gut) 24px; }
+  .ed-book {
+    position: relative; top: -80px; margin-bottom: -16px; background: var(--butter); color: var(--cocoa);
+    border-radius: 24px 24px 120px 120px; padding: 48px; display: grid; gap: 40px; align-items: center;
+  }
+  .ed-book__collage { position: relative; height: 300px; }
+  .ed-book__collage span { position: absolute; overflow: hidden; }
+  .ed-book__collage :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .ed-book__collage .c1 { left: 0; top: 0; width: 72%; height: 100%; border-radius: 24px; }
+  .ed-book__collage .c2 { right: 0; bottom: -20px; width: 42%; aspect-ratio: 0.7; border-radius: 50%; border: 1px solid var(--cocoa); }
+  .ed-book__text { text-align: center; display: grid; justify-items: center; gap: 28px; }
+  .ed-book__line { font-size: 24px; line-height: 1.3; max-width: 20em; }
+  .ed-book__line span { font-family: var(--sans); }
+
+  .ed-foot__inner { padding-top: 32px; }
+  .ed-foot__tag { font-family: var(--sans); font-size: clamp(20px, 1.8vw, 24px); line-height: 1.3; max-width: 22em; }
+  .ed-foot__tag em { font-family: var(--serif); }
+  .ed-foot__row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px; margin-top: 72px; color: var(--marigold); }
+  .ed-foot__mark { font-size: clamp(36px, 4vw, 56px); line-height: 1; }
+  .ed-foot__links { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: 14px; text-align: right; }
+  .ed-foot__links a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .ed-foot__giant {
+    margin-top: 64px !important; font-size: clamp(64px, 17.5vw, 290px); line-height: 0.82; letter-spacing: -0.06em;
+    color: var(--cream); white-space: nowrap; text-align: center; overflow: hidden;
+  }
+  .ed-foot__legal { margin-top: 24px !important; font-family: var(--sans); font-size: 12px; letter-spacing: -0.04em; opacity: 0.8; }
+
+  /* ---------- responsive ---------- */
+  @media (min-width: 900px) {
+    .ed-cols { grid-template-columns: 1fr 1fr; }
+    .ed-split { grid-template-columns: 1fr 1fr; }
+    .ed-split__photo { min-height: 0; }
+    .ed-masonry { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .ed-masonry .col--down { margin-top: 96px; }
+    .ed-masonry .col--up { margin-top: 32px; }
+    .ed-book { grid-template-columns: 1fr 1fr; padding: 64px; }
+    .ed-book__collage { height: 360px; }
+  }
+  @media (max-width: 899px) {
+    .ed-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ed-tile__name { font-size: 20px; }
+    .ed-tile__role { font-size: 14px; }
+    .ed-tile__text { bottom: 28px; padding: 0 12px; }
+    .ed-tile__plus { width: 34px; height: 34px; top: 12px; right: 12px; font-size: 18px; }
+    .ed-foot__links { text-align: left; }
+  }
+  @media (max-width: 560px) {
+    .ed-tiles { grid-template-columns: 1fr; }
+    .ed-tile__name { font-size: 26px; }
+    .ed-oval { padding: 26px 44px; }
+    .ed-book { padding: 32px 24px 56px; border-radius: 24px 24px 64px 64px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ed-tile__img, .ed-tile__text, .ed-tile__plus, .ed-oval, .ed-burger i { transition: none; }
+  }
+</style>
