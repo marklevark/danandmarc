@@ -16,7 +16,7 @@
   --radius: 4px;
 
   --step--1: clamp(0.8rem, 0.78rem + 0.1vw, 0.875rem);
-  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-0: clamp(1rem, 0.98rem + 0.1vw, 1.0625rem);
   --step-1: clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem);
   --step-2: clamp(1.5rem, 1.3rem + 1vw, 2.25rem);
   --step-3: clamp(2rem, 1.5rem + 2.5vw, 3.75rem);
