@@ -1,5 +1,7 @@
 # Migrated from https://danandmarc.ca/work/unignorable-29ejk
 title: Top Comic
+year: 2019   # estimated; used to order the /timeline page
+years: 2015–19
 order: 8
 cover: ../../assets/work/top-comic/top-comic_year-4.jpg
 awards:

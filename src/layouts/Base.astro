@@ -32,6 +32,7 @@ const isActive = (href: string) =>
       </>
     )}
     <meta name="theme-color" content="#f3f3f3" />
+    <slot name="head" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={fullTitle} />

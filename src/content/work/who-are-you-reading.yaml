@@ -1,5 +1,6 @@
 # Migrated from https://danandmarc.ca/work/gillerprize
 title: Who are you reading?
+year: 2023   # estimated; used to order the /timeline page
 order: 1
 coverPosition: 51% 13%
 cover: ../../assets/work/who-are-you-reading/giller-posters---11x173.jpg

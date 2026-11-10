@@ -1,5 +1,6 @@
 # Migrated from https://danandmarc.ca/work/loblaws
 title: If You're Cooking, You're A Cook
+year: 2020   # estimated; used to order the /timeline page
 order: 10
 cover: ../../assets/work/if-youre-cooking-youre-a-cook/cooking-poster.jpg
 coverLoop: ../../assets/work/if-youre-cooking-youre-a-cook/cooking.mp4

@@ -36,6 +36,9 @@ const work = defineCollection({
     return z.object({
       title: z.string(),
       order: z.number(),
+      /** Year for the /timeline page (sort + clock). `years` is an optional display label, e.g. '2015–19'. */
+      year: z.number().optional(),
+      years: z.string().optional(),
       cover: image(),
       coverLoop: z.string().optional(),
       /** CSS object-position for the square home-grid crop, e.g. '50% 13%' */

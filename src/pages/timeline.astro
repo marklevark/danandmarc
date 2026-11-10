@@ -1,0 +1,370 @@
+---
+/**
+ * Alternate homepage: a horizontal fisheye strip of every project, newest → oldest.
+ * Scroll moves the focus along the strip; a big year counter interpolates between projects.
+ * Past the last (oldest) project it expands to fill the screen with a closing line.
+ * Mechanic adapted from the "Florilegium" hero; rebuilt in plain Astro + Lenis.
+ */
+import { getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { getWork } from '../lib/work';
+import { site } from '../data/site';
+
+const work = (await getWork())
+  .filter((w) => w.data.year)
+  .sort((a, b) => b.data.year! - a.data.year! || a.data.order - b.data.order);
+
+const plates = await Promise.all(
+  work.map(async (w) => {
+    const img = await getImage({ src: w.data.cover, width: 900, format: 'webp', quality: 78 });
+    const d = w.data;
+    return {
+      slug: w.id,
+      title: d.title,
+      note: [d.client, d.agency && d.agency !== d.client ? d.agency : undefined].filter(Boolean).join(' / '),
+      year: d.year!,
+      label: d.years ?? String(d.year),
+      src: img.src,
+      pos: d.coverPosition,
+    };
+  }),
+);
+const N = plates.length;
+const first = plates[0];
+const last = plates[N - 1];
+---
+<Base title="Timeline" description="Every project, newest to oldest.">
+  <meta name="robots" content="noindex" slot="head" />
+  <section class="tl-track" style={`height:${N * 42 + 170}vh`} aria-label="Our work, newest to oldest">
+    <div class="tl-stage">
+      <div class="tl-chrome">
+        <div class="tl-caption" aria-live="polite">
+          <span class="tl-caption__no">Project <b data-no>01</b> / {String(N).padStart(2, '0')}</span>
+          <span class="tl-caption__title" data-title>{first.title}</span>
+          <span class="tl-caption__note" data-note>{first.note} · {first.label}</span>
+        </div>
+
+        <div class="tl-time" aria-hidden="true">
+          <span class="tl-time__now" data-now>{first.year}</span>
+          <span class="tl-time__line"><i data-fill></i></span>
+          <span class="tl-time__end">{last.year}</span>
+        </div>
+
+        <p class="tl-intro" data-intro>
+          <span>We’re Dan and Marc.</span> Here’s the work, newest to oldest. Scroll through it, or click a project to open it.
+        </p>
+        <p class="tl-hint">Scroll to explore · ← → to step</p>
+      </div>
+
+      <div class="tl-strip">
+        {plates.map((p, i) => (
+          <a
+            class="tl-card"
+            href={`/work/${p.slug}`}
+            data-i={i}
+            aria-label={`${p.title}, ${p.label}`}
+          >
+            <span class="tl-card__clip">
+              <img src={p.src} alt="" decoding="async" loading="eager" draggable="false" style={`object-position:${p.pos}`} />
+            </span>
+          </a>
+        ))}
+      </div>
+
+      <div class="tl-final" data-final>
+        <p class="tl-final__kicker">{last.title} · {last.label}</p>
+        <h2 class="tl-final__title">That’s the archive.<br /><em>Your project’s next.</em></h2>
+        <div class="tl-final__actions">
+          <a class="tl-btn" href={`mailto:${site.email}`}>Say hi</a>
+          <button type="button" class="tl-btn" data-top>Back to the newest <span aria-hidden="true">↑</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script type="application/json" id="tl-data" set:html={JSON.stringify(plates.map(({ title, note, label, year }) => ({ title, note, label, year })))} />
+</Base>
+
+<script>
+  import Lenis from 'lenis';
+
+  type P = { title: string; note: string; label: string; year: number };
+  const PLATES: P[] = JSON.parse(document.getElementById('tl-data')!.textContent!);
+  const N = PLATES.length;
+  const STRIP_END = 0.84;
+
+  const clamp = (v: number, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+  const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+  const smooth = (a: number, b: number, v: number) => {
+    const t = clamp((v - a) / (b - a));
+    return t * t * (3 - 2 * t);
+  };
+
+  const track = document.querySelector<HTMLElement>('.tl-track')!;
+  const stage = document.querySelector<HTMLElement>('.tl-stage')!;
+  const cards = [...document.querySelectorAll<HTMLAnchorElement>('.tl-card')];
+  const imgs = cards.map((c) => c.querySelector('img')!);
+  const $ = <T extends HTMLElement>(s: string) => document.querySelector<T>(s)!;
+  const chrome = $('.tl-chrome');
+  const now = $('[data-now]');
+  const fill = $('[data-fill]');
+  const intro = $('[data-intro]');
+  const final = $('[data-final]');
+  const capNo = $('[data-no]');
+  const capTitle = $('[data-title]');
+  const capNote = $('[data-note]');
+
+  const mq = matchMedia('(prefers-reduced-motion: reduce)');
+  let reduced = mq.matches;
+
+  // fade images in as they decode
+  imgs.forEach((img) => {
+    const done = () => img.classList.add('is-loaded');
+    img.complete && img.naturalWidth ? done() : img.addEventListener('load', done, { once: true });
+  });
+
+  /* ---------------------------------------------------- smooth scroll */
+  let lenis: Lenis | null = null;
+  const startLenis = () => {
+    lenis?.destroy();
+    lenis = reduced ? null : new Lenis({ lerp: 0.08 });
+  };
+  startLenis();
+  mq.addEventListener('change', () => { reduced = mq.matches; startLenis(); });
+
+  /* ---------------------------------------------------- measurements */
+  let vw = stage.clientWidth;
+  let vh = stage.clientHeight;
+  new ResizeObserver(() => { vw = stage.clientWidth; vh = stage.clientHeight; }).observe(stage);
+
+  const trackBounds = () => {
+    const top = track.getBoundingClientRect().top + scrollY;
+    return { start: top, end: top + track.offsetHeight - innerHeight };
+  };
+  const progress = () => {
+    const { start, end } = trackBounds();
+    return clamp((scrollY - start) / Math.max(1, end - start));
+  };
+
+  /* ---------------------------------------------------- frame loop */
+  const X = new Array<number>(N).fill(0);
+  const W = new Array<number>(N).fill(0);
+  const H = new Array<number>(N).fill(0);
+  let skew = 0;
+  let active = -1;
+
+  const setActive = (idx: number) => {
+    if (idx === active) return;
+    if (active >= 0) cards[active]?.classList.remove('is-active');
+    active = idx;
+    cards[idx].classList.add('is-active');
+    const p = PLATES[idx];
+    capNo.textContent = String(idx + 1).padStart(2, '0');
+    capTitle.textContent = p.title;
+    capNote.textContent = [p.note, p.label].filter(Boolean).join(' · ');
+    if (!reduced) capTitle.animate(
+      [{ opacity: 0, transform: 'translateY(60%)', filter: 'blur(4px)' }, { opacity: 1, transform: 'none', filter: 'none' }],
+      { duration: 700, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' },
+    );
+  };
+
+  const frame = (time: number) => {
+    lenis?.raf(time);
+    const p = progress();
+    const f = clamp(p / STRIP_END) * (N - 1);
+    const e = reduced ? 0 : smooth(STRIP_END + 0.02, 0.995, p);
+    const fade = reduced ? smooth(STRIP_END + 0.02, 0.95, p) : e;
+    const mobile = vw < 700;
+    const H0 = Math.min(vh * (mobile ? 0.5 : 0.48), (vw * (mobile ? 0.66 : 0.34)) / 0.75, 620);
+    const gap = Math.max(12, vw * 0.018);
+    const centerY = vh * (mobile ? 0.44 : 0.45);
+
+    let acc = 0;
+    for (let i = 0; i < N; i++) {
+      const d = i - f;
+      const s = 0.42 + 0.58 * Math.exp(-(d * d) / 0.7);
+      H[i] = H0 * s;
+      W[i] = H[i] * 0.75;
+      X[i] = acc + W[i] / 2;
+      acc += W[i] + gap;
+    }
+    const i0 = Math.floor(f);
+    const i1 = Math.min(N - 1, i0 + 1);
+    const focusX = lerp(X[i0], X[i1], f - i0);
+    const offset = vw / 2 - focusX;
+
+    skew = lerp(skew, reduced ? 0 : clamp((lenis?.velocity ?? 0) * 0.12, -6, 6), 0.1);
+
+    for (let i = 0; i < N; i++) {
+      const el = cards[i];
+      let x = X[i] + offset, y = centerY, w = W[i], h = H[i], op = 1;
+      if (i === N - 1 && e > 0) {
+        x = lerp(x, vw / 2, e); y = lerp(y, vh / 2, e); w = lerp(w, vw, e); h = lerp(h, vh, e);
+      } else if (e > 0) {
+        op = 1 - e * 1.6;
+        x += (x < vw / 2 ? -1 : 1) * e * vw * 0.2;
+      }
+      el.style.width = `${w}px`;
+      el.style.height = `${h}px`;
+      el.style.opacity = `${clamp(op)}`;
+      el.style.visibility = op <= 0 ? 'hidden' : '';
+      el.style.transform = `translate3d(${x - w / 2}px, ${y - h / 2}px, 0) skewX(${(skew * (1 - e)).toFixed(2)}deg)`;
+      el.style.borderRadius = i === N - 1 ? `${lerp(3, 0, e)}px` : '3px';
+      imgs[i].style.transform = `translate3d(${clamp(-(i - f) * 7, -10, 10) * (1 - e)}%, 0, 0) scale(${lerp(1.22, 1, i === N - 1 ? e : 0)})`;
+    }
+
+    now.textContent = String(Math.round(lerp(PLATES[i0].year, PLATES[i1].year, f - i0)));
+    fill.style.transform = `scaleX(${f / (N - 1)})`;
+    chrome.style.opacity = `${1 - fade}`;
+    const t0 = smooth(0, 0.05, p);
+    intro.style.opacity = `${1 - t0}`;
+    intro.style.transform = `translate3d(${-t0 * 40}px, -50%, 0)`;
+    const t1 = smooth(0.93, 1, p);
+    final.style.opacity = `${reduced ? fade : t1}`;
+    final.style.transform = `translate3d(0, ${(1 - t1) * 30}px, 0)`;
+    final.style.pointerEvents = (reduced ? fade : t1) > 0.5 ? 'auto' : 'none';
+
+    setActive(Math.round(f));
+    requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
+
+  /* ---------------------------------------------------- navigation */
+  const scrollToProgress = (p: number) => {
+    const { start, end } = trackBounds();
+    const y = start + p * (end - start);
+    if (lenis) lenis.scrollTo(y, { duration: 1.4 });
+    else scrollTo({ top: y, behavior: reduced ? 'auto' : 'smooth' });
+  };
+  const goTo = (i: number) => scrollToProgress((clamp(i, 0, N - 1) / (N - 1)) * STRIP_END);
+
+  // First click brings a project to centre; clicking the centred one opens it.
+  cards.forEach((c, i) => c.addEventListener('click', (ev) => {
+    if (i !== active || progress() > STRIP_END + 0.02) { ev.preventDefault(); goTo(i); }
+  }));
+  addEventListener('keydown', (e) => {
+    const { start, end } = trackBounds();
+    if (scrollY < start - 1 || scrollY > end + 1) return;
+    if ((e.target as HTMLElement).closest('input, textarea')) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); goTo(active + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(active - 1); }
+  });
+  $('[data-top]').addEventListener('click', () => scrollToProgress(0));
+
+  /* ---------------------------------------------------- intro */
+  if (!reduced) {
+    const ease = 'cubic-bezier(0.16, 1, 0.3, 1)';
+    const mid = (N - 1) / 2;
+    cards.forEach((c, i) => c.querySelector<HTMLElement>('.tl-card__clip')!.animate(
+      [{ clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)' }],
+      { duration: 1600, delay: Math.abs(i - mid) * 60, easing: ease, fill: 'backwards' },
+    ));
+    document.querySelectorAll<HTMLElement>('.tl-time > *').forEach((el, i) => el.animate(
+      [{ transform: 'translateY(100%)', opacity: 0 }, { transform: 'none', opacity: 1 }],
+      { duration: 1400, delay: 400 + i * 80, easing: ease, fill: 'backwards' },
+    ));
+    document.querySelectorAll<HTMLElement>('.tl-caption, .tl-hint').forEach((el) => el.animate(
+      [{ opacity: 0 }, { opacity: 1 }], { duration: 1000, delay: 800, easing: ease, fill: 'backwards' },
+    ));
+  }
+</script>
+
+<style>
+  :global(html.lenis), :global(html.lenis body) { height: auto; }
+  :global(.lenis.lenis-smooth) { scroll-behavior: auto !important; }
+  :global(main) { padding-bottom: 0 !important; }
+
+  .tl-track { position: relative; }
+  .tl-stage {
+    position: sticky; top: 0; height: 100vh; height: 100svh;
+    overflow: hidden; overflow: clip; background: var(--bg);
+  }
+
+  /* chrome */
+  .tl-chrome { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+  .tl-caption {
+    position: absolute; left: 0; right: 0; top: calc(45% + min(24vh, 310px) + 18px);
+    display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center;
+  }
+  .tl-caption__no, .tl-caption__note, .tl-hint {
+    font-family: var(--display); font-weight: 700; font-size: 11px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+  }
+  .tl-caption__no b { font-weight: 700; color: var(--ink); }
+  .tl-caption__title {
+    font-family: var(--display); font-weight: 700; font-size: clamp(20px, 1.7vw, 28px);
+    line-height: 1; letter-spacing: var(--display-tracking);
+  }
+
+  .tl-time {
+    position: absolute; left: 50%; bottom: clamp(40px, 6vh, 80px); transform: translateX(-50%);
+    display: flex; align-items: center; gap: clamp(14px, 1.6vw, 28px);
+    font-family: var(--display); font-weight: 700; font-size: clamp(56px, 7.6vw, 132px);
+    line-height: 0.9; letter-spacing: -0.04em; font-variant-numeric: tabular-nums;
+    white-space: nowrap; overflow: hidden; padding-bottom: 0.05em;
+  }
+  .tl-time > * { display: inline-block; }
+  .tl-time__now { min-width: 4ch; text-align: right; }
+  .tl-time__end { color: var(--muted); }
+  .tl-time__line { position: relative; width: clamp(60px, 11vw, 190px); height: 2px; background: var(--line); overflow: hidden; }
+  .tl-time__line i { position: absolute; inset: 0; background: var(--ink); transform-origin: left; transform: scaleX(0); }
+
+  .tl-intro {
+    position: absolute; left: var(--pad); top: 45%; transform: translate3d(0, -50%, 0);
+    max-width: min(300px, 22vw); margin: 0;
+    font-size: var(--fs-lead); line-height: 1.25; color: var(--muted);
+  }
+  .tl-intro span {
+    display: block; margin-bottom: 0.5em; color: var(--ink);
+    font-family: var(--display); font-weight: 700; font-size: clamp(26px, 2.4vw, 40px);
+    line-height: 0.9; letter-spacing: var(--display-tracking);
+  }
+  .tl-hint { position: absolute; left: 0; right: 0; bottom: clamp(14px, 2.2vh, 26px); margin: 0; text-align: center; }
+
+  /* strip */
+  .tl-strip { position: absolute; inset: 0; z-index: 1; }
+  .tl-card {
+    position: absolute; left: 0; top: 0; overflow: hidden; background: var(--surface);
+    will-change: transform, width, height; transform-origin: 50% 50%;
+  }
+  .tl-card:hover { opacity: 1; }
+  .tl-card:focus-visible { outline: 1px solid var(--ink); outline-offset: 6px; }
+  .tl-card__clip { position: absolute; inset: 0; overflow: hidden; }
+  .tl-card img {
+    position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover;
+    opacity: 0; filter: grayscale(0.35); transition: opacity 0.8s ease, filter 0.6s ease; user-select: none;
+  }
+  .tl-card img.is-loaded { opacity: 1; }
+  .tl-card:hover img, .tl-card.is-active img { filter: none; }
+
+  /* finale */
+  .tl-final {
+    position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; justify-content: flex-end;
+    padding: clamp(22px, 4vw, 64px) var(--pad); color: #fafafa; opacity: 0; pointer-events: none;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent 60%);
+  }
+  .tl-final__kicker {
+    margin: 0 0 18px; font-family: var(--display); font-weight: 700; font-size: 11px;
+    letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.8;
+  }
+  .tl-final__title { font-size: var(--fs-hero); line-height: 0.82; }
+  .tl-final__title em { font-style: normal; opacity: 0.75; }
+  .tl-final__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .tl-btn {
+    appearance: none; border: 1px solid rgba(250, 250, 250, 0.5); background: transparent; color: inherit;
+    font: 700 11px/1 var(--display); letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 14px 18px; border-radius: 999px; cursor: pointer; transition: background 0.3s, color 0.3s;
+  }
+  .tl-btn:hover { opacity: 1; background: #fafafa; color: #000; }
+  .tl-btn:focus-visible { outline: 1px solid #fafafa; outline-offset: 3px; }
+
+  @media (max-width: 900px) { .tl-intro { display: none; } }
+  @media (max-width: 700px) {
+    .tl-caption { top: calc(44% + 25vh + 14px); }
+    .tl-time { font-size: clamp(44px, 14vw, 70px); bottom: 48px; }
+    .tl-time__line { width: 40px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tl-card img { transition: none; }
+  }
+</style>
