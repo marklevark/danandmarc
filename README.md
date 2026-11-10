@@ -75,6 +75,18 @@ To change the site, edit files in the appdata folder (SMB share, VS Code, etc.) 
 
 If you edit files on Unraid without committing them, `git pull` skips any file you've changed locally (it says so in the log). Pick one place to make changes, or commit your local edits.
 
+### Video
+
+Videos are self-hosted. MP4s and poster JPGs live **outside the repo** in `/mnt/cache/appdata/danandmarc-media/<project>/<id>.mp4` (+ `<id>.jpg`), mounted into nginx at `/media`. In a project file:
+
+```yaml
+- videos:
+    - { provider: file, id: '262821181', title: Keith }   # -> /media/top-comic/262821181.mp4
+    - { provider: vimeo, id: '262821181' }                 # or embed from Vimeo instead
+```
+
+`scripts/download-vimeo.sh` pulls the Vimeo versions of every video listed in `scripts/vimeo-videos.txt`.
+
 ### Image mode
 
 `docker compose up -d --build` from the repo root builds a self-contained image (Dockerfile) and serves it on `:8484` (override with `DM_PORT=9000`). Changes need a rebuild.

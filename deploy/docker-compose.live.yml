@@ -24,3 +24,4 @@ services:
     volumes:
       - /mnt/cache/appdata/danandmarc/dist:/usr/share/nginx/html:ro
       - /mnt/cache/appdata/danandmarc/deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - /mnt/cache/appdata/danandmarc-media:/usr/share/nginx/media:ro

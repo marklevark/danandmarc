@@ -11,6 +11,6 @@ agency: Taxi
 blocks:
 - text: '“Who is this guy? And can he fire me?” The question on every junior’s mind. Alongside: What do I do exactly? Did that meeting go poorly? What’s an “online” and what’s an “offline” and why do neither have to do with the internet? Why is this production company being really nice to me? Is it “cab chip” or “cab chit”? Etc...'
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '371201659'
     title: TAXI - Agency of the Year 2019

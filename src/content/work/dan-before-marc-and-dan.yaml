@@ -13,7 +13,7 @@ blocks:
 
     How do we the attention of millions of mildly-vain concert goers? Build an app that makes them the centre of attention.
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '138106440'
     title: Mio_POV_Award_2015_MASTER_1920x1080_8Mbps
 - images:
@@ -27,7 +27,7 @@ blocks:
     client: TJFF
 - text: 'The Toronto Jewish Film Festival is, well, exactly what it sounds like. (It’s a film festival with Jewish films). Fun fact: it’s the largest Jewish film festival in the world.'
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '138106506'
     title: TJFF_Global_Apr4
 - images:

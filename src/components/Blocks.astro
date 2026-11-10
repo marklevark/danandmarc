@@ -106,7 +106,7 @@ let section = d.title;
       const v = it.block.videos;
       return (
         <div class="media" style={`--cols:${v.length >= 3 ? 3 : v.length}`}>
-          {v.map((x) => <VideoEmbed {...x} fallbackTitle={`${section} video`} />)}
+          {v.map((x) => <VideoEmbed {...x} project={entry.id} fallbackTitle={`${section} video`} />)}
         </div>
       );
     }

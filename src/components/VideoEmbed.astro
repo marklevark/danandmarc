@@ -1,23 +1,37 @@
 ---
-interface Props { provider: 'vimeo' | 'youtube'; id: string; title?: string; fallbackTitle: string }
-const { provider, id, title, fallbackTitle } = Astro.props;
+interface Props {
+  provider: 'file' | 'vimeo' | 'youtube';
+  id: string;
+  project: string;
+  src?: string;
+  poster?: string;
+  title?: string;
+  fallbackTitle: string;
+}
+const { provider, id, project, src, poster, title, fallbackTitle } = Astro.props;
 // Squarespace kept export filenames as titles ("..._v14mp4"); don't show those to screen readers.
 const label = title && !/[_]|mp4$/i.test(title) ? title : fallbackTitle;
-const src =
+const embed =
   provider === 'vimeo'
     ? `https://player.vimeo.com/video/${id}?dnt=1&title=0&byline=0&portrait=0`
     : `https://www.youtube-nocookie.com/embed/${id}?rel=0`;
 ---
 <div class="embed">
-  <iframe
-    src={src}
-    title={label}
-    loading="lazy"
-    allow="autoplay; fullscreen; picture-in-picture"
-    allowfullscreen
-  ></iframe>
+  {provider === 'file' ? (
+    <video
+      src={src ?? `/media/${project}/${id}.mp4`}
+      poster={poster ?? `/media/${project}/${id}.jpg`}
+      controls
+      playsinline
+      preload="none"
+      aria-label={label}
+    ></video>
+  ) : (
+    <iframe src={embed} title={label} loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+  )}
 </div>
 <style>
   .embed { position: relative; aspect-ratio: 16 / 9; background: #000; overflow: hidden; }
-  iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  iframe, video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  video { object-fit: contain; }
 </style>

@@ -36,7 +36,7 @@ blocks:
 - heading: Case Study
   level: 4
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '318253005'
     title: UW_Unignorable_Main_Award_MasterFNL_1show8Mbps
 - heading: Gallery Opening

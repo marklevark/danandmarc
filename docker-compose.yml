@@ -7,3 +7,5 @@ services:
     ports:
       # Host port defaults to 8484; override with DM_PORT=xxxx in .env or the shell
       - "${DM_PORT:-8484}:80"
+    volumes:
+      - /mnt/cache/appdata/danandmarc-media:/usr/share/nginx/media:ro

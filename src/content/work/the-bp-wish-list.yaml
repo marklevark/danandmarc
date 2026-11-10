@@ -13,7 +13,7 @@ blocks:
 - heading: Case Study
   level: 4
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '696615176'
     title: CATALOGUE_FINAL_FEB16
 - heading: The Wish List

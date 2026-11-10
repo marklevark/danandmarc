@@ -36,7 +36,7 @@ blocks:
 - heading: Case Study
   level: 4
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '471103171'
     title: 'The #UNIGNORABLE Tower Case Study'
 - images:

@@ -14,7 +14,10 @@ const work = defineCollection({
       loop: z.string().optional(),
     });
     const video = z.object({
-      provider: z.enum(['vimeo', 'youtube']),
+      /** file = self-hosted: /media/<project>/<id>.mp4 with <id>.jpg as poster (override with src/poster) */
+      provider: z.enum(['file', 'vimeo', 'youtube']),
+      src: z.string().optional(),
+      poster: z.string().optional(),
       id: z.coerce.string(),
       title: z.string().optional(),
     });

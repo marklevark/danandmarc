@@ -15,7 +15,7 @@ blocks:
 - images:
   - src: ../../assets/work/marc-before-dan-and-marc/tims-house.jpg
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '120381790'
     title: '#TimsNextDoor'
 - heading: Run The Pig
@@ -28,7 +28,7 @@ blocks:
 
     To promote Rashers, a bacon sandwich chain, we created a promo that rewarded runners that were just as committed to bacon as Rashers themselves.
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '120744306'
     title: Rashers - Run the Pig
 - images:
@@ -45,6 +45,6 @@ blocks:
 
     So we sent them a blank page and hid the application in the source code. If they were smart enough to check the code to find out what's wrong, they were smart enough for the job.
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '41537968'
     title: SourceCode

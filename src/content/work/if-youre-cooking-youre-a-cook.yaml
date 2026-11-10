@@ -8,6 +8,6 @@ client: Loblaws
 blocks:
 - text: Quarantine forced everyone to start cooking all the time. It sucked. Social media didn’t help things either, with the whole bread baking one-upping that went down. Congrats on the loaf, btw. Loblaws wanted to cheer everyone in the kitchen on, while reminding them food should be loved, not stressed about.
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '456942996'
     title: If You're Cooking, You're A Cook

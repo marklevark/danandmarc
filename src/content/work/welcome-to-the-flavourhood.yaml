@@ -14,7 +14,7 @@ client: DoorDash
 blocks:
 - text: When you’ve got access to all the flavours of your neighbourhood right in your hands, it’s almost as if your neighbourhood’s been shrunken down into a miniature world with Dashers biking by and cartoon food mascots winking at them and food puppets dancing along before morphing into real food and you’re like a giant that can pick up an entire restaurant right off its foundation and drink from its roof, as they say.
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '470837545'
     title: Welcome to the Flavourhood
 - images:
@@ -29,6 +29,6 @@ blocks:
 - heading: Behind the Scenes
   level: 4
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '489871720'
     title: DoorDash - BTS

@@ -31,26 +31,26 @@ blocks:
 
     So we used this opportunity to remind Montrealers that Leon’s has furniture that’s always worth the move. And turned discarded furniture into discounts for Leon’s.
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '132823390'
     title: Leon's - Get Move-Worthy
 - heading: There’s No Place Like Couch
   level: 2
 - text: Did you know that Leon’s has a wide variety of stylish couches that come in all sorts of colours to match your personality as well as your aesthetic?
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '300999500'
     title: Leon's - No place like couch
 - heading: Part of the Family
   level: 2
 - text: Leon’s tasked us with refreshing their brand from one that “Ho Ho Holds” your payments into one that “Ho Ho Understands Real Family Life.”
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '155222039'
     title: Stove
-  - provider: vimeo
+  - provider: file
     id: '155222038'
     title: Couch
-  - provider: vimeo
+  - provider: file
     id: '155222040'
     title: Mattress

@@ -57,7 +57,7 @@ blocks:
 - images:
   - src: ../../assets/work/top-comic/top-comic_year-3-key-vis.jpg
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '301642758'
     title: Dick's Pizza - Extended Cut
 - heading: 'Year 3: KEITH'
@@ -71,7 +71,7 @@ blocks:
 - images:
   - src: ../../assets/work/top-comic/top-comic_year-two-key-vis.png
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '262821181'
     title: Keith
 - heading: 'Year 4: Humour Analysis Helmet Apparatus'
@@ -85,7 +85,7 @@ blocks:
 - images:
   - src: ../../assets/work/top-comic/top-comic_year-one-key-vis.png
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '287484663'
     title: Top Comic - HAHA
 - heading: 'Year 5: Get a Funnier Perspective'
@@ -104,12 +104,12 @@ blocks:
   - src: ../../assets/work/top-comic/tc_posters_ghost.png
   - src: ../../assets/work/top-comic/tc_posters_fedora.png
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '352543978'
     title: Moustache
-  - provider: vimeo
+  - provider: file
     id: '352544081'
     title: Butterfly
-  - provider: vimeo
+  - provider: file
     id: '352544193'
     title: Bell

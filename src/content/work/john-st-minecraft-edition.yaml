@@ -21,6 +21,6 @@ blocks:
 
     We used every in-game function we could to make this party one that lasts an eternity (in that it’s saved on a server forever). There were side quests to complete, easter eggs hidden throughout, and office dogs that you could unfortunately kill. (There was no way around that part - we looked into it!)
 - videos:
-  - provider: vimeo
+  - provider: file
     id: '696579986'
     title: john_st_20th_anniversary_minecraft_video_v14mp4
