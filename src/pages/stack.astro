@@ -92,7 +92,7 @@ const cards = await Promise.all(
       agency: d.client && d.agency && d.agency !== d.client ? d.agency : '',
       when: d.years ?? (d.year ? String(d.year) : ''),
       src: img.src,
-      pos: d.keyImage ? '50% 50%' : d.coverPosition,
+      pos: d.keyImage ? (d.keyPosition ?? '50% 50%') : d.coverPosition,
       // GIF-style covers (john st., Loblaws, DoorDash) play their loop instead of a still
       loop: !d.keyImage && d.coverLoop ? loopUrl(d.coverLoop) : undefined,
       bg,
