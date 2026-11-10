@@ -1,0 +1,115 @@
+# Migrated from https://danandmarc.ca/work/unignorable-29ejk
+title: Top Comic
+order: 8
+cover: ../../assets/work/top-comic/top-comic_year-4.jpg
+awards:
+- show: Cannes
+  result: 1 x Shortlist
+- show: Communication Arts
+  result: 1 x In-Book
+- show: Lurzer’s Archive
+  result: 2 x Cover, 5 x In-Book
+- show: ADCC
+  result: 2 x Silver, 1 x Bronze
+- show: Marketing Awards
+  result: 2 x Bronze
+- show: Applied Arts
+  result: 3 x In-Book
+press: |-
+  Admittedly, we did a poor job of keeping track of this over the years.
+
+  Pornhub shared one of our campaigns, though.
+
+  Guess which one!
+agency: Taxi
+client: SiriusXM
+blocks:
+- text: |-
+    Every year, stand-up comedians from across the country fight for the most laughs in SiriusXM’s Top Comic competition.
+
+    And for the last 5 years, we’ve been tasked at creating a new campaign that outperforms the last.
+
+    We made the cover of Archive magazine, got re-posted by Pornhub, and had a room full of Cannes judges deliberating on a photo of a dog that’s been shaved to look like it’s having sex with itself.
+- images:
+  - src: ../../assets/work/top-comic/top-comic-intro_2--1-.png
+- heading: 'Year 1: Help a Comedian'
+  level: 3
+- text: |-
+    Comedians have this incredibly ability to turn anything into a joke. Meaning they could turn any career into a joke. Meaning we should support them to prevent this from happening.
+
+    This was our first campaign for Top Comic and the only time we’ve shaved a dog to look like it’s having sex with itself.
+- images:
+  - src: ../../assets/work/top-comic/top-comic_year-4.png
+  - src: ../../assets/work/top-comic/top-comic_year-one.jpg
+  - src: ../../assets/work/top-comic/top-comic_year-one2.jpg
+  - src: ../../assets/work/top-comic/top-comic_year-one3.jpg
+  - src: ../../assets/work/top-comic/top-comic_year-two1.jpg
+  - src: ../../assets/work/top-comic/top-comic_year-two2.jpg
+  - src: ../../assets/work/top-comic/top-comic_year-two3.jpg
+- heading: 'Year 2: Dick’s Pizza'
+  level: 3
+- text: |-
+    What happens when a failed comedian (with an incredibly juvenile sense of humour) decides to open their own business. Say, a pizzeria. And let’s just say that they take this “jokes on you” mentality to the nth degree and entirely disregard any sense of a viable business plan.
+
+    Introducing Dick’s Pizza - the fake pizzeria that really opened in Toronto that tricked people into voting for a Top Comic.
+
+    We made the front page of reddit, were featured on PornHub’s insta, and other highlights that aren’t as good.
+- images:
+  - src: ../../assets/work/top-comic/top-comic_year-3-key-vis.jpg
+- videos:
+  - provider: vimeo
+    id: '301642758'
+    title: Dick's Pizza - Extended Cut
+- heading: 'Year 3: KEITH'
+  level: 3
+- text: |-
+    Slowly but surely, the robots are taking over. Not like “taking over” taking over, but like “doing our jobs”. I mean, grocery stores have us cashing ourselves out. Ourselves!
+
+    But one thing’s for sure, robots will never be able to automate the humour, creativity, and timing of a Top Comic.
+
+    They’re the future of comedy. And we proved it by making the world’s first automated stand-up comedian. His name is Keith, and he sucks.
+- images:
+  - src: ../../assets/work/top-comic/top-comic_year-two-key-vis.png
+- videos:
+  - provider: vimeo
+    id: '262821181'
+    title: Keith
+- heading: 'Year 4: Humour Analysis Helmet Apparatus'
+  level: 3
+- text: |-
+    Electroencephalography (or EEG for short) is a terrifying monitoring technology that tracks your brain activity in real time, scanning what you react to whether you know you’re reacting or not.
+
+    Also, the perfect technology to prove that the Top Comic comedians will make you laugh (even if you’re laughing on the inside).
+
+    It’s called science! (Actually, it’s called H.A.H.A.)
+- images:
+  - src: ../../assets/work/top-comic/top-comic_year-one-key-vis.png
+- videos:
+  - provider: vimeo
+    id: '287484663'
+    title: Top Comic - HAHA
+- heading: 'Year 5: Get a Funnier Perspective'
+  level: 3
+- text: |-
+    Anything can be funny. Yes, even a fedora - widely considered to be the worst hat of all.
+
+    This year, we used minimalist illustrations to show that if we all had the knack for seeing the funnier side of everything, like our Top Comics do, then we’d all lead better, more humour-filled lives.
+- images:
+  - src: ../../assets/work/top-comic/tc_posters_bell.png
+  - src: ../../assets/work/top-comic/tc_posters_cactus.png
+  - src: ../../assets/work/top-comic/tc_posters_sun.png
+  - src: ../../assets/work/top-comic/tc_posters_butterfly.png
+  - src: ../../assets/work/top-comic/tc_posters_bottlecap.png
+  - src: ../../assets/work/top-comic/tc_posters_thought.png
+  - src: ../../assets/work/top-comic/tc_posters_ghost.png
+  - src: ../../assets/work/top-comic/tc_posters_fedora.png
+- videos:
+  - provider: vimeo
+    id: '352543978'
+    title: Moustache
+  - provider: vimeo
+    id: '352544081'
+    title: Butterfly
+  - provider: vimeo
+    id: '352544193'
+    title: Bell

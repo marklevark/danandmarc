@@ -1,0 +1,116 @@
+---
+import '../styles/global.css';
+import Wordmark from '../components/Wordmark.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+const { title, description = site.description, image } = Astro.props;
+const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — Freelance creative team, Toronto`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = image ? new URL(image, Astro.site).href : undefined;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) =>
+  href === '/' ? path === '/' || path.startsWith('/work') : path.startsWith(href);
+---
+<!doctype html>
+<html lang="en-CA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#f5f3ee" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f0f0e" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap bar">
+        <a href="/" class="home" aria-label="Dan and Marc, home"><Wordmark size="clamp(1.4rem, 1.1rem + 1vw, 2rem)" /></a>
+        <nav aria-label="Main">
+          <ul>
+            {site.nav.map((n) => (
+              <li><a href={n.href} aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main"><slot /></main>
+
+    <footer class="site-footer">
+      <div class="wrap foot">
+        <div class="say-hi">
+          <p class="eyebrow">Say hi</p>
+          <a class="big-mail" href={`mailto:${site.email}`}>{site.email}</a>
+        </div>
+        <ul class="people">
+          {site.people.map((p) => (
+            <li>
+              <span class="who">{p.first}</span>
+              <a href={`mailto:${p.email}`}>{p.email}</a>
+              <a href={p.linkedin} rel="noopener" target="_blank">LinkedIn ↗</a>
+            </li>
+          ))}
+        </ul>
+        <p class="legal">© {new Date().getFullYear()} Dan Cantelon &amp; Marc Levesque. Toronto, Canada.</p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: saturate(1.4) blur(12px);
+    -webkit-backdrop-filter: saturate(1.4) blur(12px);
+    border-bottom: 1px solid transparent;
+  }
+  .bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    min-height: 68px;
+  }
+  .home { text-decoration: none; color: var(--ink); }
+  .home:hover { color: var(--ink); }
+  nav ul { display: flex; gap: clamp(0.9rem, 2.5vw, 2rem); list-style: none; margin: 0; padding: 0; }
+  nav a {
+    font-weight: 600; text-decoration: none; font-size: var(--step-0);
+    padding-block: 0.25em; border-bottom: 2px solid transparent;
+  }
+  nav a[aria-current='page'] { border-bottom-color: var(--accent); }
+
+  .site-footer { margin-top: clamp(4rem, 10vw, 9rem); border-top: 1px solid var(--line); }
+  .foot {
+    display: grid; gap: 2.5rem 2rem; padding-block: clamp(2.5rem, 6vw, 5rem) 2rem;
+    grid-template-columns: 1fr;
+  }
+  .big-mail {
+    display: inline-block; margin-top: 0.4rem;
+    font-size: var(--step-3); font-weight: 800; letter-spacing: -0.04em; line-height: 1;
+    text-decoration: none; overflow-wrap: anywhere;
+  }
+  .people { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; align-content: end; }
+  .people li { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; align-items: baseline; }
+  .people .who { font-weight: 800; min-width: 3.5rem; }
+  .people a { color: var(--muted); text-decoration: none; }
+  .people a:hover { color: var(--accent); }
+  .legal { grid-column: 1 / -1; color: var(--muted); font-size: var(--step--1); margin: 0; }
+  @media (min-width: 860px) {
+    .foot { grid-template-columns: 1.6fr 1fr; }
+  }
+</style>

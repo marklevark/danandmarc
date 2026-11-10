@@ -1,0 +1,103 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Loop from './Loop.astro';
+import VideoEmbed from './VideoEmbed.astro';
+import { paragraphs } from '../lib/text';
+
+interface Props { entry: CollectionEntry<'work'> }
+const { entry } = Astro.props;
+const { title, blocks } = entry.data;
+
+type Media = { src: { width: number; height: number }; loop?: string };
+/** Pick a column count from how many images there are and their shape. */
+function columns(items: Media[]) {
+  const n = items.length;
+  if (n === 1) return 1;
+  const portrait = items.filter((i) => i.src.height > i.src.width * 1.1).length >= n / 2;
+  if (portrait) return n % 4 === 0 || n > 4 ? 4 : Math.min(n, 3);
+  if (n === 3) return 3;
+  return 2;
+}
+let section = title;
+---
+<div class="blocks">
+  {blocks.map((b) => {
+    if ('heading' in b) {
+      section = b.heading;
+      const Tag = (b.level <= 2 ? 'h2' : 'h3') as 'h2' | 'h3';
+      return <Tag class:list={['block-heading', b.level <= 2 ? 'major' : b.level === 3 ? 'mid' : 'minor']}>{b.heading}</Tag>;
+    }
+    if ('text' in b) {
+      return <div class="block-text">{paragraphs(b.text).map((p) => <p set:html={p} />)}</div>;
+    }
+    if ('credits' in b) {
+      return (
+        <dl class="block-credits">
+          {b.credits.agency && <div><dt>Agency</dt><dd>{b.credits.agency}</dd></div>}
+          {b.credits.client && <div><dt>Client</dt><dd>{b.credits.client}</dd></div>}
+          {b.credits.role && <div><dt>Role</dt><dd>{b.credits.role}</dd></div>}
+        </dl>
+      );
+    }
+    if ('images' in b) {
+      const cols = columns(b.images);
+      const sizes = cols === 1 ? '(min-width: 1440px) 1344px, 100vw' : `(min-width: 860px) ${Math.round(100 / cols)}vw, ${cols >= 4 ? 50 : 100}vw`;
+      return (
+        <div class="block-media" style={`--cols:${cols}`}>
+          {b.images.map((img, i) =>
+            img.loop ? (
+              <Loop src={img.loop} poster={img.src} label={img.alt ?? `${section}, animation ${i + 1}`} class="m" />
+            ) : (
+              <Image
+                src={img.src}
+                alt={img.alt ?? `${section}, image ${i + 1}`}
+                widths={cols === 1 ? [640, 1024, 1600, 2400] : [400, 640, 1024, 1400]}
+                sizes={sizes}
+                class="m"
+              />
+            ),
+          )}
+        </div>
+      );
+    }
+    if ('videos' in b) {
+      return (
+        <div class="block-videos" style={`--cols:${b.videos.length >= 3 ? 3 : 1}`}>
+          {b.videos.map((v) => <VideoEmbed {...v} fallbackTitle={`${section} video`} />)}
+        </div>
+      );
+    }
+  })}
+</div>
+
+<style>
+  .blocks { display: grid; gap: clamp(1.25rem, 3vw, 2.5rem); }
+  .block-heading.major {
+    font-size: var(--step-3); margin-top: clamp(2rem, 6vw, 5rem);
+    padding-top: clamp(1.25rem, 3vw, 2rem); border-top: 1px solid var(--line);
+  }
+  .block-heading.mid { font-size: var(--step-2); margin-top: clamp(1.5rem, 4vw, 3rem); }
+  .block-heading.minor {
+    font-size: var(--step--1); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--muted); margin-top: clamp(1rem, 3vw, 2rem);
+  }
+  .blocks > :first-child { margin-top: 0; }
+  .block-heading + .block-text, .block-heading + .block-credits { margin-top: -0.5rem; }
+  .block-text { max-width: 62ch; font-size: var(--step-1); line-height: 1.5; letter-spacing: -0.005em; }
+  .block-credits { display: flex; flex-wrap: wrap; gap: 0.5rem 2.5rem; margin: 0; }
+  .block-credits dt { font-size: var(--step--1); color: var(--muted); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+  .block-credits dd { margin: 0; font-weight: 700; }
+
+  .block-media {
+    display: grid; gap: clamp(8px, 1.2vw, 16px); align-items: start;
+    grid-template-columns: repeat(min(var(--cols), 2), minmax(0, 1fr));
+  }
+  .block-media[style*='--cols:1'] { grid-template-columns: 1fr; }
+  .block-media :global(.m) { width: 100%; height: auto; border-radius: var(--radius); background: var(--surface); }
+  .block-videos { display: grid; gap: clamp(8px, 1.2vw, 16px); grid-template-columns: 1fr; }
+  @media (min-width: 860px) {
+    .block-media { grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); }
+    .block-videos { grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); }
+  }
+</style>

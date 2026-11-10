@@ -1,0 +1,18 @@
+---
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { loopUrl } from '../lib/media';
+
+interface Props { src: string; poster: ImageMetadata; label?: string; class?: string }
+const { src, poster, label, class: cls } = Astro.props;
+const p = await getImage({ src: poster, width: Math.min(poster.width, 1600), format: 'webp' });
+---
+<video
+  class={cls}
+  src={loopUrl(src)}
+  poster={p.src}
+  width={poster.width}
+  height={poster.height}
+  autoplay muted loop playsinline preload="metadata"
+  aria-label={label}
+></video>

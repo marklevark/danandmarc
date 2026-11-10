@@ -1,0 +1,68 @@
+# Migrated from https://danandmarc.ca/work/unignorable
+title: '#UNIGNORABLE'
+order: 4
+cover: ../../assets/work/unignorable/revised-chip-2.jpg
+awards:
+- show: One Show
+  result: 1 x Silver, 2 x Bronze, 6 x Merit
+- show: Cannes
+  result: 2 x Shortlist
+- show: D&AD
+  result: 1 x Wood, 1 x Shortlist
+- show: London International Awards
+  result: 1 x Gold
+- show: ADC
+  result: 1 x Silver, 1 x Merit
+- show: Communication Arts
+  result: 5 x In-Book
+- show: ADCC
+  result: 2 x Gold, 2 x Silver, 4 x Bronze
+- show: Strategy AOTY
+  result: 2019 Campaign of the Year
+- show: Strategy Awards
+  result: 1 x Silver
+- show: Marketing Awards
+  result: 3 x Gold, 3 x Silver
+- show: Applied Arts
+  result: 22 x In-Book
+press: The Drum, Adweek, Fashion Magazine, Globe & Mail, Trend Hunter, Creative Bloq, Strategy, The Message, The Dieline, Canada Post, Daily Hive, Global Citizen, SheDoesTheCity, Edmonton Journal, CIty of Toronto, Toronto Sun, Toronto Star,
+client: United Way
+agency: Taxi
+blocks:
+- text: |-
+    United Way is unlike any other charity - they tackle many issues instead of just one. They support communities from the ground up, targeting hyper-local issues like from poverty, hunger, domestic violence, and social isolation. Their biggest problem: Canadians don’t know how bad these issues really are.
+
+    Through a partnership with the Pantone® Color Institute, we created a custom colour specifically designed to get your attention. A neon coral orange that stops you in your tracks, but invites you into a conversation. It turns out, most bright colours are polarizing, like neon yellow. Who knew! (Pantone).
+- heading: Case Study
+  level: 4
+- videos:
+  - provider: vimeo
+    id: '318253005'
+    title: UW_Unignorable_Main_Award_MasterFNL_1show8Mbps
+- heading: Gallery Opening
+  level: 4
+- images:
+  - src: ../../assets/work/unignorable/gal_1--1-.jpg
+- heading: OOH
+  level: 4
+- images:
+  - src: ../../assets/work/unignorable/5_-_support_image_2.jpg
+  - src: ../../assets/work/unignorable/hoarding_2.jpg
+  - src: ../../assets/work/unignorable/uwtsa.jpg
+- heading: The Posters
+  level: 4
+- images:
+  - src: ../../assets/work/unignorable/domestic.jpg
+  - src: ../../assets/work/unignorable/mental_health.jpg
+  - src: ../../assets/work/unignorable/unemployment.jpg
+  - src: ../../assets/work/unignorable/homelessness.jpg
+  - src: ../../assets/work/unignorable/education.jpg
+  - src: ../../assets/work/unignorable/senior_isolation.jpg
+  - src: ../../assets/work/unignorable/poverty.jpg
+  - src: ../../assets/work/unignorable/hunger.jpg
+- heading: The Ignored Room
+  level: 4
+- text: As part of Toronto’s Nuit Blanche, we created an interactive installation to emulate the feelings of isolation, helplessness, and uncertainty that millions of Canadians feel every day. Its ominous (and heavily instagrammable) presence was unignorable, with people waiting over an hour to get in.
+- images:
+  - src: ../../assets/work/unignorable/ignored-room.jpg
+  - src: ../../assets/work/unignorable/new.jpg

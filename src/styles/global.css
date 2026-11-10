@@ -1,0 +1,90 @@
+@import '@fontsource-variable/inter-tight';
+
+:root {
+  --bg: #f5f3ee;
+  --surface: #ebe8e1;
+  --ink: #0d0d0d;
+  --muted: #5f5c57;
+  --line: #d4d0c8;
+  /* The #UNIGNORABLE coral */
+  --accent: #ff5a3c;
+  --accent-ink: #0d0d0d;
+
+  --font: 'Inter Tight Variable', 'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --gutter: clamp(16px, 4vw, 48px);
+  --max: 1440px;
+  --radius: 4px;
+
+  --step--1: clamp(0.8rem, 0.78rem + 0.1vw, 0.875rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-1: clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem);
+  --step-2: clamp(1.5rem, 1.3rem + 1vw, 2.25rem);
+  --step-3: clamp(2rem, 1.5rem + 2.5vw, 3.75rem);
+  --step-4: clamp(2.75rem, 1.6rem + 5.5vw, 7.5rem);
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f0f0e;
+    --surface: #1b1a19;
+    --ink: #f2efe8;
+    --muted: #a19d96;
+    --line: #2e2c2a;
+    --accent: #ff6a4d;
+    color-scheme: dark;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: var(--step-0);
+  line-height: 1.55;
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img, video, iframe { display: block; max-width: 100%; }
+img, video { height: auto; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+a:hover { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+::selection { background: var(--accent); color: var(--accent-ink); }
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+p { margin: 0 0 1em; text-wrap: pretty; }
+p:last-child { margin-bottom: 0; }
+
+.wrap { width: 100%; max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter); }
+.eyebrow {
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+.skip {
+  position: absolute; left: var(--gutter); top: -100px; z-index: 100;
+  background: var(--ink); color: var(--bg); padding: 0.5em 1em;
+}
+.skip:focus { top: 12px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}

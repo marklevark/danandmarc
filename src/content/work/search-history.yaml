@@ -1,0 +1,24 @@
+# Migrated from https://danandmarc.ca/work/searchhistory
+title: Search History
+order: 6
+cover: ../../assets/work/search-history/posters.jpg
+awards:
+- show: ADCC
+  result: 2 x Gold, 2 x Silver, 4 x Merit
+- show: Marketing Awards
+  result: 1 x Bronze
+- show: Applied Arts
+  result: 4 x In-Book
+agency: Taxi
+client: Covenant House
+blocks:
+- text: |-
+    Just because a kid is living on the street, doesn’t mean they were destined to be there. With the right support, we can spot the warning signs and help change the narrative.
+
+    This campaign uses a common smartphone visual to show how swiftly an innocent life can spiral into one that’s struggling to survive.
+- images:
+  - src: ../../assets/work/search-history/cov-house-intro-image.jpg
+  - src: ../../assets/work/search-history/wide-cov.jpg
+  - src: ../../assets/work/search-history/covhouse_acceptance_digitalproof_applied.jpg
+  - src: ../../assets/work/search-history/covhouse_addiction_digitalproof_applied.jpg
+  - src: ../../assets/work/search-history/covhouse_escort_digitalproof_applied.jpg

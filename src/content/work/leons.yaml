@@ -1,0 +1,56 @@
+# Migrated from https://danandmarc.ca/work/leons
+title: Leon's
+order: 9
+cover: ../../assets/work/leons/strategy-1-copy.jpg
+awards:
+- show: New York Festivals
+  result: 1 x Finalist
+- show: ADCC
+  result: 1 x Silver
+- show: Applied Arts
+  result: 1 x In-Book
+- show: Effies
+  result: 1 x Silver, 2 x Bronze
+- show: CMAs
+  result: 1 x Bronze
+- show: Media Innovation Awards
+  result: 1 x Gold, 1 x Silver, 2 x Finalist
+- show: Promo Awards
+  result: 1 x Bronze
+- show: Shopper Innovation Awards
+  result: 2 x Gold, 1 x Bronze
+- show: Atomic Awards
+  result: 1 x Silver
+agency: Taxi
+client: Leon’s
+blocks:
+- heading: Get Move-Worthy
+  level: 2
+- text: |-
+    Every year on July 1st, Montreal celebrates Moving Day - an odd phenomenon where thousands of apartment dwellers move to new apartments. As a result, unwanted furniture that’s just not worth the move gets kicked to the curb.
+
+    So we used this opportunity to remind Montrealers that Leon’s has furniture that’s always worth the move. And turned discarded furniture into discounts for Leon’s.
+- videos:
+  - provider: vimeo
+    id: '132823390'
+    title: Leon's - Get Move-Worthy
+- heading: There’s No Place Like Couch
+  level: 2
+- text: Did you know that Leon’s has a wide variety of stylish couches that come in all sorts of colours to match your personality as well as your aesthetic?
+- videos:
+  - provider: vimeo
+    id: '300999500'
+    title: Leon's - No place like couch
+- heading: Part of the Family
+  level: 2
+- text: Leon’s tasked us with refreshing their brand from one that “Ho Ho Holds” your payments into one that “Ho Ho Understands Real Family Life.”
+- videos:
+  - provider: vimeo
+    id: '155222039'
+    title: Stove
+  - provider: vimeo
+    id: '155222038'
+    title: Couch
+  - provider: vimeo
+    id: '155222040'
+    title: Mattress

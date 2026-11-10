@@ -1,0 +1,42 @@
+---
+/**
+ * "Dan&Marc" that flips to "Marc&Dan" and back. Replaces the old 2500px GIF logo.
+ * Both orders use the same letters, so the width never changes.
+ */
+interface Props { size?: string; animate?: boolean }
+const { size = '1.5rem', animate = true } = Astro.props;
+---
+<span class:list={['wordmark', { animate }]} style={`--size:${size}`} aria-label="Dan and Marc">
+  <span class="reel" aria-hidden="true">
+    <span>Dan&amp;Marc</span>
+    <span>Marc&amp;Dan</span>
+    <span>Dan&amp;Marc</span>
+  </span>
+</span>
+
+<style>
+  .wordmark {
+    display: inline-block;
+    height: 1em;
+    overflow: hidden;
+    font-size: var(--size);
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    vertical-align: bottom;
+    white-space: nowrap;
+  }
+  .reel { display: flex; flex-direction: column; }
+  .reel > span { display: block; height: 1em; line-height: 0.95; }
+  .animate .reel { animation: flip 6s cubic-bezier(0.7, 0, 0.2, 1) infinite; }
+  .wordmark:hover .reel { animation-play-state: paused; }
+
+  @keyframes flip {
+    0%, 40% { transform: translateY(0); }
+    50%, 90% { transform: translateY(-1em); }
+    100% { transform: translateY(-2em); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate .reel { animation: none; }
+  }
+</style>

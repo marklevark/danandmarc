@@ -1,0 +1,33 @@
+# Migrated from https://danandmarc.ca/work/bpwishlist
+title: The BP Wish List
+order: 7
+cover: ../../assets/work/the-bp-wish-list/bp-wishlist-1.jpg
+press: Adage, Adweek, Muse by Clio, Little Black Book, Strategy, The Stable, The Message
+agency: john st.
+client: Boston Pizza
+blocks:
+- text: |-
+    Pizza isn’t a big part of the holidays. Some might say, it has nothing to do with the holidays. Either way, it’s less than ideal for Boston Pizza.
+
+    So we took something that IS a big part of the holidays (the beloved Wish Books of the 80’s and 90’s) and pizza-fied the hell out of them.
+- heading: Case Study
+  level: 4
+- videos:
+  - provider: vimeo
+    id: '696615176'
+    title: CATALOGUE_FINAL_FEB16
+- heading: The Wish List
+  level: 4
+- images:
+  - src: ../../assets/work/the-bp-wish-list/bp-wishlist-board2.jpg
+  - src: ../../assets/work/the-bp-wish-list/bp-wishlist-board3.jpg
+  - src: ../../assets/work/the-bp-wish-list/bp-wishlist-board4.jpg
+  - src: ../../assets/work/the-bp-wish-list/bp-wishlist-board5.jpg
+  - src: ../../assets/work/the-bp-wish-list/bp-wishlist-board6.jpg
+  - src: ../../assets/work/the-bp-wish-list/bp-wishlist-board7.jpg
+  - src: ../../assets/work/the-bp-wish-list/bp-wishlist-board8.jpg
+  - src: ../../assets/work/the-bp-wish-list/bp-wishlist-board9.jpg
+  - src: ../../assets/work/the-bp-wish-list/bp-wishlist-board10.jpg
+  - src: ../../assets/work/the-bp-wish-list/bp-wishlist-board11.jpg
+  - src: ../../assets/work/the-bp-wish-list/bp-wishlist-board12.jpg
+  - src: ../../assets/work/the-bp-wish-list/bp-wishlist-board13.jpg

@@ -1,0 +1,62 @@
+# Migrated from https://danandmarc.ca/work/theunignorabletower
+title: 'The #Unignorable Tower'
+order: 2
+cover: ../../assets/work/the-unignorable-tower/www.kelseyhorne.com669steal_this_page_19.jpg
+awards:
+- show: One Show
+  result: 2 x Silver, 1 x Bronze, 4 x Merit, 3 x Shortlist
+- show: Cannes
+  result: 1 x Bronze
+- show: D&AD
+  result: 1 x Shortlist
+- show: Clios
+  result: 1 x Shortlist
+- show: ADC
+  result: 3 x Merit
+- show: Communication Arts
+  result: 2 x In-Book
+- show: The Webby Awards
+  result: 1 x Nominee
+- show: ADCC
+  result: 1 x Gold, 1 x Silver, 1 x Bronze
+- show: Marketing Awards
+  result: 1 x Silver, 1 x Bronze, 1 x Merit
+- show: Applied Arts
+  result: 3 x In-Book
+press: CBC, Toronto Star, BlogTO, Adweek, Little Black Book, reddit, Yahoo News, Daily Hive, Furniture Bank, Strategy Magazine, One Club, The FWA, Trend Hunter, Business Insider, Arch Daily, Cornell University, Canadian Architect, App Advice, The Baron, Point Blank Creative
+agency: Taxi
+client: United Way
+blocks:
+- text: |-
+    Behind all of Toronto’s recent successes (Drake, Raptors Championship, etc...) you’ll find the poverty capital of Canada, currently in the midst of a housing crisis. In fact, 1 in 7 Torontonians struggle with this issue. And the waitlist for affordable housing is at 100,000+ families and counting.
+
+    We needed to bring attention to the size and scale of this issue in a way that everyone could understand. So we visualized the problem by showing how big a building would have to be to house everyone in the city that desperately needs a home.
+
+    And as a result, we created what would easily be the world’s biggest tower.
+- heading: Case Study
+  level: 4
+- videos:
+  - provider: vimeo
+    id: '471103171'
+    title: 'The #UNIGNORABLE Tower Case Study'
+- images:
+  - src: ../../assets/work/the-unignorable-tower/tower-presentation-board-01.jpg
+- heading: The App
+  level: 4
+- images:
+  - src: ../../assets/work/the-unignorable-tower/tower-supporting-boards-1.jpg
+  - src: ../../assets/work/the-unignorable-tower/tower-supporting-boards-3.jpg
+  - src: ../../assets/work/the-unignorable-tower/tower-supporting-boards-5.jpg
+- heading: OOH
+  level: 4
+- images:
+  - src: ../../assets/work/the-unignorable-tower/notice-board.jpg
+  - src: ../../assets/work/the-unignorable-tower/uw---unignorable-tower-launch-05386.jpg
+  - src: ../../assets/work/the-unignorable-tower/uw---unignorable-tower-launch-04945.jpg
+- heading: The Tower
+  level: 4
+- images:
+  - src: ../../assets/work/the-unignorable-tower/2_supporting_image.jpg
+  - src: ../../assets/work/the-unignorable-tower/tower-supporting-boards-4.jpg
+  - src: ../../assets/work/the-unignorable-tower/tower_supporting_boards_9.jpg
+  - src: ../../assets/work/the-unignorable-tower/www.kelseyhorne.com669steal_this_page_19-2.jpg

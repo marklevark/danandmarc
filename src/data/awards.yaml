@@ -1,0 +1,569 @@
+# Migrated from https://danandmarc.ca/contact-1
+- id: international
+  region: International
+  shows:
+  - show: The One Show
+    tally: 3🥈, 3🥉, 11 Merit, 3 Shortlist
+    entries:
+    - year: 2022
+      award: Shortlist - Gaming - Innovation in Lockdown (john st. 20th)
+    - year: 2020
+      award: 'Silver - Digital Craft - Creative Use of Data (The #UNIGNORABLE Tower)'
+    - year: 2020
+      award: 'Silver - Mobile - AR / VR / MR (The #UNIGNORABLE Tower)'
+    - year: 2020
+      award: 'Bronze - Experiential - Data Visualization (The #UNIGNORABLE Tower)'
+    - year: 2020
+      award: 'Merit - Direct - Digital - Mobile (The #UNIGNORABLE Tower)'
+    - year: 2020
+      award: 'Merit - Experiential - AR / VR / MR (The #UNIGNORABLE Tower)'
+    - year: 2020
+      award: 'Merit - Mobile - Craft: Art Direction (The #UNIGNORABLE Tower)'
+    - year: 2020
+      award: 'Merit - Mobile - Craft: Use of Technology (The #UNIGNORABLE Tower)'
+    - year: 2020
+      award: 'Shortlist - Creative Use of Data - Data Visualization (The #UNIGNORABLE Tower)'
+    - year: 2020
+      award: 'Shortlist | Creative Use of Data - Storytelling (The #UNIGNORABLE Tower)'
+    - year: 2020
+      award: 'Shortlist - Design - Data Visualization (The #UNIGNORABLE Tower)'
+    - year: 2019
+      award: Silver - Health, Wellness & Pharma - Print (#UNIGNORABLE)
+    - year: 2019
+      award: Bronze - Health, Wellness & Pharma - Out of Home (#UNIGNORABLE)
+    - year: 2019
+      award: Bronze - Direct Marketing - Craft Art Direction (#UNIGNORABLE)
+    - year: 2019
+      award: Merit - Design Promotional – Posters – Series (#UNIGNORABLE)
+    - year: 2019
+      award: Merit - Health, Wellness & Pharma - Direct Marketing (#UNIGNORABLE)
+    - year: 2019
+      award: Merit - Integrated Craft – Art Direction (#UNIGNORABLE)
+    - year: 2019
+      award: Merit - Print & Outdoor Craft – Illustration (#UNIGNORABLE)
+    - year: 2019
+      award: Merit - Print & Outdoor Craft – Printing & Production (#UNIGNORABLE)
+    - year: 2019
+      award: Merit - Print & Outdoor Posters – Campaign (#UNIGNORABLE)
+    - year: 2014
+      award: Merit - Experiential (Dove Men+Care "Change Table")
+  - show: Cannes Lions
+    tally: 1🥉, 3 Shortlist
+    entries:
+    - year: 2021
+      award: 'Bronze - Mobile Technology - AR (The #UNIGNORABLE Tower)'
+    - year: 2019
+      award: Shortlist - Design - Poster Campaign (#UNIGNORABLE)
+    - year: 2019
+      award: Shortlist - Print & Publishing (#UNIGNORABLE - Domestic Violence)
+    - year: 2016
+      award: 'Shortlist - Outdoor: Street Posters (Top Comic)'
+  - show: D&AD
+    tally: 2🥉, 2 Shortlist
+    entries:
+    - year: 2020
+      award: 'Shortlist - Direct - Ambient (The #UNIGNORABLE Tower)'
+    - year: 2019
+      award: Wood Pencil - Poster Campaign (#UNIGNORABLE)
+    - year: 2019
+      award: Shortlist - Graphic Design - Poster (#UNIGNORABLE - Domestic Violence)
+    - year: 2012
+      award: Wood Pencil – Print Single (Mercedes-Benz “Moustaches”)
+  - show: London International Awards
+    tally: 1🥇
+    entries:
+    - year: 2019
+      award: Gold - Design - Use of Illustration Campaign
+  - show: Clios
+    tally: 2 Shortlist
+    entries:
+    - year: 2020
+      award: 'Shortlist - AR/VR Public Service (The #UNIGNORABLE Tower)'
+    - year: 2020
+      award: Shortlist - Use of Music (DoorDash)
+  - show: Art Director’s Club
+    tally: 1🥈, 4 Merit
+    entries:
+    - year: 2020
+      award: 'Merit - Interactive - AR / VR / MR (The #UNIGNORABLE Tower)'
+    - year: 2020
+      award: 'Merit - Interactive - Data Visualization (The #UNIGNORABLE Tower)'
+    - year: 2020
+      award: 'Merit - Experiential Design - Placemaking (The #UNIGNORABLE Tower)'
+    - year: 2019
+      award: Silver - Spatial Design - Craft Use of Colour (#UNIGNORABLE)
+    - year: 2019
+      award: Merit - Illustration - Single (#UNIGNORABLE - Domestic Violence)
+  - show: Communication Arts
+    tally: 8 In-Book, 2 Shortlist
+    entries:
+    - year: 2022
+      award: Advertising Annual - Self-Promotion (john st. 20th)
+    - year: 2020
+      award: 'Advertising Annual - Public Service (The #UNIGNORABLE Tower)'
+    - year: 2020
+      award: Advertising Annual - Poster Series (Top Comic)
+    - year: 2020
+      award: 'Interactive Annual - Mobile/Tablet (The #UNIGNORABLE Tower)'
+    - year: 2019
+      award: Advertising Annual - Shortlist - Integrated Campaign (#UNIGNORABLE)
+    - year: 2019
+      award: Advertising Annual - Shortlist - Posters (#UNIGNORABLE)
+    - year: 2019
+      award: Design Annual - Integrated Campaign (#UNIGNORABLE)
+    - year: 2019
+      award: Design Annual - Public Service (#UNIGNORABLE - Domestic Violence)
+    - year: 2019
+      award: Illustration Annual - Print Single (#UNIGNORABLE - Domestic Violence)
+    - year: 2012
+      award: Design Annual - Print Single (Toronto Jewish Film Festival - Curls)
+  - show: New York Festivals
+    tally: 2🥉, 1 Finalist
+    entries:
+    - year: 2016
+      award: 'Finalist - Outdoor: Installations (Leon''s Moving Day)'
+    - year: 2015
+      award: 'Bronze - Outdoor: Ambient (Tims Next Door)'
+    - year: 2015
+      award: 'Bronze - Outdoor: Restaurants (Tims Next Door)'
+  - show: Lurzer’s Archive
+    tally: 8 In-Book
+    entries:
+    - year: 2018
+      award: 200 Best Digital Artists (Top Comic)
+    - year: 2018
+      award: Print Ad of the Week (Audi)
+    - year: 2018
+      award: Vol. 2 - Print Campaign (Audi)
+    - year: 2016
+      award: 2017 Calendar Cover Image (Top Comic)
+    - year: 2016
+      award: Vol. 6 - Cover Image (Top Comic)
+    - year: 2016
+      award: Vol. 6 - Print Campaign (Top Comic)
+    - year: 2016
+      award: 200 Best Digital Artists (Top Comic)
+    - year: 2015
+      award: Vol.6 - Print Campaign (Top Comic)
+  - show: The Webby Awards
+    tally: 3 Nominee
+    entries:
+    - year: 2021
+      award: 'Nominee - Advertising AR (The #Unignorable Tower)'
+    - year: 2015
+      award: Nominee – Integrated Mobile Experience (MiO POV)
+    - year: 2014
+      award: Nominee - Integrated Mobile Experience (Rashers "Run the Pig")
+  - show: Warc 100
+    tally: ''
+    entries:
+    - year: 2017
+      award: 'Campaign #89 (Tims Next Door)'
+  - show: Kinsale Shark Awards
+    tally: 1🥇, 1🥈, 1🥉
+    entries:
+    - year: 2012
+      award: Gold - Toronto Jewish Film Festival “Curls”
+    - year: 2012
+      award: Bronze - Mercedes-Benz “Moustaches”
+    - year: 2012
+      award: Silver - Mercedes-Benz “Moustache Emblem”
+  - show: Caples
+    tally: 3🥉, 3 Finalist
+    entries:
+    - year: 2014
+      award: Bronze - Integrated Campaign (HIEX "Smart Billboards")
+    - year: 2014
+      award: Finalist - Content Marketing (Tim Hortons "Bring It Back")
+    - year: 2014
+      award: Finalist - Integrated Campaign (Tim Hortons "Bring It Back")
+    - year: 2013
+      award: Bronze - Promo Campaign (Rashers "Run the Pig")
+    - year: 2013
+      award: Finalist - Promo Campaign (Dove Men+Care "Change Table")
+    - year: 2012
+      award: Bronze - Agency Self Promotion (Source Code)
+  - show: International Echo Awards
+    tally: 1🥈, 1🥉
+    entries:
+    - year: 2014
+      award: Bronze - Travel & Hospitality/Transportation (Holiday Inn Express)
+    - year: 2013
+      award: Silver - Retail, Direct Sales (Tim Hortons "Epic Coffee Runners")
+  - show: WPPed Cream Awards
+    tally: 1🥈, 2🥉
+    entries:
+    - year: 2019
+      award: 'Silver - #UNIGNORABLE'
+    - year: 2019
+      award: 'Bronze - #UNIGNORABLE'
+    - year: 2018
+      award: Bronze - Health & Wellness Traditional (Search History)
+- id: canadian
+  region: Canadian
+  shows:
+  - show: ADCC
+    tally: 6🥇, 16🥈, 7🥉, 15 Merit
+    entries:
+    - year: 2024
+      award: Silver - Print - Business Press (Who are you reading?)
+    - year: 2024
+      award: Bronze - Photography Campaign (Who are you reading?)
+    - year: 2021
+      award: 'Gold - OOH Enhanced Singe (The #Unignorable Tower)'
+    - year: 2021
+      award: 'Silver - AR & VR (The #Unignorable Tower)'
+    - year: 2021
+      award: Silver - Advertising Posters Campaign (Top Comic)
+    - year: 2021
+      award: 'Bronze - Education & Information (The #Unignorable Tower)'
+    - year: 2019
+      award: Gold - Advertising Best Art Direction Single (#UNIGNORABLE - Domestic Violence)
+    - year: 2019
+      award: Gold - Public Service Ad Print Single (#UNIGNORABLE - Domestic Violence)
+    - year: 2019
+      award: Silver - Public Service Ad Print Campaign (#UNIGNORABLE)
+    - year: 2019
+      award: Silver - Design Public Service Design Single (#UNIGNORABLE - Domestic Violence)
+    - year: 2019
+      award: Bronze - Design Poster Single (#UNIGNORABLE - Domestic Violence)
+    - year: 2019
+      award: Bronze - Design Poster Series (#UNIGNORABLE)
+    - year: 2019
+      award: Bronze - Design Public Service Series (#UNIGNORABLE)
+    - year: 2019
+      award: Bronze - Creative Effectiveness In Design (#UNIGNORABLE)
+    - year: 2019
+      award: Bronze - Advertising - OOH Enhanced Single (Top Comic)
+    - year: 2018
+      award: Gold - Public Service Print Campaign (Search History)
+    - year: 2018
+      award: Gold - Public Service Print Single (Search History - Addiction)
+    - year: 2018
+      award: Silver - Public Service Print Single (Search History - Acceptance)
+    - year: 2018
+      award: Silver - Advertising Print Single (Search History - Addiction)
+    - year: 2018
+      award: Merit - Advertising Print Campaign (Search History)
+    - year: 2018
+      award: Merit - Advertising Print Single (Search History - Acceptance)
+    - year: 2018
+      award: Merit - Advertising Print Single (Search History - Escort)
+    - year: 2018
+      award: Merit - Public Service Print Single (Search History - Escort)
+    - year: 2017
+      award: Silver - Advertising Photography (Top Comic)
+    - year: 2017
+      award: Silver - Creative Use of Technology (Leon's)
+    - year: 2015
+      award: Silver - Promo Single (Tims Next Door)
+    - year: 2015
+      award: Silver - Media Innovation Single (Tims Next Door)
+    - year: 2015
+      award: Silver - Experiential Single (Tims Next Door)
+    - year: 2015
+      award: Silver - Best Use of Technology (MiO POV)
+    - year: 2015
+      award: Silver - Digital Installation (MiO POV)
+    - year: 2015
+      award: Silver - Mobile (MiO POV)
+    - year: 2014
+      award: Merit - Media Innovation - (PWS "Blanket the City")
+    - year: 2014
+      award: Merit - Public Service Campaign (PWS "Blanket the City")
+    - year: 2013
+      award: Merit - Promo Single (Rashers "Run the Pig")
+    - year: 2013
+      award: Merit - Media Innovation (Rashers "Run the Pig")
+    - year: 2013
+      award: Merit - Promo Single (Dove Men+Care "Change Table")
+    - year: 2013
+      award: Merit - Media Innovation (Dove Men+Care "Change Table")
+    - year: 2013
+      award: Merit - Print -Mercedes-Benz "Gloves"
+    - year: 2012
+      award: Gold - Print - Toronto Jewish Film Festival “Curls”
+    - year: 2012
+      award: Silver - Newspaper, Single - Mercedes-Benz “Moustaches”
+    - year: 2012
+      award: Merit - TV - Toronto Jewish Film Festival “Multiple Entertainer”
+    - year: 2012
+      award: Merit - Advertising Posters, single - Mercedes-Benz “Moustaches”
+    - year: 2012
+      award: Merit - Brochures - Toronto Jewish Film Festival “Curls”
+    - year: 2010
+      award: Merit - WWF “Ice for Oil”
+  - show: Strategy Agency of the Year
+    tally: ''
+    entries:
+    - year: 2019
+      award: Campaign of the Year (#UNIGNORABLE)
+  - show: Marketing Awards
+    tally: 3🥇, 11🥈, 11🥉, 3 Merit
+    entries:
+    - year: 2024
+      award: Silver - Craft - Photography (Who are you reading?)
+    - year: 2022
+      award: Silver - Self Promotion (john st. 20th)
+    - year: 2022
+      award: Merit - Design (john st. 20th)
+    - year: 2021
+      award: Silver - Craft Animation (DoorDash)
+    - year: 2021
+      award: Merit - Print Campaign (DoorDash)
+    - year: 2020
+      award: Silver - Self Promotion (Strategy Jr.)
+    - year: 2020
+      award: 'Silver - AR / VR (The #UNIGNORABLE Tower)'
+    - year: 2020
+      award: 'Bronze - Education & Advocacy (The #UNIGNORABLE Tower)'
+    - year: 2020
+      award: 'Merit - Craft - SFX (The #UNIGNORABLE Tower)'
+    - year: 2019
+      award: Gold - Public Service - Integrated Campaign (#UNIGNORABLE)
+    - year: 2019
+      award: Gold - Public Service - OOH Campaign (#UNIGNORABLE)
+    - year: 2019
+      award: Gold - Craft -Art Direction (#UNIGNORABLE)
+    - year: 2019
+      award: Silver - Public Service - Press Campaign (#UNIGNORABLE)
+    - year: 2019
+      award: Silver - Public Service - OOH Single (#UNIGNORABLE - Domestic Violence)
+    - year: 2019
+      award: Silver - Public Service - Press Single (#UNIGNORABLE - Domestic Violence)
+    - year: 2019
+      award: Bronze - Public Service - OOH Campaign (Search History)
+    - year: 2018
+      award: Silver - Integrated Web Campaign (The Future of Comedy)
+    - year: 2018
+      award: Silver - Creative Use of Technology (The Future of Comedy)
+    - year: 2016
+      award: Bronze - Radio Campaign (Top Comic)
+    - year: 2016
+      award: Bronze - Experiential / Stunts (Leon's Moving Day)
+    - year: 2016
+      award: Bronze - Transit Poster Single (Top Comic - Pet Groomer)
+    - year: 2015
+      award: Silver - OOH Non-Standard (Tims Next Door)
+    - year: 2015
+      award: Silver - OOH Large Scale (Tims Next Door)
+    - year: 2015
+      award: Bronze - Websites (Tim Hortons "Bring It Back")
+    - year: 2015
+      award: Bronze - Public Service Press Campaign (Media Smarts)
+    - year: 2015
+      award: Bronze - Public Service Press Single (Media Smarts "Push")
+    - year: 2015
+      award: Bronze - Public Service Press Single (Media Smarts "Throw")
+    - year: 2014
+      award: Bronze - Public Service OOH Campaign (PWS "Blanket the City")
+    - year: 2012
+      award: Bronze – Print Single - Mercedes-Benz “Moustache Emblem”
+  - show: Applied Arts
+    tally: 49 In-Book
+    entries:
+    - year: 2021
+      award: Advertising - COVID19 Response - Single (John St. 20th)
+    - year: 2021
+      award: Advertising - Agency/Artist Self-Promotion (John St. 20th)
+    - year: 2021
+      award: Advertising - Ideation - Single (John St. 20th)
+    - year: 2020
+      award: 'Advertising - AR/VR Single (The #UNIGNORABLE Tower)'
+    - year: 2020
+      award: 'Advertising - Craft Art Direction (The #UNIGNORABLE Tower)'
+    - year: 2020
+      award: 'Advertising - PSA Digital Advertising (The #UNIGNORABLE Tower)'
+    - year: 2020
+      award: Advertising - Agency Self-Promotion (Strategy Jr.)
+    - year: 2019
+      award: Advertising - Advertising Campaign (#UNIGNORABLE)
+    - year: 2019
+      award: Advertising - Art Direction Series (#UNIGNORABLE)
+    - year: 2019
+      award: Advertising - Art Direction Single (#UNIGNORABLE - Domestic Violence)
+    - year: 2019
+      award: Advertising - Craft Image Single (#UNIGNORABLE - Domestic Violence)
+    - year: 2019
+      award: Advertising - OOH Single (#UNIGNORABLE - Domestic Violence)
+    - year: 2019
+      award: Advertising - OOH Campaign (#UNIGNORABLE)
+    - year: 2019
+      award: Advertising - Public Service Single (#UNIGNORABLE - Domestic Violence)
+    - year: 2019
+      award: Advertising - Public Service Series (#UNIGNORABLE)
+    - year: 2019
+      award: Design - Craft Illustration Single (#UNIGNORABLE - Domestic Violence)
+    - year: 2019
+      award: Design - Craft Illustration Series (#UNIGNORABLE)
+    - year: 2019
+      award: Design - Poster Series (#UNIGNORABLE)
+    - year: 2019
+      award: Design - Public Service Single (#UNIGNORABLE - Domestic Violence)
+    - year: 2019
+      award: Design - Public Service Series (#UNIGNORABLE)
+    - year: 2019
+      award: Illustration - Advertising Illustration Series (#UNIGNORABLE)
+    - year: 2019
+      award: Illustration - Advertising Illustration Single (#UNIGNORABLE - Domestic Violence)
+    - year: 2019
+      award: Illustration - Advertising Illustration Single (#UNIGNORABLE - Mental Illness)
+    - year: 2019
+      award: Illustration - Poster Illustration Series (#UNIGNORABLE)
+    - year: 2019
+      award: Illustration - Poster Illustration Single (#UNIGNORABLE - Domestic Violence)
+    - year: 2019
+      award: Illustration - Poster Illustration Single (#UNIGNORABLE - Homelessness)
+    - year: 2019
+      award: Illustration - Public Service Illustration Series (#UNIGNORABLE)
+    - year: 2019
+      award: Illustration - Conceptual Illustration Single (#UNIGNORABLE - Domestic Violence)
+    - year: 2019
+      award: Illustration - Conceptual Illustration Single (#UNIGNORABLE - Homelessness)
+    - year: 2018
+      award: Advertising - OOH Series (Search History)
+    - year: 2018
+      award: Advertising - Public Service Single (Search History - Acceptance)
+    - year: 2018
+      award: Advertising - Public Service Single (Search History - Addiction)
+    - year: 2018
+      award: Advertising - Public Service Single (Search History - Escort)
+    - year: 2016
+      award: Advertising - Non-traditional Single (Leon's Moving Day)
+    - year: 2015
+      award: Advertising - Non-traditional Single (Tims Next Door)
+    - year: 2015
+      award: Advertising - Integrated Campaign (MiO POV)
+    - year: 2015
+      award: Photography - Public Service Campaign (MediaSmarts "Cyberbullying")
+    - year: 2013
+      award: Advertising - Integrated Campaign (Rashers "Run the Pig")
+    - year: 2013
+      award: Advertising - OOH Single (Dove Men+Care "Change Table")
+    - year: 2013
+      award: Advertising - Ad Promo Single (Dove Men+Care "Change Table")
+    - year: 2013
+      award: Interactive - Offline Digital (Dove Men+Care "Change Table")
+    - year: 2012
+      award: Interactive - Self-Promo (Source Code)
+    - year: 2012
+      award: Advertising - Print Single - Toronto Jewish Film Festival “Curls”
+    - year: 2012
+      award: Advertising - Print Single - Mercedes-Benz “Moustaches”
+    - year: 2012
+      award: Advertising - Print Single - Mercedes-Benz “Moustache Emblem”
+    - year: 2011
+      award: Advertising - Print Single - WWF “Ice Caps,” “Drought”
+    - year: 2010
+      award: Advertising - Print Single - WWF “Ice for Oil”
+    - year: 2010
+      award: Advertising - Print Single - OLG “Fingerprints”
+  - show: Effies Canada
+    tally: 1🥈, 2🥉
+    entries:
+    - year: 2018
+      award: Bronze - Brand Building Equity (Leon's Part of the Family)
+    - year: 2018
+      award: Bronze - New Brand Positioning (Leon's Part of the Family)
+    - year: 2017
+      award: Silver - Seasonal (Leon's Moving Day)
+  - show: Canadian Marketing Awards
+    tally: 2🥈, 4🥉
+    entries:
+    - year: 2016
+      award: Bronze - Experiential & Innovative Media (Leon's)
+    - year: 2015
+      award: Silver - Experiential & Innovative Media (Tims Next Door)
+    - year: 2015
+      award: Bronze - Promotion/Shopper Marketing (Tims Next Door)
+    - year: 2014
+      award: Bronze - Consumer Services (Holiday Inn Express "Smart vs. Smart")
+    - year: 2014
+      award: Bronze - Retail (Tim Hortons "Bring It Back")
+    - year: 2012
+      award: Silver - Business Products & Services (Source Code)
+  - show: Media Innovation Awards
+    tally: 2🥇, 1🥈, 3 Finalist
+    entries:
+    - year: 2015
+      award: Gold - Retail & E-Commerce (Leon's)
+    - year: 2015
+      award: Silver - Location-Based Marketing (Leon's)
+    - year: 2015
+      award: Finalist - Mobile (Leon's)
+    - year: 2015
+      award: Finalist - Niche Targeting (Leon's)
+    - year: 2015
+      award: Finalist - Experiential / Stunts Under $100,000 (KD Rebrand)
+    - year: 2014
+      award: Gold - Mobile (MiO POV)
+  - show: Applied Arts Creative Excellence
+    tally: ''
+    entries:
+    - year: 2013
+      award: Finalist - (Dove Men+Care "Change Table")
+  - show: Strategy Awards (
+    tally: 1🥈
+    entries:
+    - year: 2019
+      award: Silver - Cause / Public Service (#UNIGNORABLE)
+  - show: Promo! Awards
+    tally: 2🥇, 1🥉
+    entries:
+    - year: 2016
+      award: Bronze - Leon's (Niche Targeting)
+    - year: 2015
+      award: Gold - Most Innovative Idea or Concept (Tims Next Door)
+    - year: 2015
+      award: Gold - Best Pop-up Activation (Tims Next Door)
+  - show: Shopper Innovation Awards
+    tally: 4🥇, 1🥈, 1🥉
+    entries:
+    - year: 2016
+      award: Gold - Original Idea (Leon's)
+    - year: 2016
+      award: Gold - Brand New! (Leon's)
+    - year: 2016
+      award: Bronze - Small Budget, Big Impact (Leon's)
+    - year: 2015
+      award: Gold - In-store Engagement (Tims Next Door)
+    - year: 2015
+      award: Gold - Out of the Box Retail (Tims Next Door)
+    - year: 2015
+      award: Silver - Original Idea (Tims Next Door)
+  - show: Atomic Awards
+    tally: 1🥇, 2🥈, 3🥉
+    entries:
+    - year: 2016
+      award: Silver - Best Print / OOH (Leon's Moving Day)
+    - year: 2015
+      award: Gold - Best Tech Breakthrough – MiO POV
+    - year: 2015
+      award: Silver - Atomic Collaboration – MiO POV
+    - year: 2015
+      award: Bronze - ATOMIC Idea (Tims Next Door)
+    - year: 2015
+      award: Bronze - Best Niche Targeting (Tims Next Door)
+    - year: 2015
+      award: Bronze - Best Experiential Engagement (Tims Next Door)
+  - show: Globes
+    tally: 1🥇, 1🥈
+    entries:
+    - year: 2015
+      award: Gold - Retail (Tims Next Door)
+    - year: 2015
+      award: Silver - Short Term (Tims Next Door)
+  - show: National Advertising Awards
+    tally: 1🥇, 2🥉
+    entries:
+    - year: 2017
+      award: Bronze, Not for Profit - Children’s Wish Foundation
+    - year: 2012
+      award: Gold, Print – Drano “Log”
+    - year: 2010
+      award: Bronze, Print  - Chunky Soup
+  - show: Calm Awards
+    tally: ''
+    entries:
+    - year: 2017
+      award: Dennis McGann Stroke-of-Genius Awar

@@ -1,0 +1,34 @@
+# Migrated from https://danandmarc.ca/work/doordash
+title: Welcome to the Flavourhood
+order: 5
+cover: ../../assets/work/welcome-to-the-flavourhood/dorbrd20009_doordashgif1-poster.jpg
+coverLoop: ../../assets/work/welcome-to-the-flavourhood/dorbrd20009_doordashgif1.mp4
+awards:
+- show: Clios
+  result: 1 x Shortlist
+- show: Marketing Awards
+  result: 1 x Silver, 1 x Merit
+press: Muse by Clio, Adnews, Strategy, The Message, Little Black Book, Stimulant, Best Ads on TV, Ads of the World, Adforum
+agency: john st.
+client: DoorDash
+blocks:
+- text: When you’ve got access to all the flavours of your neighbourhood right in your hands, it’s almost as if your neighbourhood’s been shrunken down into a miniature world with Dashers biking by and cartoon food mascots winking at them and food puppets dancing along before morphing into real food and you’re like a giant that can pick up an entire restaurant right off its foundation and drink from its roof, as they say.
+- videos:
+  - provider: vimeo
+    id: '470837545'
+    title: Welcome to the Flavourhood
+- images:
+  - src: ../../assets/work/welcome-to-the-flavourhood/dorbrd20009_doordashgif2-poster.jpg
+    loop: ../../assets/work/welcome-to-the-flavourhood/dorbrd20009_doordashgif2.mp4
+  - src: ../../assets/work/welcome-to-the-flavourhood/dorbrd20009_doordashgif3-poster.jpg
+    loop: ../../assets/work/welcome-to-the-flavourhood/dorbrd20009_doordashgif3.mp4
+  - src: ../../assets/work/welcome-to-the-flavourhood/dorbrd20009_doordashgif4-poster.jpg
+    loop: ../../assets/work/welcome-to-the-flavourhood/dorbrd20009_doordashgif4.mp4
+  - src: ../../assets/work/welcome-to-the-flavourhood/dorbrd20009_doordashgif5-poster.jpg
+    loop: ../../assets/work/welcome-to-the-flavourhood/dorbrd20009_doordashgif5.mp4
+- heading: Behind the Scenes
+  level: 4
+- videos:
+  - provider: vimeo
+    id: '489871720'
+    title: DoorDash - BTS

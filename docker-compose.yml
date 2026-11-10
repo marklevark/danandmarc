@@ -1,0 +1,8 @@
+services:
+  danandmarc:
+    build: .
+    image: danandmarc:latest
+    container_name: danandmarc
+    restart: unless-stopped
+    ports:
+      - "8080:80"   # point your reverse proxy at this

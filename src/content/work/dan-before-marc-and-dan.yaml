@@ -1,0 +1,58 @@
+# Migrated from https://danandmarc.ca/work/unignorable-29ejk-rhmpk-lbrs9
+title: Dan before Marc and Dan
+order: 13
+cover: ../../assets/work/dan-before-marc-and-dan/tjff---curls---poster_1000-1.jpg
+blocks:
+- heading: MiO POV
+  level: 2
+- credits:
+    agency: Taxi
+    client: MiO
+- text: |-
+    MiO, everyone’s go-to water enhancer, was a key sponsor of NXNE.
+
+    How do we the attention of millions of mildly-vain concert goers? Build an app that makes them the centre of attention.
+- videos:
+  - provider: vimeo
+    id: '138106440'
+    title: Mio_POV_Award_2015_MASTER_1920x1080_8Mbps
+- images:
+  - src: ../../assets/work/dan-before-marc-and-dan/screen-shot-2015-09-02-at-1.26.50-pm_459.png
+  - src: ../../assets/work/dan-before-marc-and-dan/screen-shot-2015-09-02-at-1.27.01-pm_457.png
+  - src: ../../assets/work/dan-before-marc-and-dan/screen-shot-2015-09-02-at-1.27.13-pm_453.png
+- heading: Toronto Jewish Film Festival
+  level: 2
+- credits:
+    agency: BBDO
+    client: TJFF
+- text: 'The Toronto Jewish Film Festival is, well, exactly what it sounds like. (It’s a film festival with Jewish films). Fun fact: it’s the largest Jewish film festival in the world.'
+- videos:
+  - provider: vimeo
+    id: '138106506'
+    title: TJFF_Global_Apr4
+- images:
+  - src: ../../assets/work/dan-before-marc-and-dan/tjff---curls---poster_1000-1-2.jpg
+- heading: Breaks It Down
+  level: 2
+- credits:
+    agency: NAC
+    client: Drano
+- text: |-
+    Q: Can a poo joke send you to France?
+
+    A: Oui!
+- images:
+  - src: ../../assets/work/dan-before-marc-and-dan/drano-log_1000_1000_1000-1.jpg
+- heading: Benz Adz
+  level: 2
+- credits:
+    agency: BBDO
+    client: Mercedez Benz
+- text: |-
+    Every year, Mercedes Benz wanted a new print ad for one of their men’s health sponsorships.
+
+    Here are the three best (as judged by Dan).
+- images:
+  - src: ../../assets/work/dan-before-marc-and-dan/mercedes---cornering.jpg
+  - src: ../../assets/work/dan-before-marc-and-dan/mercedes---moustache.jpg
+  - src: ../../assets/work/dan-before-marc-and-dan/mercedes---prostate.jpg

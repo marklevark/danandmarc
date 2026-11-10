@@ -1,0 +1,50 @@
+# Migrated from https://danandmarc.ca/work/unignorable-29ejk-rhmpk
+title: Marc before Dan and Marc
+order: 12
+cover: ../../assets/work/marc-before-dan-and-marc/tims-house.jpg
+blocks:
+- heading: The Tims Next Door
+  level: 2
+- credits:
+    agency: Taxi
+    client: Tim Hortons
+- text: |-
+    For every Canadian city that’s not Toronto, the local Tims is the neighbourhood hub.
+
+    To remind Canadians of exactly that, we turned a regular ol’ house into a Tim Hortons overnight, and gave a Calgary neighbourhood (and a couple who were getting possession of the house 6 days later) a big surprise.
+- images:
+  - src: ../../assets/work/marc-before-dan-and-marc/tims-house.jpg
+- videos:
+  - provider: vimeo
+    id: '120381790'
+    title: '#TimsNextDoor'
+- heading: Run The Pig
+  level: 2
+- credits:
+    agency: Ogilvy
+    client: Rashers
+- text: |-
+    Some runners are really just running to allow their bodies to consume more food.
+
+    To promote Rashers, a bacon sandwich chain, we created a promo that rewarded runners that were just as committed to bacon as Rashers themselves.
+- videos:
+  - provider: vimeo
+    id: '120744306'
+    title: Rashers - Run the Pig
+- images:
+  - src: ../../assets/work/marc-before-dan-and-marc/bestreason_o.jpg
+  - src: ../../assets/work/marc-before-dan-and-marc/dash_o.jpg
+  - src: ../../assets/work/marc-before-dan-and-marc/hero_o.jpg
+- heading: Source Code
+  level: 2
+- credits:
+    agency: Ogilvy
+    client: Ogilvy
+- text: |-
+    Ogilvy needed an art director that could work and think like a developer.
+
+    So we sent them a blank page and hid the application in the source code. If they were smart enough to check the code to find out what's wrong, they were smart enough for the job.
+- videos:
+  - provider: vimeo
+    id: '41537968'
+    title: SourceCode
