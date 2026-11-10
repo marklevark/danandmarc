@@ -1,0 +1,245 @@
+---
+/**
+ * Alternate homepage in a "sample board" style: grey canvas, achromatic UI that disappears,
+ * full-bleed photography and GIF loops, one sans at 400 plus tiny spaced mono labels,
+ * thin outlined buttons, a dark footer, and a museum-style caption naming the project in view.
+ * Fonts: Inter (for Matter) and IBM Plex Mono (for Matter Mono).
+ */
+import '@fontsource-variable/inter';
+import '@fontsource/ibm-plex-mono/400.css';
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Base from '../layouts/Base.astro';
+import { getWork } from '../lib/work';
+import { loopUrl } from '../lib/media';
+import { site } from '../data/site';
+import gillerSpread from '../assets/work/who-are-you-reading/screenshot-2024-12-20-131253.png';
+
+const work = await getWork();
+const bySlug = new Map(work.map((w) => [w.id, w]));
+
+// Per-page image picks (otherwise: landscape key image, else cover)
+const override: Record<string, ImageMetadata> = { 'who-are-you-reading': gillerSpread };
+
+type Item = {
+  slug: string; title: string; credit: string; text: string; src: string; loop?: string; w: number; h: number; pos: string;
+};
+const firstSentences = (t: string, max = 220) => {
+  const p = t.split(/\n{2,}/)[0].replace(/\s+/g, ' ').trim();
+  if (p.length <= max) return p;
+  const cut = p.slice(0, max);
+  const end = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('! '), cut.lastIndexOf('? '));
+  return end > 80 ? cut.slice(0, end + 1) : cut.replace(/\s+\S*$/, '') + '…';
+};
+async function item(slug: string, width: number): Promise<Item> {
+  const w = bySlug.get(slug)!;
+  const d = w.data;
+  const meta = override[slug] ?? d.keyImage ?? d.cover;
+  const img = await getImage({ src: meta, width: Math.min(width, meta.width), format: 'webp', quality: 80 });
+  const text = d.blocks.find((b) => 'text' in b) as { text: string } | undefined;
+  return {
+    slug,
+    title: d.title,
+    credit: [d.client, d.agency && d.agency !== d.client ? d.agency : undefined].filter(Boolean).join(' / ') || d.agency || '',
+    text: text ? firstSentences(text.text) : '',
+    src: img.src,
+    loop: !override[slug] && !d.keyImage && d.coverLoop ? loopUrl(d.coverLoop) : undefined,
+    w: meta.width,
+    h: meta.height,
+    pos: d.keyImage || override[slug] ? '50% 50%' : d.coverPosition,
+  };
+}
+
+// The museum walk: hero loop, then full-bleed moments alternating with two-column pairs.
+const hero = await item('if-youre-cooking-youre-a-cook', 2400);
+const sequence: ({ kind: 'full'; it: Item } | { kind: 'pair'; a: Item; b: Item })[] = [
+  { kind: 'full', it: await item('who-are-you-reading', 2400) },
+  { kind: 'pair', a: await item('the-unignorable-tower', 1200), b: await item('unignorable', 1200) },
+  { kind: 'full', it: await item('john-st-minecraft-edition', 2400) },
+  { kind: 'pair', a: await item('search-history', 1200), b: await item('the-bp-wish-list', 1200) },
+  { kind: 'full', it: await item('top-comic', 2400) },
+  { kind: 'pair', a: await item('welcome-to-the-flavourhood', 1200), b: await item('leons', 1200) },
+  { kind: 'full', it: await item('marc-before-dan-and-marc', 2400) },
+  { kind: 'pair', a: await item('strategy-junior', 1200), b: await item('dan-before-marc-and-dan', 1200) },
+];
+const code = (s: string) => s.toUpperCase();
+---
+<Base title="Work" description={site.description}>
+  <meta name="robots" content="noindex" slot="head" />
+
+  <div class="mt">
+    <!-- hero: 100% photography (a loop), nav floats on top in white -->
+    <section class="mt-hero" data-caption={`${code(hero.title)} — ${code(hero.credit)}`}>
+      {hero.loop ? (
+        <video class="mt-media" src={hero.loop} poster={hero.src} autoplay muted loop playsinline aria-hidden="true"></video>
+      ) : (
+        <img class="mt-media" src={hero.src} alt="" />
+      )}
+      <a class="mt-hero__link" href={`/work/${hero.slug}`}><span class="sr-only">{hero.title}</span></a>
+    </section>
+
+    <!-- intro -->
+    <section class="mt-intro mt-wrap">
+      <p class="mt-label">Dan &amp; Marc — Toronto</p>
+      <p class="mt-lead">We’re Dan and Marc. But you can call us Marc and Dan. An award-winning freelance creative team with a combined 25+ years at top-tier agencies, making strategic, results-driven work across every discipline.</p>
+      <div class="mt-btns">
+        <a class="mt-btn" href="/contact">Contact</a>
+        <a class="mt-btn" href="/awards">Awards</a>
+      </div>
+    </section>
+
+    {sequence.map((s) =>
+      s.kind === 'full' ? (
+        <a class="mt-full" href={`/work/${s.it.slug}`} data-caption={`${code(s.it.title)} — ${code(s.it.credit)}`} style={`aspect-ratio:${s.it.w}/${s.it.h}`}>
+          {s.it.loop ? (
+            <video class="mt-media" src={s.it.loop} poster={s.it.src} autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
+          ) : (
+            <img class="mt-media" src={s.it.src} alt="" loading="lazy" decoding="async" />
+          )}
+          <span class="sr-only">{s.it.title}</span>
+        </a>
+      ) : (
+        <section class="mt-pair mt-wrap">
+          {[s.a, s.b].map((it) => (
+            <article class="mt-col" data-caption={`${code(it.title)} — ${code(it.credit)}`}>
+              <a class="mt-col__img" href={`/work/${it.slug}`} tabindex="-1" aria-hidden="true">
+                {it.loop ? (
+                  <video class="mt-media" src={it.loop} poster={it.src} autoplay muted loop playsinline preload="metadata" style={`object-position:${it.pos}`}></video>
+                ) : (
+                  <img class="mt-media" src={it.src} alt="" loading="lazy" decoding="async" style={`object-position:${it.pos}`} />
+                )}
+              </a>
+              <p class="mt-label">{it.title} — {it.credit}</p>
+              <p class="mt-body">{it.text}</p>
+              <a class="mt-btn" href={`/work/${it.slug}`}>View project<span class="sr-only">: {it.title}</span></a>
+            </article>
+          ))}
+        </section>
+      ),
+    )}
+
+    <footer class="mt-foot">
+      <div class="mt-foot__grid">
+        <div>
+          <p class="mt-foot__h">Dan&amp;Marc</p>
+          <p>Freelance creative team<br />Toronto, Canada</p>
+        </div>
+        <div>
+          <p class="mt-foot__k">Say hi</p>
+          <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+          {site.people.map((p) => <p><a href={`mailto:${p.email}`}>{p.email}</a></p>)}
+        </div>
+        <div>
+          <p class="mt-foot__k">Elsewhere</p>
+          {site.people.map((p) => <p><a href={p.linkedin} rel="noopener" target="_blank">{p.first} — LinkedIn</a></p>)}
+          <p><a href="/awards">Awards</a></p>
+        </div>
+      </div>
+      <p class="mt-foot__legal">© {new Date().getFullYear()} Dan Cantelon &amp; Marc Levesque</p>
+    </footer>
+
+    <!-- museum-style object label: names whatever is in view -->
+    <p class="mt-tag" aria-hidden="true" data-tag>{code(hero.title)} — {code(hero.credit)}</p>
+  </div>
+</Base>
+
+<script>
+  const tag = document.querySelector<HTMLElement>('[data-tag]')!;
+  const spots = [...document.querySelectorAll<HTMLElement>('[data-caption]')];
+  const visible = new Map<HTMLElement, number>();
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => visible.set(e.target as HTMLElement, e.isIntersecting ? e.intersectionRatio : 0));
+    let best: HTMLElement | undefined; let max = 0;
+    visible.forEach((r, el) => { if (r > max) { max = r; best = el; } });
+    tag.style.opacity = best ? '1' : '0';
+    if (best) tag.textContent = best.dataset.caption!;
+  }, { threshold: [0, 0.15, 0.3, 0.5, 0.7, 0.9] });
+  spots.forEach((s) => io.observe(s));
+
+  // loops hold still for reduced motion
+  const mq = matchMedia('(prefers-reduced-motion: reduce)');
+  const vids = [...document.querySelectorAll<HTMLVideoElement>('.mt video')];
+  const sync = () => vids.forEach((v) => (mq.matches ? v.pause() : v.play().catch(() => {})));
+  mq.addEventListener('change', sync);
+  sync();
+</script>
+
+<style>
+  /* Grey canvas; existing header/nav floats over the hero in white */
+  :global(body) { --bg: #bababa; }
+  :global(main) { padding-bottom: 0 !important; }
+  :global(.site-header) { color: #fff; --ink: #fff; }
+  :global(.site-header .home) { color: #fff; }
+  :global(.site-header nav a[aria-current='page']) { text-decoration-color: #fff; }
+  @media (max-width: 640px) {
+    :global(.site-header nav) { background: #1e1e1e; }
+    :global(.site-header .menu-btn) { color: #fff; }
+  }
+
+  .mt {
+    --obsidian: #000; --bone: #fff; --graphite: #1e1e1e; --ash: #bababa;
+    --sans: 'Inter Variable', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    background: var(--ash); color: var(--obsidian);
+    font-family: var(--sans); font-weight: 400; font-size: 15px; line-height: 1.2;
+    font-feature-settings: 'tnum'; letter-spacing: 0;
+  }
+  .mt :global(*) { font-weight: 400; }
+  .mt p { margin: 0; }
+  .mt a:hover { opacity: 1; }
+  .mt-wrap { width: min(960px, 100% - 48px); margin-inline: auto; }
+
+  .mt-label, .mt-btn, .mt-tag, .mt-foot {
+    font-family: var(--mono); font-size: 10px; line-height: 1.3; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .mt-btn {
+    display: inline-block; padding: 8px 24px; border: 1px solid var(--obsidian); border-radius: 3px;
+    font-size: 12px; letter-spacing: 0.02em; color: var(--obsidian); background: transparent;
+  }
+  .mt-btn:focus-visible, .mt-full:focus-visible { outline: 1px solid var(--obsidian); outline-offset: 3px; }
+
+  .mt-media { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+  /* hero: edge-to-edge, no overlay, no text */
+  .mt-hero { position: relative; height: 100vh; height: 100svh; overflow: hidden; background: var(--graphite); }
+  .mt-hero__link { position: absolute; inset: 0; }
+
+  /* intro */
+  .mt-intro { padding: 120px 0 160px; display: grid; gap: 24px; }
+  .mt-lead { font-size: clamp(19px, 2vw, 20px); line-height: 1.2; max-width: 34em; }
+  .mt-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  /* full-bleed moment at the image's natural shape */
+  .mt-full { display: block; width: 100%; max-height: 100svh; overflow: hidden; margin: 0 0 160px; background: var(--graphite); }
+
+  /* two-column showcase: image, label, text, button — left-aligned */
+  .mt-pair { display: grid; grid-template-columns: 1fr; gap: 72px 24px; margin-bottom: 160px; }
+  .mt-col { display: grid; gap: 24px; align-content: start; justify-items: start; }
+  .mt-col__img { display: block; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; background: var(--graphite); }
+  .mt-body { font-size: 15px; line-height: 1.2; max-width: 30em; margin-top: -12px; }
+  .mt-col .mt-label { margin-top: -8px; }
+
+  /* museum caption, bottom-left, readable on any background */
+  .mt-tag {
+    position: fixed; z-index: 40; left: 16px; bottom: 14px; margin: 0; max-width: calc(100vw - 32px);
+    color: #fff; mix-blend-mode: difference; pointer-events: none; transition: opacity 0.2s ease;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  /* footer: the only dark block */
+  .mt-foot { background: var(--graphite); color: var(--bone); padding: 64px 24px 28px; font-size: 12px; letter-spacing: 0.02em; }
+  .mt-foot__grid { display: grid; gap: 32px; grid-template-columns: 1fr; width: min(960px, 100%); margin: 0 auto; }
+  .mt-foot__grid p + p { margin-top: 6px; }
+  .mt-foot__h { font-family: var(--sans); font-size: 20px; text-transform: none; letter-spacing: 0; margin-bottom: 12px !important; }
+  .mt-foot__k { color: #8c8c8c; margin-bottom: 12px !important; }
+  .mt-foot a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .mt-foot__legal { width: min(960px, 100%); margin: 72px auto 0 !important; font-size: 10px; letter-spacing: 0.04em; color: #8c8c8c; }
+
+  @media (min-width: 760px) {
+    .mt-pair { grid-template-columns: 1fr 1fr; }
+    .mt-foot__grid { grid-template-columns: 1.2fr 1fr 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mt-tag { transition: none; }
+  }
+</style>
