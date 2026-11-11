@@ -10,6 +10,7 @@ import '@fontsource/ibm-plex-mono/400.css';
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import Base from '../layouts/Base.astro';
+import Wordmark from '../components/Wordmark.astro';
 import { getWork } from '../lib/work';
 import { loopUrl } from '../lib/media';
 import { site } from '../data/site';
@@ -51,7 +52,9 @@ async function item(slug: string, width: number): Promise<Item> {
 }
 
 // The museum walk: hero loop, then full-bleed moments alternating with two-column pairs.
-const hero = await item('if-youre-cooking-youre-a-cook', 2400);
+// Hero slideshow: every project, in the site's order
+const slides = await Promise.all(work.map((w) => item(w.id, 2400)));
+const hero = slides[0];
 const sequence: ({ kind: 'full'; it: Item } | { kind: 'pair'; a: Item; b: Item })[] = [
   { kind: 'full', it: await item('who-are-you-reading', 2400) },
   { kind: 'pair', a: await item('the-unignorable-tower', 1200), b: await item('unignorable', 1200) },
@@ -68,14 +71,27 @@ const code = (s: string) => s.toUpperCase();
   <meta name="robots" content="noindex" slot="head" />
 
   <div class="mt">
-    <!-- hero: 100% photography (a loop), nav floats on top in white -->
-    <section class="mt-hero" data-caption={`${code(hero.title)} — ${code(hero.credit)}`}>
-      {hero.loop ? (
-        <video class="mt-media" src={hero.loop} poster={hero.src} autoplay muted loop playsinline aria-hidden="true"></video>
-      ) : (
-        <img class="mt-media" src={hero.src} alt="" />
-      )}
-      <a class="mt-hero__link" href={`/work/${hero.slug}`}><span class="sr-only">{hero.title}</span></a>
+    <!-- hero: full-screen slideshow of the work; big wordmark centred; nav floats on top in white -->
+    <section class="mt-hero" data-caption={`${code(hero.title)} — ${code(hero.credit)}`} aria-roledescription="carousel" aria-label="Our work">
+      {slides.map((sl, i) => (
+        <a
+          class:list={['mt-slide', { 'is-active': i === 0 }]}
+          href={`/work/${sl.slug}`}
+          data-caption={`${code(sl.title)} — ${code(sl.credit)}`}
+          aria-hidden={i === 0 ? undefined : 'true'}
+          tabindex={i === 0 ? undefined : -1}
+        >
+          {sl.loop ? (
+            <video class="mt-media" src={sl.loop} poster={sl.src} muted loop playsinline preload={i === 0 ? 'auto' : 'metadata'} style={`object-position:${sl.pos}`}></video>
+          ) : (
+            <img class="mt-media" src={sl.src} alt="" loading={i < 2 ? 'eager' : 'lazy'} decoding="async" style={`object-position:${sl.pos}`} />
+          )}
+          <span class="sr-only">{sl.title}</span>
+        </a>
+      ))}
+      <div class="mt-hero__mark" aria-hidden="true"><Wordmark size="clamp(54px, 10vw, 168px)" /></div>
+      <h1 class="sr-only">Dan and Marc</h1>
+      <div class="mt-dots" aria-hidden="true">{slides.map((_, i) => <i class:list={{ on: i === 0 }}></i>)}</div>
     </section>
 
     <!-- intro -->
@@ -145,7 +161,39 @@ const code = (s: string) => s.toUpperCase();
 
 <script>
   const tag = document.querySelector<HTMLElement>('[data-tag]')!;
-  const spots = [...document.querySelectorAll<HTMLElement>('[data-caption]')];
+  const heroEl = document.querySelector<HTMLElement>('.mt-hero')!;
+  const slides = [...heroEl.querySelectorAll<HTMLAnchorElement>('.mt-slide')];
+  const dots = [...heroEl.querySelectorAll<HTMLElement>('.mt-dots i')];
+  const HOLD = 4500;
+  let cur = 0;
+  let timer: number | undefined;
+  const reduceMq = matchMedia('(prefers-reduced-motion: reduce)');
+
+  const show = (n: number) => {
+    const prev = slides[cur];
+    cur = (n + slides.length) % slides.length;
+    const next = slides[cur];
+    if (prev !== next) {
+      prev.classList.remove('is-active'); prev.setAttribute('aria-hidden', 'true'); prev.tabIndex = -1;
+      prev.querySelector('video')?.pause();
+    }
+    next.classList.add('is-active'); next.removeAttribute('aria-hidden'); next.removeAttribute('tabindex');
+    const v = next.querySelector('video');
+    if (v && !reduceMq.matches) { v.currentTime = 0; v.play().catch(() => {}); }
+    dots.forEach((d, i) => d.classList.toggle('on', i === cur));
+    heroEl.dataset.caption = next.dataset.caption!;
+    // preload the one after next
+    const ahead = slides[(cur + 1) % slides.length].querySelector('img');
+    if (ahead) ahead.loading = 'eager';
+    if (visible.get(heroEl)) tag.textContent = next.dataset.caption!;
+  };
+  const start = () => { stop(); if (!reduceMq.matches && !document.hidden) timer = window.setInterval(() => show(cur + 1), HOLD); };
+  const stop = () => { if (timer) clearInterval(timer); timer = undefined; };
+  document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+  reduceMq.addEventListener('change', start);
+  heroEl.addEventListener('focusin', stop);
+  heroEl.addEventListener('focusout', start);
+  const spots = [...document.querySelectorAll<HTMLElement>('[data-caption]:not(.mt-slide)')];
   const visible = new Map<HTMLElement, number>();
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => visible.set(e.target as HTMLElement, e.isIntersecting ? e.intersectionRatio : 0));
@@ -155,10 +203,12 @@ const code = (s: string) => s.toUpperCase();
     if (best) tag.textContent = best.dataset.caption!;
   }, { threshold: [0, 0.15, 0.3, 0.5, 0.7, 0.9] });
   spots.forEach((s) => io.observe(s));
+  show(0);
+  start();
 
   // loops hold still for reduced motion
   const mq = matchMedia('(prefers-reduced-motion: reduce)');
-  const vids = [...document.querySelectorAll<HTMLVideoElement>('.mt video')];
+  const vids = [...document.querySelectorAll<HTMLVideoElement>('.mt video:not(.mt-slide video)')];
   const sync = () => vids.forEach((v) => (mq.matches ? v.pause() : v.play().catch(() => {})));
   mq.addEventListener('change', sync);
   sync();
@@ -202,7 +252,17 @@ const code = (s: string) => s.toUpperCase();
 
   /* hero: edge-to-edge, no overlay, no text */
   .mt-hero { position: relative; height: 100vh; height: 100svh; overflow: hidden; background: var(--graphite); }
-  .mt-hero__link { position: absolute; inset: 0; }
+  .mt-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.9s ease; }
+  .mt-slide.is-active { opacity: 1; z-index: 1; }
+  .mt-hero__mark {
+    position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; pointer-events: none; color: #fff;
+  }
+  .mt-hero__mark :global(.wordmark), .mt-hero__mark :global(.wordmark *) { font-weight: 700 !important; }
+  .mt-dots { position: absolute; z-index: 2; right: 16px; bottom: 16px; display: flex; gap: 6px; pointer-events: none; }
+  .mt-dots i { width: 14px; height: 1px; background: rgba(255, 255, 255, 0.45); }
+  .mt-dots i.on { background: #fff; }
+  /* the big centred wordmark replaces the small one top-left on this page */
+  :global(.site-header .home) { visibility: hidden; }
 
   /* intro */
   .mt-intro { padding: 120px 0 160px; display: grid; gap: 24px; }
@@ -242,6 +302,6 @@ const code = (s: string) => s.toUpperCase();
     .mt-foot__grid { grid-template-columns: 1.2fr 1fr 1fr; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .mt-tag { transition: none; }
+    .mt-tag, .mt-slide { transition: none; }
   }
 </style>
