@@ -1,0 +1,26 @@
+# Added Nov 2026. Copy below is placeholder from the case board; replace when final copy is ready.
+title: Smashed
+year: 2026   # used to order the /timeline page
+order: 1
+cover: ../../assets/work/smashed/smashed-objects.jpg
+agency: Rethink
+client: A&W
+blocks:
+- text: |-
+    A&W was the first quick-service restaurant in Canada to launch a Smash Burger. But we had a problem: our marketing budget was much smaller than the competitors’.
+
+    So we turned the launch campaign into an embodiment of the burger itself, by smashing everything. And we mean everything. An entire A&W restaurant (and everything in it), our commercials, OOH, social posts, and more.
+
+    +13.5 sales growth. 26M earned impressions.
+- videos:
+  - provider: file          # self-hosted: /media/smashed/smashed.mp4 (poster: smashed.jpg)
+    id: smashed
+    title: Smashed case study
+- images:
+  - src: ../../assets/work/smashed/smashed-case-board.jpg
+    alt: Smashed case board, the smashed A&W restaurant on Queen Street with lineups out front
+  - src: ../../assets/work/smashed/smashed-objects.jpg
+    alt: Smashed A&W mugs, trays, stools, napkin holder, booth seat and menu stand on orange
+  - src: ../../assets/work/smashed/smashed-press.jpg
+    alt: Smash Burgers poster surrounded by press and social reactions
+press: Little Black Book, PR Newswire

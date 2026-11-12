@@ -56,6 +56,7 @@ async function item(slug: string, width: number): Promise<Item> {
 const slides = await Promise.all(work.map((w) => item(w.id, 2400)));
 const hero = slides[0];
 const sequence: ({ kind: 'full'; it: Item } | { kind: 'pair'; a: Item; b: Item })[] = [
+  { kind: 'full', it: await item('smashed', 2400) },
   { kind: 'full', it: await item('who-are-you-reading', 2400) },
   { kind: 'pair', a: await item('the-unignorable-tower', 1200), b: await item('unignorable', 1200) },
   { kind: 'full', it: await item('john-st-minecraft-edition', 2400) },
