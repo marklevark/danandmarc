@@ -1,4 +1,6 @@
 @import '@fontsource-variable/inter-tight';
+@import '@fontsource-variable/figtree';
+@import '@fontsource/source-code-pro/500.css';
 
 /*
  * Matches the original Squarespace theme: cool light grey, black type, tight 10px edges.
@@ -78,3 +80,25 @@ main { padding-bottom: 60px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+/* ------------------------------------------------------------------
+ * "Night" theme (after arih.com): near-black, warm off-white type, Figtree.
+ * Turned on by visiting /night (remembered per browser); visiting / turns it off.
+ * ------------------------------------------------------------------ */
+
+html.theme-night {
+  --bg: #010101;
+  --surface: #151412;
+  --ink: #fbefe0;
+  --muted: rgba(251, 239, 224, 0.55);
+  --line: rgba(251, 239, 224, 0.18);
+  --display: 'Figtree Variable', 'Figtree', system-ui, sans-serif;
+  --text: 'Figtree Variable', 'Figtree', system-ui, sans-serif;
+  --mono: 'Source Code Pro', ui-monospace, Menlo, monospace;
+  --display-tracking: -0.03em;
+  --text-tracking: -0.01em;
+  color-scheme: dark;
+}
+html.theme-night body { font-weight: 500; }
+html.theme-night h1, html.theme-night h2, html.theme-night h3, html.theme-night h4 { font-weight: 500; }
+html.theme-night ::selection { background: #fbefe0; color: #010101; }

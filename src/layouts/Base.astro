@@ -19,6 +19,15 @@ const isActive = (href: string) =>
 <!doctype html>
 <html lang="en-CA">
   <head>
+    <script is:inline>
+      // Night theme: /night switches it on for this browser, / switches it off.
+      try {
+        var p = location.pathname;
+        if (p.indexOf('/night') === 0) localStorage.setItem('dm-theme', 'night');
+        else if (p === '/' || p === '') localStorage.removeItem('dm-theme');
+        if (localStorage.getItem('dm-theme') === 'night') document.documentElement.classList.add('theme-night');
+      } catch (e) {}
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
@@ -58,6 +67,10 @@ const isActive = (href: string) =>
     </header>
 
     <main id="main"><slot /></main>
+    <script is:inline>
+      if (document.documentElement.classList.contains('theme-night'))
+        document.querySelectorAll('a[href="/"]').forEach(function (a) { a.setAttribute('href', '/night'); });
+    </script>
 
     <script>
       const btn = document.querySelector<HTMLButtonElement>('.menu-btn')!;
