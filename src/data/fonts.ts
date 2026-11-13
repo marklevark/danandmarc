@@ -1,6 +1,7 @@
 /**
  * Headline font exploration for the night theme.
- * Try one across the whole site with /night?font=<id>; /night?font=none goes back to Figtree.
+ * Default on the dark theme: Familjen Grotesk. Try another across the whole site with /night?font=<id>;
+ * /night?font=none goes back to the default.
  */
 import '@fontsource-variable/fraunces/full.css';
 import '@fontsource/instrument-serif/400.css';

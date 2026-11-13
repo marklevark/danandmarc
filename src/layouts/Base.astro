@@ -30,7 +30,8 @@ const isActive = (href: string) =>
         // headline font exploration: ?font=<id> remembers a font, ?font=none clears it
         var f = new URLSearchParams(location.search).get('font');
         if (f === 'none') localStorage.removeItem('dm-font'); else if (f) localStorage.setItem('dm-font', f);
-        var cur = localStorage.getItem('dm-font');
+        // dark theme headline font: Familjen Grotesk unless another one is being previewed
+        var cur = localStorage.getItem('dm-font') || (document.documentElement.classList.contains('theme-night') ? 'familjen' : null);
         if (cur) document.documentElement.setAttribute('data-font', cur);
       } catch (e) {}
     </script>
