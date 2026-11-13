@@ -5,6 +5,7 @@ import Swap from '../components/Swap.astro';
 import { fonts } from '../data/fonts';
 import { site } from '../data/site';
 const groups = [
+  { id: 'swear', title: 'Round 3: in the spirit of Swear Display', sub: `${fonts.filter((f) => f.group === 'swear').length} options · sharp, high-contrast serifs; the swapping names use a heavy italic where the font has a true one` },
   { id: 'serifs', title: 'Round 2: design-forward serifs', sub: `${fonts.filter((f) => f.group === 'serifs').length} options` },
   { id: 'original', title: 'The original site’s font', sub: 'Degular and its free lookalikes. Familjen Grotesk is the current default.' },
   { id: 'round1', title: 'Round 1', sub: `${fonts.filter((f) => f.group === 'round1').length} options` },
@@ -15,7 +16,7 @@ const groups = [
   <script is:inline slot="head">document.documentElement.classList.add('theme-night');</script>
 
   <section class="page intro">
-    <p class="lab">Headline font exploration · {fonts.length} options · <a href="#serifs">Serifs</a> · <a href="#original">Original</a> · <a href="#round1">Round 1</a></p>
+    <p class="lab">Headline font exploration · {fonts.length} options · <a href="#swear">Swear-style</a> · <a href="#serifs">Serifs</a> · <a href="#original">Original</a> · <a href="#round1">Round 1</a></p>
     <p class="lead">Each option is the real homepage headline at full size. Body text stays Figtree. Click “Try it on the site” to see one across every page; “Back to the default” resets it to Familjen Grotesk.</p>
     <p><a class="btn" href="/night?font=none">Back to the default (Familjen Grotesk)</a></p>
   </section>

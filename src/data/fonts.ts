@@ -31,12 +31,28 @@ import '@fontsource-variable/cormorant-garamond/wght-italic.css';
 import '@fontsource-variable/brygada-1918/wght.css';
 import '@fontsource/libre-caslon-display/400.css';
 import '@fontsource/hedvig-letters-serif/400.css';
-import '@fontsource/castoro-titling/400.css';
 import '@fontsource/abril-fatface/400.css';
 import '@fontsource/rozha-one/400.css';
 import '@fontsource/corben/700.css';
 import '@fontsource/ultra/400.css';
 import '@fontsource/linden-hill/400-italic.css';
+import '@fontsource-variable/fraunces/full-italic.css';
+import '@fontsource/playfair-display/400.css';
+import '@fontsource/playfair-display/900-italic.css';
+import '@fontsource-variable/noto-serif-display';
+import '@fontsource-variable/noto-serif-display/wght-italic.css';
+import '@fontsource-variable/libre-bodoni';
+import '@fontsource-variable/libre-bodoni/wght-italic.css';
+import '@fontsource/prata/400.css';
+import '@fontsource/vidaloka/400.css';
+import '@fontsource/gilda-display/400.css';
+import '@fontsource/yeseva-one/400.css';
+import '@fontsource/chonburi/400.css';
+import '@fontsource-variable/hahmlet';
+import '@fontsource/rufina/400.css';
+import '@fontsource/rufina/700.css';
+import '@fontsource/kaisei-tokumin/400.css';
+import '@fontsource/kaisei-tokumin/800.css';
 
 
 export type HeadlineFont = {
@@ -52,9 +68,24 @@ export type HeadlineFont = {
   scale?: number; // size multiplier for very wide faces
   requiresKit?: boolean; // commercial font that needs the Adobe Fonts kit
   group?: string; // section on /fonts
+  /** Optional emphasis style for the swapping names (e.g. a heavy true italic, Swear-style). */
+  em?: { family?: string; weight?: number; style?: 'normal' | 'italic'; vars?: string };
 };
 
 export const fonts: HeadlineFont[] = [
+  // ---------- round 3: Swear Display-style (sharp, high-contrast; names in a heavy italic where a true italic exists)
+  { group: 'swear', id: 'fraunces-sharp', name: 'Fraunces Sharp + Black Italic', note: 'Fraunces with its soft/wonky options switched off: sharp wedge serifs and high contrast. The black italic is the closest free thing to Swear’s.', family: "'Fraunces Variable'", weight: 400, vars: "'opsz' 144, 'SOFT' 0, 'WONK' 0", tracking: '-0.03em', lh: 0.92, em: { weight: 900, style: 'italic', vars: "'opsz' 144, 'SOFT' 0, 'WONK' 1" } },
+  { group: 'swear', id: 'playfair-swear', name: 'Playfair Display + Black Italic', note: 'High-contrast regular with Playfair’s fat, curvy Black Italic for the names. Very close to Swear’s specimen look.', family: "'Playfair Display'", weight: 400, tracking: '-0.02em', lh: 0.95, em: { weight: 900, style: 'italic' } },
+  { group: 'swear', id: 'noto-display', name: 'Noto Serif Display + ExtraBold Italic', note: 'Crisp, high-contrast display serif with a true heavy italic. Clean and sharp.', family: "'Noto Serif Display Variable'", weight: 400, tracking: '-0.025em', lh: 0.95, em: { weight: 800, style: 'italic' } },
+  { group: 'swear', id: 'libre-bodoni', name: 'Libre Bodoni + Bold Italic', note: 'A sturdier Bodoni with real italics; more readable than fashion Didones.', family: "'Libre Bodoni Variable'", weight: 400, tracking: '-0.03em', lh: 0.95, em: { weight: 700, style: 'italic' } },
+  { group: 'swear', id: 'prata', name: 'Prata', note: 'Sharp, high-contrast Didone with wedge serifs and teardrop terminals. Close to Swear’s regular weight.', family: "'Prata'", weight: 400, tracking: '-0.03em', lh: 0.95 },
+  { group: 'swear', id: 'gilda', name: 'Gilda Display', note: 'Light, airy high-contrast serif. Swear’s elegance at the thinner end.', family: "'Gilda Display'", weight: 400, tracking: '-0.02em', lh: 0.95 },
+  { group: 'swear', id: 'vidaloka', name: 'Vidaloka', note: 'Bold, punchy Didone with sharp serifs. Like Swear’s bolder weights.', family: "'Vidaloka'", weight: 400, tracking: '-0.03em', lh: 0.95 },
+  { group: 'swear', id: 'kaisei', name: 'Kaisei Tokumin', note: 'Wide, high-contrast serif with tapered strokes. Calm and stylish.', family: "'Kaisei Tokumin'", weight: 400, tracking: '-0.03em', lh: 0.95, scale: 0.92, em: { weight: 800 } },
+  { group: 'swear', id: 'hahmlet', name: 'Hahmlet', note: 'Variable serif with sharp wedges and a crisp, contemporary feel.', family: "'Hahmlet Variable'", weight: 400, tracking: '-0.03em', lh: 0.95, em: { weight: 800 } },
+  { group: 'swear', id: 'rufina', name: 'Rufina', note: 'Calligraphic high-contrast serif with flared, sharp details.', family: "'Rufina'", weight: 400, tracking: '-0.025em', lh: 0.95, em: { weight: 700 } },
+  { group: 'swear', id: 'yeseva', name: 'Yeseva One', note: 'Heavy, curvy high-contrast serif with a feminine flourish. Like Swear Black.', family: "'Yeseva One'", weight: 400, tracking: '-0.02em', lh: 0.98 },
+  { group: 'swear', id: 'chonburi', name: 'Chonburi', note: 'Chunky, high-contrast display serif with sharp spurs. Loud and stylish.', family: "'Chonburi'", weight: 400, tracking: '-0.03em', lh: 0.98, scale: 0.9 },
   // ---------- round 2: design-forward serifs
   { group: 'serifs', id: 'kalnia', name: 'Kalnia', note: 'Wide, razor-contrast serif with odd, sliced details. Feels like a 2020s fashion identity.', family: "'Kalnia Variable'", weight: 600, vars: "'wdth' 125", tracking: '-0.03em', lh: 0.9, scale: 0.55 },
   { group: 'serifs', id: 'imbue', name: 'Imbue', note: 'Tall, condensed Didone. Very magazine-masthead; big impact in little width.', family: "'Imbue Variable'", weight: 600, vars: "'opsz' 100", tracking: '-0.01em', lh: 0.84, scale: 1.15 },
@@ -67,7 +98,6 @@ export const fonts: HeadlineFont[] = [
   { group: 'serifs', id: 'cormorant-italic', name: 'Cormorant Garamond Italic', note: 'The italic is almost calligraphic. Romantic, a little theatrical.', family: "'Cormorant Garamond Variable'", weight: 600, style: 'italic', tracking: '-0.02em', lh: 0.88, scale: 1.08 },
   { group: 'serifs', id: 'hedvig', name: 'Hedvig Letters Serif', note: 'Contemporary Scandinavian serif with quirky, chiselled shapes.', family: "'Hedvig Letters Serif'", weight: 400, tracking: '-0.03em', lh: 0.95 },
   { group: 'serifs', id: 'brygada', name: 'Brygada 1918', note: 'A revived 1918 Polish typeface. Sturdy, slightly eccentric, full of history.', family: "'Brygada 1918 Variable'", weight: 700, tracking: '-0.03em', lh: 0.92 },
-  { group: 'serifs', id: 'castoro-titling', name: 'Castoro Titling', note: 'All-caps titling serif, like carved inscriptions. Formal and monumental.', family: "'Castoro Titling'", weight: 400, tracking: '0em', lh: 0.95, scale: 0.72 },
   { group: 'serifs', id: 'abril', name: 'Abril Fatface', note: 'A Victorian fat-face poster serif. Big, black and loud.', family: "'Abril Fatface'", weight: 400, tracking: '-0.02em', lh: 0.92 },
   { group: 'serifs', id: 'rozha', name: 'Rozha One', note: 'Heavy, ultra-contrast display serif. Strong poster presence.', family: "'Rozha One'", weight: 400, tracking: '-0.02em', lh: 0.95 },
   { group: 'serifs', id: 'corben', name: 'Corben', note: 'Rounded, soft 70s serif. Cosy and fun, a bit Wes Anderson.', family: "'Corben'", weight: 700, tracking: '-0.04em', lh: 0.95, scale: 0.9 },
@@ -99,7 +129,15 @@ export const fontCss = fonts
     (f) =>
       `[data-font="${f.id}"],html.theme-night[data-font="${f.id}"]{--display:${f.family},'Figtree Variable',sans-serif;--hd-weight:${f.weight ?? 400};--hd-style:${f.style ?? 'normal'};--hd-vars:${f.vars ?? 'normal'};--display-tracking:${f.tracking ?? '-0.02em'};--hd-lh:${f.lh ?? 0.9};--hd-scale:${f.scale ?? 1}}`,
   )
-  .join('\n');
+  .join('\n') +
+  '\n' +
+  fonts
+    .filter((f) => f.em)
+    .map(
+      (f) =>
+        `[data-font="${f.id}"] .swap{font-family:${f.em!.family ?? f.family};font-weight:${f.em!.weight ?? f.weight ?? 400};font-style:${f.em!.style ?? 'normal'};font-variation-settings:${f.em!.vars ?? f.vars ?? 'normal'}}`,
+    )
+    .join('\n');
 
 // ------------------------------------------------------------------
 // Body fonts + serif/sans pairings (see /pairings).
@@ -149,5 +187,5 @@ export const pairings: Pairing[] = [
   { head: 'fraunces', body: 'space-grotesk', why: 'Soft, wonky serif with a quirky grotesk. Playful on both levels.' },
   { head: 'playfair-2', body: 'schibsted', why: 'Needle-sharp condensed serif over a sturdy newspaper grotesk. Confident and newsy.' },
   { head: 'young-serif', body: 'onest', why: 'Chunky 70s serif with a soft, round sans. Warm and full of personality.' },
-  { head: 'castoro-titling', body: 'hanken', why: 'Carved, all-caps titling over a quiet grotesk. Formal, like a gallery wall.' },
+  { head: 'fraunces-sharp', body: 'hanken', why: 'Swear-style sharp serif with a black-italic kick, over a quiet, even grotesk.' },
 ];
