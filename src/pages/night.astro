@@ -14,7 +14,7 @@ const work = await getWork();
 <Base>
   <meta name="robots" content="noindex" slot="head" />
   <section class="hero page">
-    <h1>We’re <Swap a="Dan and Marc" b="Marc and Dan" />.<br />But you can call us <Swap a="Marc and Dan" b="Dan and Marc" />.</h1>
+    <h1>We’re <span class="nw"><Swap a="Dan and Marc" b="Marc and Dan" />.</span><br />But you can call us <span class="nw"><Swap a="Marc and Dan" b="Dan and Marc" />.</span></h1>
     <p>We’re an award-winning freelance creative team based out of Toronto.</p>
   </section>
 
@@ -27,8 +27,9 @@ const work = await getWork();
 </Base>
 
 <style>
+  .nw { white-space: nowrap; }
   .hero { padding-top: clamp(64px, 23.5vw, 340px); padding-bottom: 14px; }
-  h1 { font-size: var(--fs-hero); line-height: 0.88; max-width: 9em; }
+  h1 { font-size: calc(var(--fs-hero) * var(--hd-scale, 1)); line-height: var(--hd-lh, 0.88); max-width: 9em; }
   .hero p { margin-top: 0.9rem; font-size: var(--fs-lead); }
 
   .grid {

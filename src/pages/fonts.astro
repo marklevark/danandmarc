@@ -1,0 +1,56 @@
+---
+/** Headline font exploration on the dark theme. Not linked from the site. */
+import Base from '../layouts/Base.astro';
+import Swap from '../components/Swap.astro';
+import { fonts } from '../data/fonts';
+---
+<Base title="Headline fonts">
+  <meta name="robots" content="noindex" slot="head" />
+  <script is:inline slot="head">document.documentElement.classList.add('theme-night');</script>
+
+  <section class="page intro">
+    <p class="lab">Headline font exploration · {fonts.length} options</p>
+    <p class="lead">Each option is the real homepage headline at full size. Body text stays Figtree. Click “Try it on the site” to see one across every page; “Back to Figtree” resets it.</p>
+    <p><a class="btn" href="/night?font=none">Back to Figtree</a></p>
+  </section>
+
+  {fonts.map((f, i) => (
+    <section class="opt page" data-font={f.id} id={f.id}>
+      <div class="meta">
+        <span class="lab">{String(i + 1).padStart(2, '0')} — {f.name}</span>
+        <a class="btn" href={`/night?font=${f.id}`}>Try it on the site →</a>
+      </div>
+      <h2 class="hd">We’re <span class="nw"><Swap a="Dan and Marc" b="Marc and Dan" />.</span><br />But you can call us <span class="nw"><Swap a="Marc and Dan" b="Dan and Marc" />.</span></h2>
+      <p class="sub">We’re an award-winning freelance creative team based out of Toronto.</p>
+      <div class="sample">
+        <span class="hd t">The #Unignorable Tower</span>
+        <span class="hd t">Who are you reading?</span>
+        <span class="hd t">Smashed</span>
+      </div>
+      <p class="note">{f.note}</p>
+    </section>
+  ))}
+</Base>
+
+<style>
+  .nw { white-space: nowrap; }
+  .intro { padding-top: 120px; padding-bottom: 40px; max-width: 60rem; }
+  .lab { color: var(--muted); font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .lead { font-size: var(--fs-lead); margin: 1rem 0 1.4rem; }
+  .btn {
+    display: inline-block; padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px;
+    font-size: 13px; white-space: nowrap;
+  }
+  .btn:hover { opacity: 1; background: var(--ink); color: var(--bg); }
+
+  .opt { padding-top: 56px; padding-bottom: 72px; border-top: 1px solid var(--line); }
+  .meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 40px; }
+  .hd {
+    font-family: var(--display); letter-spacing: var(--display-tracking);
+  }
+  h2.hd { font-size: calc(clamp(30px, 6.4vw, 104px) * var(--hd-scale, 1)); line-height: var(--hd-lh, 0.9); max-width: 11em; }
+  .sub { margin-top: 1rem; font-size: var(--fs-lead); }
+  .sample { display: flex; flex-wrap: wrap; gap: 8px 36px; margin-top: 40px; color: var(--muted); }
+  .sample .t { font-size: clamp(22px, 2vw, 30px); line-height: 1; }
+  .note { margin-top: 28px; color: var(--muted); max-width: 36rem; }
+</style>

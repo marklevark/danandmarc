@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Wordmark from '../components/Wordmark.astro';
 import { site } from '../data/site';
+import { fontCss } from '../data/fonts';
 
 interface Props {
   title?: string;
@@ -26,9 +27,15 @@ const isActive = (href: string) =>
         if (p.indexOf('/night') === 0) localStorage.setItem('dm-theme', 'night');
         else if (p === '/' || p === '') localStorage.removeItem('dm-theme');
         if (localStorage.getItem('dm-theme') === 'night') document.documentElement.classList.add('theme-night');
+        // headline font exploration: ?font=<id> remembers a font, ?font=none clears it
+        var f = new URLSearchParams(location.search).get('font');
+        if (f === 'none') localStorage.removeItem('dm-font'); else if (f) localStorage.setItem('dm-font', f);
+        var cur = localStorage.getItem('dm-font');
+        if (cur) document.documentElement.setAttribute('data-font', cur);
       } catch (e) {}
     </script>
     <meta charset="utf-8" />
+    <style is:inline set:html={fontCss}></style>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
