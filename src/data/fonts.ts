@@ -17,6 +17,8 @@ import '@fontsource/dm-serif-display/400.css';
 import '@fontsource/dm-serif-display/400-italic.css';
 import '@fontsource-variable/big-shoulders-display';
 import '@fontsource-variable/playfair-display/wght-italic.css';
+import '@fontsource-variable/familjen-grotesk';
+import '@fontsource-variable/outfit';
 
 export type HeadlineFont = {
   id: string;
@@ -29,9 +31,13 @@ export type HeadlineFont = {
   tracking?: string;
   lh?: number; // headline line-height
   scale?: number; // size multiplier for very wide faces
+  requiresKit?: boolean; // commercial font that needs the Adobe Fonts kit
 };
 
 export const fonts: HeadlineFont[] = [
+  { id: 'degular', name: 'Degular Display (the original site’s font)', note: 'The font danandmarc.ca used on Squarespace. Commercial (Adobe Fonts): it only shows here once an Adobe Fonts kit ID is set in src/data/site.ts. Until then you’ll see Figtree in its place.', family: "'degular-display'", weight: 700, tracking: '-0.01em', lh: 0.82, requiresKit: true },
+  { id: 'familjen', name: 'Familjen Grotesk (closest free match to Degular)', note: 'Free, and nearly identical to Degular Display Bold in weight, shapes and width. The original site’s look, without the licence.', family: "'Familjen Grotesk Variable'", weight: 700, tracking: '-0.045em', lh: 0.82 },
+  { id: 'outfit', name: 'Outfit (rounder Degular cousin)', note: 'Free geometric sans in the same family of feeling as Degular, a little rounder and friendlier.', family: "'Outfit Variable'", weight: 700, tracking: '-0.05em', lh: 0.84 },
   { id: 'fraunces', name: 'Fraunces (soft, wonky)', note: 'Old-style serif with soft, slightly wonky letterforms. Warm and a bit playful.', family: "'Fraunces Variable'", weight: 400, vars: "'SOFT' 100, 'WONK' 1, 'opsz' 144", tracking: '-0.035em', lh: 0.9 },
   { id: 'instrument', name: 'Instrument Serif', note: 'Condensed, editorial serif. Feels like a magazine cover.', family: "'Instrument Serif'", weight: 400, tracking: '-0.02em', lh: 0.88 },
   { id: 'instrument-italic', name: 'Instrument Serif Italic', note: 'The italic cut. Loose, handwritten-ish energy.', family: "'Instrument Serif'", weight: 400, style: 'italic', tracking: '-0.02em', lh: 0.9 },
