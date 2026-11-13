@@ -53,6 +53,10 @@ import '@fontsource/rufina/400.css';
 import '@fontsource/rufina/700.css';
 import '@fontsource/kaisei-tokumin/400.css';
 import '@fontsource/kaisei-tokumin/800.css';
+import '@fontsource-variable/grenze-gotisch';
+import '@fontsource/pirata-one/400.css';
+import '@fontsource/im-fell-english/400.css';
+import '@fontsource/im-fell-english/400-italic.css';
 
 
 export type HeadlineFont = {
@@ -73,6 +77,12 @@ export type HeadlineFont = {
 };
 
 export const fonts: HeadlineFont[] = [
+  // ---------- blackletter / antique (after spencerandjordan.com: Gothicus Roman + BlackBeard)
+  { group: 'gothic', id: 'grenze-gotisch', name: 'Grenze Gotisch', note: 'Readable blackletter: gothic capitals and sharp, broken curves. The closest free match to Gothicus Roman (the Spencer & Jordan logo font).', family: "'Grenze Gotisch Variable'", weight: 600, tracking: '-0.01em', lh: 0.9 },
+  { group: 'gothic', id: 'grenze-gotisch-light', name: 'Grenze Gotisch Light', note: 'The same blackletter at a lighter weight. More elegant, less heavy-metal.', family: "'Grenze Gotisch Variable'", weight: 350, tracking: '-0.01em', lh: 0.9 },
+  { group: 'gothic', id: 'pirata', name: 'Pirata One', note: 'Blackletter with a rougher, cut-paper feel. Bolder and more graphic.', family: "'Pirata One'", weight: 400, tracking: '0em', lh: 0.92, scale: 1.05 },
+  { group: 'gothic', id: 'im-fell', name: 'IM Fell English', note: 'A digitized 1600s book typeface with ink-spread roughness, like BlackBeard (Spencer & Jordan’s body/awards font).', family: "'IM Fell English'", weight: 400, tracking: '-0.02em', lh: 0.95 },
+  { group: 'gothic', id: 'im-fell-italic', name: 'IM Fell English Italic', note: 'The real italic, closest to the slanted awards list on spencerandjordan.com. Antique and charming.', family: "'IM Fell English'", weight: 400, style: 'italic', tracking: '-0.02em', lh: 0.95 },
   // ---------- round 3: Swear Display-style (sharp, high-contrast; names in a heavy italic where a true italic exists)
   { group: 'swear', id: 'fraunces-sharp', name: 'Fraunces Sharp + Black Italic', note: 'Fraunces with its soft/wonky options switched off: sharp wedge serifs and high contrast. The black italic is the closest free thing to Swear’s.', family: "'Fraunces Variable'", weight: 400, vars: "'opsz' 144, 'SOFT' 0, 'WONK' 0", tracking: '-0.03em', lh: 0.92, em: { weight: 900, style: 'italic', vars: "'opsz' 144, 'SOFT' 0, 'WONK' 1" } },
   { group: 'swear', id: 'playfair-swear', name: 'Playfair Display + Black Italic', note: 'High-contrast regular with Playfair’s fat, curvy Black Italic for the names. Very close to Swear’s specimen look.', family: "'Playfair Display'", weight: 400, tracking: '-0.02em', lh: 0.95, em: { weight: 900, style: 'italic' } },

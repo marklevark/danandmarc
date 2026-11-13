@@ -4,27 +4,18 @@ import Base from '../layouts/Base.astro';
 import Swap from '../components/Swap.astro';
 import { fonts } from '../data/fonts';
 import { site } from '../data/site';
-const groups = [
-  { id: 'swear', title: 'Round 3: in the spirit of Swear Display', sub: `${fonts.filter((f) => f.group === 'swear').length} options · sharp, high-contrast serifs; the swapping names use a heavy italic where the font has a true one` },
-  { id: 'serifs', title: 'Round 2: design-forward serifs', sub: `${fonts.filter((f) => f.group === 'serifs').length} options` },
-  { id: 'original', title: 'The original site’s font', sub: 'Degular and its free lookalikes. Familjen Grotesk is the current default.' },
-  { id: 'round1', title: 'Round 1', sub: `${fonts.filter((f) => f.group === 'round1').length} options` },
-];
 ---
 <Base title="Headline fonts">
   <meta name="robots" content="noindex" slot="head" />
   <script is:inline slot="head">document.documentElement.classList.add('theme-night');</script>
 
   <section class="page intro">
-    <p class="lab">Headline font exploration · {fonts.length} options · <a href="#swear">Swear-style</a> · <a href="#serifs">Serifs</a> · <a href="#original">Original</a> · <a href="#round1">Round 1</a></p>
+    <p class="lab">Headline font exploration · {fonts.length} options</p>
     <p class="lead">Each option is the real homepage headline at full size. Body text stays Figtree. Click “Try it on the site” to see one across every page; “Back to the default” resets it to Familjen Grotesk.</p>
     <p><a class="btn" href="/night?font=none">Back to the default (Familjen Grotesk)</a></p>
   </section>
 
-  {groups.map((g) => (
-    <>
-    <section class="group page" id={g.id}><h2 class="gh">{g.title}</h2><p class="lab">{g.sub}</p></section>
-    {fonts.filter((f) => f.group === g.id).map((f, i) => (
+  {fonts.map((f, i) => (
     <section class="opt page" data-font={f.id} id={f.id}>
       <div class="meta">
         <span class="lab">{String(i + 1).padStart(2, '0')} — {f.name}</span>
@@ -40,8 +31,6 @@ const groups = [
       <p class="note">{f.note}</p>
       {f.requiresKit && !site.adobeFontsKit && <p class="note warn">Not active yet: no Adobe Fonts kit is set, so this preview is showing the fallback.</p>}
     </section>
-    ))}
-    </>
   ))}
 </Base>
 
@@ -56,9 +45,6 @@ const groups = [
   }
   .btn:hover { opacity: 1; background: var(--ink); color: var(--bg); }
 
-  .group { padding-top: 90px; padding-bottom: 20px; border-top: 1px solid var(--ink); }
-  .gh { font-size: var(--fs-title); line-height: 1; margin-bottom: 10px; }
-  .lab a { text-decoration: underline; text-underline-offset: 3px; }
   .opt { padding-top: 56px; padding-bottom: 72px; border-top: 1px solid var(--line); }
   .meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 40px; }
   .hd {
