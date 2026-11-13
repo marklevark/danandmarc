@@ -1,0 +1,64 @@
+---
+/** Serif headline + sans body pairings on the dark theme. Not linked from the site. */
+import Base from '../layouts/Base.astro';
+import Swap from '../components/Swap.astro';
+import { fonts, bodyFonts, pairings } from '../data/fonts';
+const H = new Map(fonts.map((f) => [f.id, f]));
+const B = new Map(bodyFonts.map((b) => [b.id, b]));
+---
+<Base title="Font pairings">
+  <meta name="robots" content="noindex" slot="head" />
+  <script is:inline slot="head">document.documentElement.classList.add('theme-night');</script>
+
+  <section class="page intro">
+    <p class="lab">Serif headline + sans body · {pairings.length} pairings</p>
+    <p class="lead">Each pairing shows the headline, the intro line, body copy and small labels the way they’d sit on the site. “Try it on the site” switches both fonts on every page; “Back to the default” returns to Familjen Grotesk + Figtree.</p>
+    <p><a class="btn" href="/night?font=none&body=none">Back to the default</a> <a class="btn" href="/fonts">All headline fonts →</a></p>
+  </section>
+
+  {pairings.map((p, i) => {
+    const h = H.get(p.head)!;
+    const b = B.get(p.body)!;
+    return (
+      <section class="pair page" data-font={h.id} data-body={b.id} id={`${h.id}--${b.id}`}>
+        <div class="meta">
+          <span class="lab">{String(i + 1).padStart(2, '0')} — {h.name.replace(/ \(.*\)$/, '')} + {b.name}</span>
+          <a class="btn" href={`/night?font=${h.id}&body=${b.id}`}>Try it on the site →</a>
+        </div>
+        <h2 class="hd">We’re <span class="nw"><Swap a="Dan and Marc" b="Marc and Dan" />.</span><br />But you can call us <span class="nw"><Swap a="Marc and Dan" b="Dan and Marc" />.</span></h2>
+        <p class="bd lead2">We’re an award-winning freelance creative team based out of Toronto.</p>
+        <div class="cols">
+          <div>
+            <h3 class="hd t">The #Unignorable Tower</h3>
+            <dl class="bd creds"><div><dt>Agency:</dt><dd>Taxi</dd></div><div><dt>Client:</dt><dd>United Way</dd></div></dl>
+          </div>
+          <p class="bd copy">Behind all of Toronto’s recent successes (Drake, Raptors Championship, etc...) you’ll find the poverty capital of Canada, currently in the midst of a housing crisis. So we visualized the problem by showing how big a building would have to be to house everyone in the city that desperately needs a home.</p>
+        </div>
+        <p class="bd why">{p.why}</p>
+      </section>
+    );
+  })}
+</Base>
+
+<style>
+  .intro { padding-top: 120px; padding-bottom: 40px; max-width: 62rem; }
+  .lab { color: var(--muted); font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .lead { font-size: var(--fs-lead); margin: 1rem 0 1.4rem; }
+  .btn { display: inline-block; margin: 0 6px 6px 0; padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px; font-size: 13px; white-space: nowrap; }
+  .btn:hover { opacity: 1; background: var(--ink); color: var(--bg); }
+  .nw { white-space: nowrap; }
+
+  .pair { padding-top: 56px; padding-bottom: 80px; border-top: 1px solid var(--line); }
+  .meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 40px; }
+  .hd { font-family: var(--display); letter-spacing: var(--display-tracking); }
+  h2.hd { font-size: calc(clamp(30px, 6vw, 96px) * var(--hd-scale, 1)); line-height: var(--hd-lh, 0.9); max-width: 11em; }
+  .lead2 { margin-top: 1.1rem; font-size: clamp(16px, 1.3vw, 19px); }
+  .cols { display: grid; gap: 24px 3rem; grid-template-columns: 1fr; margin-top: 56px; }
+  h3.t { font-size: calc(clamp(26px, 2.6vw, 40px) * var(--hd-scale, 1)); line-height: var(--hd-lh, 0.9); }
+  .creds { margin: 1.2rem 0 0; display: grid; gap: 0.7rem; font-size: 15px; }
+  .creds dt { color: var(--muted); }
+  .creds dd { margin: 0; }
+  .copy { font-size: 15px; line-height: 1.45; max-width: 37rem; }
+  .why { margin-top: 36px; color: var(--muted); max-width: 40rem; font-size: 14px; }
+  @media (min-width: 768px) { .cols { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); } }
+</style>

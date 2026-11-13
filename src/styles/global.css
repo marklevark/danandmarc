@@ -101,6 +101,9 @@ html.theme-night {
 }
 html.theme-night body { font-weight: 500; }
 html.theme-night h1, html.theme-night h2, html.theme-night h3, html.theme-night h4 { font-weight: 500; }
+/* body font exploration (see src/data/fonts.ts) */
+html[data-body] body, [data-body] .bd { font-weight: var(--body-weight); }
+[data-body] .bd { font-family: var(--text); letter-spacing: var(--text-tracking); }
 /* headline font exploration (see src/data/fonts.ts) */
 [data-font] h1, [data-font] h2, [data-font] h3, [data-font] h4, [data-font] .wordmark, [data-font] .hd {
   font-weight: var(--hd-weight) !important; font-style: var(--hd-style); font-variation-settings: var(--hd-vars);

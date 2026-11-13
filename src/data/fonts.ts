@@ -100,3 +100,54 @@ export const fontCss = fonts
       `[data-font="${f.id}"],html.theme-night[data-font="${f.id}"]{--display:${f.family},'Figtree Variable',sans-serif;--hd-weight:${f.weight ?? 400};--hd-style:${f.style ?? 'normal'};--hd-vars:${f.vars ?? 'normal'};--display-tracking:${f.tracking ?? '-0.02em'};--hd-lh:${f.lh ?? 0.9};--hd-scale:${f.scale ?? 1}}`,
   )
   .join('\n');
+
+// ------------------------------------------------------------------
+// Body fonts + serif/sans pairings (see /pairings).
+// Try a body font across the site with ?body=<id>; ?body=none goes back to Figtree.
+// ------------------------------------------------------------------
+import '@fontsource-variable/inter';
+import '@fontsource-variable/geist';
+import '@fontsource-variable/instrument-sans';
+import '@fontsource-variable/hanken-grotesk';
+import '@fontsource-variable/dm-sans';
+import '@fontsource-variable/manrope';
+import '@fontsource-variable/space-grotesk';
+import '@fontsource-variable/ibm-plex-sans';
+import '@fontsource-variable/schibsted-grotesk';
+import '@fontsource-variable/onest';
+import '@fontsource/hedvig-letters-sans/400.css';
+
+export type BodyFont = { id: string; name: string; family: string; weight?: number; tracking?: string };
+export const bodyFonts: BodyFont[] = [
+  { id: 'figtree', name: 'Figtree', family: "'Figtree Variable'", weight: 500, tracking: '-0.01em' },
+  { id: 'inter', name: 'Inter', family: "'Inter Variable'", weight: 400, tracking: '-0.011em' },
+  { id: 'geist', name: 'Geist', family: "'Geist Variable'", weight: 400, tracking: '-0.01em' },
+  { id: 'instrument-sans', name: 'Instrument Sans', family: "'Instrument Sans Variable'", weight: 400, tracking: '0em' },
+  { id: 'hanken', name: 'Hanken Grotesk', family: "'Hanken Grotesk Variable'", weight: 400, tracking: '0em' },
+  { id: 'dm-sans', name: 'DM Sans', family: "'DM Sans Variable'", weight: 400, tracking: '-0.01em' },
+  { id: 'manrope', name: 'Manrope', family: "'Manrope Variable'", weight: 500, tracking: '-0.01em' },
+  { id: 'space-grotesk', name: 'Space Grotesk', family: "'Space Grotesk Variable'", weight: 400, tracking: '-0.01em' },
+  { id: 'plex', name: 'IBM Plex Sans', family: "'IBM Plex Sans Variable'", weight: 400, tracking: '0em' },
+  { id: 'schibsted', name: 'Schibsted Grotesk', family: "'Schibsted Grotesk Variable'", weight: 400, tracking: '-0.005em' },
+  { id: 'onest', name: 'Onest', family: "'Onest Variable'", weight: 400, tracking: '-0.01em' },
+  { id: 'hedvig-sans', name: 'Hedvig Letters Sans', family: "'Hedvig Letters Sans'", weight: 400, tracking: '0em' },
+];
+export const bodyCss = bodyFonts
+  .map((b) => `[data-body="${b.id}"],html.theme-night[data-body="${b.id}"]{--text:${b.family},'Figtree Variable',sans-serif;--body-weight:${b.weight ?? 400};--text-tracking:${b.tracking ?? '0em'}}`)
+  .join('\n');
+
+export type Pairing = { head: string; body: string; why: string };
+export const pairings: Pairing[] = [
+  { head: 'hedvig', body: 'hedvig-sans', why: 'Designed as a family: the sans shares the serif’s chiselled details, so it feels fully custom.' },
+  { head: 'kalnia', body: 'instrument-sans', why: 'Kalnia’s drama, balanced by a calm, slightly narrow sans. Very contemporary studio.' },
+  { head: 'imbue', body: 'inter', why: 'Tall fashion masthead + the most neutral, readable sans there is. Let the headline do the talking.' },
+  { head: 'instrument', body: 'instrument-sans', why: 'Another matched pair. Editorial serif, clean sans with the same DNA. Magazine-like.' },
+  { head: 'bodoni-moda', body: 'dm-sans', why: 'Classic fashion contrast: hairline Didone over a geometric sans.' },
+  { head: 'newsreader-italic', body: 'geist', why: 'Warm literary italic with a crisp, modern techy sans. Thoughtful and current.' },
+  { head: 'cormorant', body: 'manrope', why: 'Delicate Garamond with a friendly, slightly rounded sans. Elegant but approachable.' },
+  { head: 'libre-caslon', body: 'plex', why: 'Bookish Caslon over IBM Plex’s engineered details. Smart and a little nerdy.' },
+  { head: 'fraunces', body: 'space-grotesk', why: 'Soft, wonky serif with a quirky grotesk. Playful on both levels.' },
+  { head: 'playfair-2', body: 'schibsted', why: 'Needle-sharp condensed serif over a sturdy newspaper grotesk. Confident and newsy.' },
+  { head: 'young-serif', body: 'onest', why: 'Chunky 70s serif with a soft, round sans. Warm and full of personality.' },
+  { head: 'castoro-titling', body: 'hanken', why: 'Carved, all-caps titling over a quiet grotesk. Formal, like a gallery wall.' },
+];
