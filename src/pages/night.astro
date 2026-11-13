@@ -1,136 +1,39 @@
 ---
 /**
- * Alternate homepage in the "night" theme (after arih.com): near-black canvas, warm off-white
- * Figtree, small Source Code Pro lines. Visiting this page turns the night theme on for the
- * rest of the site (project, contact and awards pages) in this browser; visiting / turns it off.
+ * The regular homepage in the "night" theme: same layout as /, only the colours and fonts change
+ * (near-black #010101, off-white #fbefe0, Figtree). Visiting this page turns the night theme on for
+ * the rest of the site in this browser; visiting / turns it off. Theme tokens live in global.css.
  */
-import { getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import Wordmark from '../components/Wordmark.astro';
+import WorkCard from '../components/WorkCard.astro';
+import Swap from '../components/Swap.astro';
 import { getWork } from '../lib/work';
-import { loopUrl } from '../lib/media';
 
 const work = await getWork();
-const heroWork = work.find((w) => w.id === 'john-st-minecraft-edition')!;
-const heroPoster = await getImage({ src: heroWork.data.cover, width: 1600, format: 'webp' });
-const heroLoop = loopUrl(heroWork.data.coverLoop);
-
-const items = await Promise.all(
-  work.map(async (w) => {
-    const d = w.data;
-    const img = await getImage({ src: d.keyImage ?? d.cover, width: 1000, format: 'webp', quality: 80 });
-    return {
-      slug: w.id,
-      title: d.title,
-      sub: [d.client, d.agency && d.agency !== d.client ? d.agency : undefined].filter(Boolean).join(' / ') || d.agency || '',
-      src: img.src,
-      loop: !d.keyImage && d.coverLoop ? loopUrl(d.coverLoop) : undefined,
-      pos: d.keyImage ? '50% 50%' : d.coverPosition,
-    };
-  }),
-);
-const roman = ['I.', 'II.', 'III.'];
 ---
-<Base title="Dan and Marc">
+<Base>
   <meta name="robots" content="noindex" slot="head" />
-  <meta name="theme-color" content="#010101" slot="head" />
-
-  <section class="nt-hero">
-    <video class="nt-hero__media" src={heroLoop} poster={heroPoster.src} autoplay muted loop playsinline aria-hidden="true"></video>
-    <div class="nt-hero__lines">
-      <p><span>{roman[0]}</span>We’re Dan and Marc. But you can call us Marc and Dan.</p>
-      <p class="indent">An award-winning freelance creative team, based out of Toronto.</p>
-      <p><span>{roman[1]}</span>Combined height: 12'5". Dan’s the one that’s tall.</p>
-    </div>
-    <h1 class="nt-hero__mark"><Wordmark size="clamp(64px, 12.5vw, 200px)" /></h1>
+  <section class="hero page">
+    <h1>We’re <Swap a="Dan and Marc" b="Marc and Dan" />.<br />But you can call us <Swap a="Marc and Dan" b="Dan and Marc" />.</h1>
+    <p>We’re an award-winning freelance creative team based out of Toronto.</p>
   </section>
 
-  <section class="nt-statement page">
-    <p>
-      A freelance creative team with a combined 25+ years of industry experience. We’ve spent our careers at
-      top-tier agencies, making strategic, results-driven work across every discipline, recognized at every
-      major international and national award show.
-    </p>
-  </section>
-
-  <section class="nt-work page" aria-labelledby="nt-work-h">
-    <h2 id="nt-work-h" class="nt-label"><span>{roman[2]}</span>Selected work</h2>
-    <ul class="nt-grid">
-      {items.map((it, i) => (
-        <li>
-          <a class="nt-card" href={`/work/${it.slug}`}>
-            <span class="nt-card__img">
-              {it.loop ? (
-                <video src={it.loop} poster={it.src} autoplay muted loop playsinline preload="metadata" aria-hidden="true" style={`object-position:${it.pos}`}></video>
-              ) : (
-                <img src={it.src} alt="" loading={i < 3 ? 'eager' : 'lazy'} decoding="async" style={`object-position:${it.pos}`} />
-              )}
-            </span>
-            <span class="nt-card__no">{String(i + 1).padStart(2, '0')}</span>
-            <span class="nt-card__title">{it.title}</span>
-            <span class="nt-card__sub">{it.sub}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
-  </section>
+  <h2 class="sr-only">Work</h2>
+  <ul class="grid">
+    {work.map((entry, i) => (
+      <li><WorkCard entry={entry} eager={i < 3} /></li>
+    ))}
+  </ul>
 </Base>
 
-<script>
-  // loops hold still for reduced motion
-  const mq = matchMedia('(prefers-reduced-motion: reduce)');
-  const vids = [...document.querySelectorAll<HTMLVideoElement>('.nt-hero video, .nt-card video')];
-  const sync = () => vids.forEach((v) => (mq.matches ? v.pause() : v.play().catch(() => {})));
-  mq.addEventListener('change', sync);
-  sync();
-</script>
-
 <style>
-  :global(main) { padding-bottom: 80px; }
-  .nt-label, .nt-hero__lines, .nt-card__no, .nt-card__sub {
-    font-family: var(--mono, 'Source Code Pro', monospace); font-weight: 500; font-size: 15px; line-height: 1.5; letter-spacing: -0.02em;
+  .hero { padding-top: clamp(64px, 23.5vw, 340px); padding-bottom: 14px; }
+  h1 { font-size: var(--fs-hero); line-height: 0.88; max-width: 9em; }
+  .hero p { margin-top: 0.9rem; font-size: var(--fs-lead); }
+
+  .grid {
+    list-style: none; margin: 0; padding: 0 var(--pad);
+    display: grid; gap: var(--gap); grid-template-columns: 1fr;
   }
-
-  /* hero: dark full-bleed loop with mono lines and a huge wordmark at the bottom */
-  .nt-hero { position: relative; height: 100vh; height: 100svh; min-height: 520px; overflow: hidden; color: var(--ink); }
-  .nt-hero__media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
-  .nt-hero__lines { position: absolute; top: 96px; left: 30px; right: 30px; display: grid; gap: 140px; }
-  .nt-hero__lines p { margin: 0; display: grid; grid-template-columns: minmax(0, 16vw) minmax(0, 1fr); }
-  .nt-hero__lines p.indent { padding-left: 33vw; display: block; }
-  .nt-hero__lines span { color: var(--ink); }
-  .nt-hero__mark { position: absolute; left: 26px; bottom: 10px; margin: 0; line-height: 0.8; }
-  .nt-hero__mark :global(.wordmark) { font-weight: 500 !important; letter-spacing: -0.05em; }
-
-  /* big justified statement, like the reference's mission paragraph */
-  .nt-statement { padding-block: clamp(90px, 14vw, 200px); padding-inline: clamp(16px, 2.5vw, 36px); }
-  .nt-statement p {
-    margin: 0; font-size: clamp(30px, 4.6vw, 66px); line-height: 1.12; letter-spacing: -0.01em;
-    text-align: justify; text-align-last: justify; hyphens: none; text-wrap: wrap;
-  }
-
-  .nt-label { display: flex; gap: 0; margin: 0 0 28px; padding-inline: 20px; }
-  .nt-label span { width: 16vw; }
-
-  .nt-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 54px 10px; grid-template-columns: 1fr; }
-  .nt-card { display: grid; grid-template-columns: auto 1fr; column-gap: 12px; color: var(--ink); }
-  .nt-card:hover { opacity: 1; }
-  .nt-card__img { grid-column: 1 / -1; aspect-ratio: 4 / 3; overflow: hidden; background: var(--surface); margin-bottom: 14px; }
-  .nt-card__img img, .nt-card__img video { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.3s; }
-  .nt-card:hover .nt-card__img img, .nt-card:hover .nt-card__img video { transform: scale(1.03); }
-  .nt-card__no { color: var(--muted); padding-top: 3px; }
-  .nt-card__title { font-size: clamp(22px, 1.9vw, 30px); font-weight: 600; line-height: 1.05; letter-spacing: -0.02em; text-transform: uppercase; }
-  .nt-card__sub { grid-column: 2; color: var(--muted); font-size: 14px; margin-top: 6px; }
-
-  @media (min-width: 760px) { .nt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (min-width: 1100px) { .nt-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-  @media (max-width: 760px) {
-    .nt-hero__lines { top: 84px; left: 16px; right: 16px; gap: 60px; font-size: 13px; }
-    .nt-hero__lines p.indent { padding-left: 16vw; }
-    .nt-hero__mark { left: 12px; }
-    .nt-statement p { text-align: left; text-align-last: auto; }
-    .nt-label { padding-inline: 0; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .nt-card__img img, .nt-card__img video { transition: none; }
-  }
+  @media (min-width: 768px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 </style>
