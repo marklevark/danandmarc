@@ -1,7 +1,7 @@
 /**
  * Headline font exploration for the night theme.
- * Default on the dark theme: Outfit. Try another across the whole site with /night?font=<id>;
- * /night?font=none goes back to the default.
+ * Default on the dark theme: Outfit. Try another across the whole site with /?font=<id>;
+ * /?font=none goes back to the default.
  */
 import '@fontsource-variable/fraunces/full.css';
 import '@fontsource/instrument-serif/400.css';

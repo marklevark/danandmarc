@@ -83,7 +83,7 @@ main { padding-bottom: 60px; }
 
 /* ------------------------------------------------------------------
  * "Night" theme (after arih.com): near-black, warm off-white type, Figtree.
- * Turned on by visiting /night (remembered per browser); visiting / turns it off.
+ * The site default. Visiting /light switches to the light theme (remembered per browser); visiting / switches back.
  * ------------------------------------------------------------------ */
 
 html.theme-night {

@@ -14,7 +14,7 @@ const B = new Map(bodyFonts.map((b) => [b.id, b]));
   <section class="page intro">
     <p class="lab">Serif headline + sans body · {pairings.length} pairings</p>
     <p class="lead">Each pairing shows the headline, the intro line, body copy and small labels the way they’d sit on the site. “Try it on the site” switches both fonts on every page; “Back to the default” returns to Familjen Grotesk + Figtree.</p>
-    <p><a class="btn" href="/night?font=none&body=none">Back to the default</a> <a class="btn" href="/fonts">All headline fonts →</a></p>
+    <p><a class="btn" href="/?font=none&body=none">Back to the default</a> <a class="btn" href="/fonts">All headline fonts →</a></p>
   </section>
 
   {pairings.map((p, i) => {
@@ -24,7 +24,7 @@ const B = new Map(bodyFonts.map((b) => [b.id, b]));
       <section class="pair page" data-font={h.id} data-body={b.id} id={`${h.id}--${b.id}`}>
         <div class="meta">
           <span class="lab">{String(i + 1).padStart(2, '0')} — {h.name.replace(/ \(.*\)$/, '')} + {b.name}</span>
-          <a class="btn" href={`/night?font=${h.id}&body=${b.id}`}>Try it on the site →</a>
+          <a class="btn" href={`/?font=${h.id}&body=${b.id}`}>Try it on the site →</a>
         </div>
         <h2 class="hd">We’re <span class="nw"><Swap a="Dan & Marc" b="Marc & Dan" />.</span><br />But you can call us <span class="nw"><Swap a="Marc & Dan" b="Dan & Marc" />.</span></h2>
         <p class="bd lead2">We’re an award-winning freelance creative team based out of Toronto.</p>

@@ -6,6 +6,8 @@ export default defineConfig({
   // nginx serves /work/foo from /work/foo/index.html, so no trailing slash in URLs
   trailingSlash: 'never',
   build: { format: 'directory' },
+  // the dark theme used to live at /night; it is the homepage now
+  redirects: { '/night': '/' },
   image: {
     responsiveStyles: true,
   },

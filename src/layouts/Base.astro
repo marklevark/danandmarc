@@ -22,12 +22,12 @@ const isActive = (href: string) =>
 <html lang="en-CA">
   <head>
     <script is:inline define:vars={{ __FSMAP__: fontshareMap, __FONTIDS__: fontIds }}>
-      // Night theme: /night switches it on for this browser, / switches it off.
+      // Night (dark) theme is the default. /light switches to the light theme for this browser; / switches back.
       try {
         var p = location.pathname;
-        if (p.indexOf('/night') === 0) localStorage.setItem('dm-theme', 'night');
+        if (p.indexOf('/light') === 0) localStorage.setItem('dm-theme', 'light');
         else if (p === '/' || p === '') localStorage.removeItem('dm-theme');
-        if (localStorage.getItem('dm-theme') === 'night') document.documentElement.classList.add('theme-night');
+        if (localStorage.getItem('dm-theme') !== 'light') document.documentElement.classList.add('theme-night');
         // headline font exploration: ?font=<id> remembers a font, ?font=none clears it
         var f = new URLSearchParams(location.search).get('font');
         if (f === 'none') localStorage.removeItem('dm-font'); else if (f) localStorage.setItem('dm-font', f);
@@ -58,7 +58,7 @@ const isActive = (href: string) =>
         <link rel="stylesheet" href={`https://use.typekit.net/${site.adobeFontsKit}.css`} />
       </>
     )}
-    <meta name="theme-color" content="#f3f3f3" />
+    <meta name="theme-color" content="#010101" />
     <slot name="head" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />
@@ -85,10 +85,6 @@ const isActive = (href: string) =>
     </header>
 
     <main id="main"><slot /></main>
-    <script is:inline>
-      if (document.documentElement.classList.contains('theme-night'))
-        document.querySelectorAll('a[href="/"]').forEach(function (a) { a.setAttribute('href', '/night'); });
-    </script>
 
     <script>
       const btn = document.querySelector<HTMLButtonElement>('.menu-btn')!;
