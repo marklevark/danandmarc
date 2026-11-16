@@ -2,7 +2,8 @@
 import '../styles/global.css';
 import Wordmark from '../components/Wordmark.astro';
 import { site } from '../data/site';
-import { fontCss, bodyCss, fontshareMap } from '../data/fonts';
+import { fontCss, bodyCss, fontshareMap, fonts as headlineFonts } from '../data/fonts';
+const fontIds = headlineFonts.map((f) => f.id);
 
 interface Props {
   title?: string;
@@ -20,7 +21,7 @@ const isActive = (href: string) =>
 <!doctype html>
 <html lang="en-CA">
   <head>
-    <script is:inline define:vars={{ __FSMAP__: fontshareMap }}>
+    <script is:inline define:vars={{ __FSMAP__: fontshareMap, __FONTIDS__: fontIds }}>
       // Night theme: /night switches it on for this browser, / switches it off.
       try {
         var p = location.pathname;
@@ -31,7 +32,9 @@ const isActive = (href: string) =>
         var f = new URLSearchParams(location.search).get('font');
         if (f === 'none') localStorage.removeItem('dm-font'); else if (f) localStorage.setItem('dm-font', f);
         // dark theme headline font: Familjen Grotesk unless another one is being previewed
-        var cur = localStorage.getItem('dm-font') || (document.documentElement.classList.contains('theme-night') ? 'familjen' : null);
+        var saved = localStorage.getItem('dm-font');
+        if (saved && __FONTIDS__.indexOf(saved) < 0) { localStorage.removeItem('dm-font'); saved = null; } // option was removed
+        var cur = saved || (document.documentElement.classList.contains('theme-night') ? 'familjen' : null);
         if (cur) document.documentElement.setAttribute('data-font', cur);
         // fonts served by Fontshare load only when one is being previewed
         var fsm = __FSMAP__;
