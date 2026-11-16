@@ -17,9 +17,9 @@
   --display: 'degular-display', 'Inter Tight Variable', 'Inter Tight', system-ui, sans-serif;
   --text: 'degular-text', 'Inter Tight Variable', 'Inter Tight', system-ui, sans-serif;
 
-  /* page edge: 10px desktop like the original */
-  --pad: 10px;
-  --gap: 10px;
+  /* page edge and gaps between images: roomier than the original's 10px */
+  --pad: clamp(18px, 3vw, 48px);
+  --gap: clamp(12px, 1.4vw, 22px);
 
   --fs-body: clamp(14px, 13.4px + 0.1vw, 15px);
   --fs-lead: clamp(15px, 14.4px + 0.15vw, 16.5px);

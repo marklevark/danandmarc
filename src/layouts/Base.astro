@@ -104,7 +104,7 @@ const isActive = (href: string) =>
   .site-header {
     position: absolute; top: 0; left: 0; right: 0; z-index: 50;
     display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-    height: 43px; padding-inline: 25px var(--pad);
+    height: 43px; padding-inline: var(--pad);
   }
   .home { color: var(--ink); }
   .home:hover { opacity: 1; }
@@ -122,7 +122,7 @@ const isActive = (href: string) =>
   .menu-btn { display: none; }
 
   @media (max-width: 640px) {
-    .site-header { height: 57px; padding-inline: 13px 16px; }
+    .site-header { height: 57px; padding-inline: var(--pad); }
     .home { position: relative; z-index: 2; }
     .menu-btn {
       position: relative; z-index: 2; display: block; width: 36px; height: 36px; margin-right: -4px;
