@@ -76,22 +76,20 @@ export type HeadlineFont = {
   group?: string; // section on /fonts
   /** Served by the Fontshare API (ITF Free Font License: free for commercial web use; files must not be redistributed, so they are not committed). Value: '<slug>@<weights>' (401/701 = italics). */
   fontshare?: string;
-  /** Optional emphasis style for the swapping names (e.g. a heavy true italic, Swear-style). */
-  em?: { family?: string; weight?: number; style?: 'normal' | 'italic'; vars?: string };
 };
 
 export const fonts: HeadlineFont[] = [
   // ---------- Fontshare (Indian Type Foundry, free for commercial use; loaded from their API)
-  { group: 'fontshare', id: 'zodiak', name: 'Zodiak + Bold Italic', note: 'Sharp, high-contrast serif with wedge serifs and a juicy italic. The closest free thing to Swear Display.', family: "'Zodiak'", weight: 400, tracking: '-0.03em', lh: 0.92, em: { weight: 700, style: 'italic' }, fontshare: 'zodiak@400,401,700,701' },
+  { group: 'fontshare', id: 'zodiak', name: 'Zodiak', note: 'Sharp, high-contrast serif with wedge serifs. The closest free thing to Swear Display.', family: "'Zodiak'", weight: 400, tracking: '-0.03em', lh: 0.92, fontshare: 'zodiak@400,401,700,701' },
   { group: 'fontshare', id: 'zodiak-bold', name: 'Zodiak Bold', note: 'Zodiak at full weight: chunky, sculpted and confident.', family: "'Zodiak'", weight: 700, tracking: '-0.035em', lh: 0.9, fontshare: 'zodiak@400,401,700,701' },
-  { group: 'fontshare', id: 'boska', name: 'Boska + Bold Italic', note: 'Expressive, calligraphic serif. The italic has real flourish.', family: "'Boska'", weight: 400, tracking: '-0.025em', lh: 0.92, em: { weight: 700, style: 'italic' }, fontshare: 'boska@400,401,700,701' },
+  { group: 'fontshare', id: 'boska', name: 'Boska', note: 'Expressive, calligraphic serif. The italic has real flourish.', family: "'Boska'", weight: 400, tracking: '-0.025em', lh: 0.92, fontshare: 'boska@400,401,700,701' },
   { group: 'fontshare', id: 'melodrama', name: 'Melodrama', note: 'Tall, condensed display serif. Theatrical, fashion-masthead energy.', family: "'Melodrama'", weight: 500, tracking: '-0.01em', lh: 0.86, scale: 1.12, fontshare: 'melodrama@500,700' },
-  { group: 'fontshare', id: 'gambetta', name: 'Gambetta + Bold Italic', note: 'Contemporary serif with crisp, slightly quirky details. Editorial and warm.', family: "'Gambetta'", weight: 400, tracking: '-0.03em', lh: 0.92, em: { weight: 700, style: 'italic' }, fontshare: 'gambetta@400,401,600,701' },
-  { group: 'fontshare', id: 'erode', name: 'Erode + Bold Italic', note: 'Robust, sharp-edged serif. Feels like a modern newspaper with attitude.', family: "'Erode'", weight: 400, tracking: '-0.025em', lh: 0.94, em: { weight: 700, style: 'italic' }, fontshare: 'erode@400,401,600,701' },
-  { group: 'fontshare', id: 'sentient', name: 'Sentient + Bold Italic', note: 'Calm, bookish serif with soft contrast. Thoughtful and grown-up.', family: "'Sentient'", weight: 400, tracking: '-0.025em', lh: 0.94, em: { weight: 700, style: 'italic' }, fontshare: 'sentient@400,401,700,701' },
-  { group: 'fontshare', id: 'bespoke-serif', name: 'Bespoke Serif ExtraBold', note: 'Heavy, high-contrast serif with a bold italic for the names. Very poster-ready.', family: "'Bespoke Serif'", weight: 800, tracking: '-0.035em', lh: 0.9, em: { weight: 700, style: 'italic' }, fontshare: 'bespoke-serif@400,401,800,701' },
-  { group: 'fontshare', id: 'recia', name: 'Recia + Bold Italic', note: 'Elegant transitional serif with sharp terminals. Refined, a touch luxurious.', family: "'Recia'", weight: 400, tracking: '-0.025em', lh: 0.93, em: { weight: 700, style: 'italic' }, fontshare: 'recia@400,401,600,701' },
-  { group: 'fontshare', id: 'rowan', name: 'Rowan + Bold Italic', note: 'Soft-edged serif with gentle curves. Friendly and quietly characterful.', family: "'Rowan'", weight: 400, tracking: '-0.025em', lh: 0.93, em: { weight: 700, style: 'italic' }, fontshare: 'rowan@400,401,600,701' },
+  { group: 'fontshare', id: 'gambetta', name: 'Gambetta', note: 'Contemporary serif with crisp, slightly quirky details. Editorial and warm.', family: "'Gambetta'", weight: 400, tracking: '-0.03em', lh: 0.92, fontshare: 'gambetta@400,401,600,701' },
+  { group: 'fontshare', id: 'erode', name: 'Erode', note: 'Robust, sharp-edged serif. Feels like a modern newspaper with attitude.', family: "'Erode'", weight: 400, tracking: '-0.025em', lh: 0.94, fontshare: 'erode@400,401,600,701' },
+  { group: 'fontshare', id: 'sentient', name: 'Sentient', note: 'Calm, bookish serif with soft contrast. Thoughtful and grown-up.', family: "'Sentient'", weight: 400, tracking: '-0.025em', lh: 0.94, fontshare: 'sentient@400,401,700,701' },
+  { group: 'fontshare', id: 'bespoke-serif', name: 'Bespoke Serif ExtraBold', note: 'Heavy, high-contrast serif. Very poster-ready.', family: "'Bespoke Serif'", weight: 800, tracking: '-0.035em', lh: 0.9, fontshare: 'bespoke-serif@400,401,800,701' },
+  { group: 'fontshare', id: 'recia', name: 'Recia', note: 'Elegant transitional serif with sharp terminals. Refined, a touch luxurious.', family: "'Recia'", weight: 400, tracking: '-0.025em', lh: 0.93, fontshare: 'recia@400,401,600,701' },
+  { group: 'fontshare', id: 'rowan', name: 'Rowan', note: 'Soft-edged serif with gentle curves. Friendly and quietly characterful.', family: "'Rowan'", weight: 400, tracking: '-0.025em', lh: 0.93, fontshare: 'rowan@400,401,600,701' },
   { group: 'fontshare', id: 'clash-display', name: 'Clash Display', note: 'Sharp, slightly condensed grotesk with sliced curves. Bold and very current.', family: "'Clash Display'", weight: 600, tracking: '-0.03em', lh: 0.88, fontshare: 'clash-display@600' },
   { group: 'fontshare', id: 'cabinet-grotesk', name: 'Cabinet Grotesk ExtraBold', note: 'Chunky, quirky grotesk with personality in every curve.', family: "'Cabinet Grotesk'", weight: 800, tracking: '-0.035em', lh: 0.88, fontshare: 'cabinet-grotesk@800' },
   { group: 'fontshare', id: 'chillax', name: 'Chillax', note: 'Rounded, relaxed geometric sans. Laid-back and friendly.', family: "'Chillax'", weight: 600, tracking: '-0.03em', lh: 0.9, fontshare: 'chillax@600' },
@@ -105,17 +103,17 @@ export const fonts: HeadlineFont[] = [
   { group: 'gothic', id: 'pirata', name: 'Pirata One', note: 'Blackletter with a rougher, cut-paper feel. Bolder and more graphic.', family: "'Pirata One'", weight: 400, tracking: '0em', lh: 0.92, scale: 1.05 },
   { group: 'gothic', id: 'im-fell', name: 'IM Fell English', note: 'A digitized 1600s book typeface with ink-spread roughness, like BlackBeard (Spencer & Jordan’s body/awards font).', family: "'IM Fell English'", weight: 400, tracking: '-0.02em', lh: 0.95 },
   { group: 'gothic', id: 'im-fell-italic', name: 'IM Fell English Italic', note: 'The real italic, closest to the slanted awards list on spencerandjordan.com. Antique and charming.', family: "'IM Fell English'", weight: 400, style: 'italic', tracking: '-0.02em', lh: 0.95 },
-  // ---------- round 3: Swear Display-style (sharp, high-contrast; names in a heavy italic where a true italic exists)
-  { group: 'swear', id: 'fraunces-sharp', name: 'Fraunces Sharp + Black Italic', note: 'Fraunces with its soft/wonky options switched off: sharp wedge serifs and high contrast. The black italic is the closest free thing to Swear’s.', family: "'Fraunces Variable'", weight: 400, vars: "'opsz' 144, 'SOFT' 0, 'WONK' 0", tracking: '-0.03em', lh: 0.92, em: { weight: 900, style: 'italic', vars: "'opsz' 144, 'SOFT' 0, 'WONK' 1" } },
-  { group: 'swear', id: 'playfair-swear', name: 'Playfair Display + Black Italic', note: 'High-contrast regular with Playfair’s fat, curvy Black Italic for the names. Very close to Swear’s specimen look.', family: "'Playfair Display'", weight: 400, tracking: '-0.02em', lh: 0.95, em: { weight: 900, style: 'italic' } },
-  { group: 'swear', id: 'noto-display', name: 'Noto Serif Display + ExtraBold Italic', note: 'Crisp, high-contrast display serif with a true heavy italic. Clean and sharp.', family: "'Noto Serif Display Variable'", weight: 400, tracking: '-0.025em', lh: 0.95, em: { weight: 800, style: 'italic' } },
-  { group: 'swear', id: 'libre-bodoni', name: 'Libre Bodoni + Bold Italic', note: 'A sturdier Bodoni with real italics; more readable than fashion Didones.', family: "'Libre Bodoni Variable'", weight: 400, tracking: '-0.03em', lh: 0.95, em: { weight: 700, style: 'italic' } },
+  // ---------- round 3: Swear Display-style (sharp, high-contrast)
+  { group: 'swear', id: 'fraunces-sharp', name: 'Fraunces Sharp', note: 'Fraunces with its soft/wonky options switched off: sharp wedge serifs and high contrast, close to Swear Display.', family: "'Fraunces Variable'", weight: 400, vars: "'opsz' 144, 'SOFT' 0, 'WONK' 0", tracking: '-0.03em', lh: 0.92 },
+  { group: 'swear', id: 'playfair-swear', name: 'Playfair Display', note: 'High-contrast, sharp display serif. Close to Swear’s regular weight.', family: "'Playfair Display'", weight: 400, tracking: '-0.02em', lh: 0.95 },
+  { group: 'swear', id: 'noto-display', name: 'Noto Serif Display', note: 'Crisp, high-contrast display serif with a true heavy italic. Clean and sharp.', family: "'Noto Serif Display Variable'", weight: 400, tracking: '-0.025em', lh: 0.95 },
+  { group: 'swear', id: 'libre-bodoni', name: 'Libre Bodoni', note: 'A sturdier Bodoni with real italics; more readable than fashion Didones.', family: "'Libre Bodoni Variable'", weight: 400, tracking: '-0.03em', lh: 0.95 },
   { group: 'swear', id: 'prata', name: 'Prata', note: 'Sharp, high-contrast Didone with wedge serifs and teardrop terminals. Close to Swear’s regular weight.', family: "'Prata'", weight: 400, tracking: '-0.03em', lh: 0.95 },
   { group: 'swear', id: 'gilda', name: 'Gilda Display', note: 'Light, airy high-contrast serif. Swear’s elegance at the thinner end.', family: "'Gilda Display'", weight: 400, tracking: '-0.02em', lh: 0.95 },
   { group: 'swear', id: 'vidaloka', name: 'Vidaloka', note: 'Bold, punchy Didone with sharp serifs. Like Swear’s bolder weights.', family: "'Vidaloka'", weight: 400, tracking: '-0.03em', lh: 0.95 },
-  { group: 'swear', id: 'kaisei', name: 'Kaisei Tokumin', note: 'Wide, high-contrast serif with tapered strokes. Calm and stylish.', family: "'Kaisei Tokumin'", weight: 400, tracking: '-0.03em', lh: 0.95, scale: 0.92, em: { weight: 800 } },
-  { group: 'swear', id: 'hahmlet', name: 'Hahmlet', note: 'Variable serif with sharp wedges and a crisp, contemporary feel.', family: "'Hahmlet Variable'", weight: 400, tracking: '-0.03em', lh: 0.95, em: { weight: 800 } },
-  { group: 'swear', id: 'rufina', name: 'Rufina', note: 'Calligraphic high-contrast serif with flared, sharp details.', family: "'Rufina'", weight: 400, tracking: '-0.025em', lh: 0.95, em: { weight: 700 } },
+  { group: 'swear', id: 'kaisei', name: 'Kaisei Tokumin', note: 'Wide, high-contrast serif with tapered strokes. Calm and stylish.', family: "'Kaisei Tokumin'", weight: 400, tracking: '-0.03em', lh: 0.95, scale: 0.92 },
+  { group: 'swear', id: 'hahmlet', name: 'Hahmlet', note: 'Variable serif with sharp wedges and a crisp, contemporary feel.', family: "'Hahmlet Variable'", weight: 400, tracking: '-0.03em', lh: 0.95 },
+  { group: 'swear', id: 'rufina', name: 'Rufina', note: 'Calligraphic high-contrast serif with flared, sharp details.', family: "'Rufina'", weight: 400, tracking: '-0.025em', lh: 0.95 },
   { group: 'swear', id: 'yeseva', name: 'Yeseva One', note: 'Heavy, curvy high-contrast serif with a feminine flourish. Like Swear Black.', family: "'Yeseva One'", weight: 400, tracking: '-0.02em', lh: 0.98 },
   { group: 'swear', id: 'chonburi', name: 'Chonburi', note: 'Chunky, high-contrast display serif with sharp spurs. Loud and stylish.', family: "'Chonburi'", weight: 400, tracking: '-0.03em', lh: 0.98, scale: 0.9 },
   // ---------- round 2: design-forward serifs
@@ -161,15 +159,7 @@ export const fontCss = fonts
     (f) =>
       `[data-font="${f.id}"],html.theme-night[data-font="${f.id}"]{--display:${f.family},'Figtree Variable',sans-serif;--hd-weight:${f.weight ?? 400};--hd-style:${f.style ?? 'normal'};--hd-vars:${f.vars ?? 'normal'};--display-tracking:${f.tracking ?? '-0.02em'};--hd-lh:${f.lh ?? 0.9};--hd-scale:${f.scale ?? 1}}`,
   )
-  .join('\n') +
-  '\n' +
-  fonts
-    .filter((f) => f.em)
-    .map(
-      (f) =>
-        `[data-font="${f.id}"] .swap{font-family:${f.em!.family ?? f.family};font-weight:${f.em!.weight ?? f.weight ?? 400};font-style:${f.em!.style ?? 'normal'};font-variation-settings:${f.em!.vars ?? f.vars ?? 'normal'}}`,
-    )
-    .join('\n');
+  .join('\n');
 
 // ------------------------------------------------------------------
 // Body fonts + serif/sans pairings (see /pairings).
