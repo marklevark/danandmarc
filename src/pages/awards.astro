@@ -29,7 +29,7 @@ const regions = (await getCollection('awards'))
 </Base>
 
 <style>
-  h1 { font-size: calc(var(--fs-hero) * 0.8 * var(--hd-scale, 1)); line-height: 0.96; max-width: 12em; padding-top: clamp(96px, 29vw, 425px); }
+  h1 { font-size: calc(var(--fs-hero) * 0.8 * var(--hd-scale, 1)); line-height: 0.96; max-width: 12em; padding-top: clamp(64px, 23.5vw, 340px); margin-top: -0.06em; /* offsets the looser line-height so the first line sits where the homepage headline does */ }
   .regions { display: grid; gap: 40px 3rem; grid-template-columns: 1fr; padding-top: 36px; }
   h2 { font-size: var(--fs-title); line-height: 0.83; margin-bottom: 1.6rem; }
   .regions section:last-child h2 { margin-top: 0; }
