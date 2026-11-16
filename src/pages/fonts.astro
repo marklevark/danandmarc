@@ -2,11 +2,12 @@
 /** Headline font exploration on the dark theme. Not linked from the site. */
 import Base from '../layouts/Base.astro';
 import Swap from '../components/Swap.astro';
-import { fonts } from '../data/fonts';
+import { fonts, fontshareMap } from '../data/fonts';
 import { site } from '../data/site';
 ---
 <Base title="Headline fonts">
   <meta name="robots" content="noindex" slot="head" />
+  {Object.values(fontshareMap).map((href) => <link rel="stylesheet" href={href} slot="head" />)}
   <script is:inline slot="head">document.documentElement.classList.add('theme-night');</script>
 
   <section class="page intro">

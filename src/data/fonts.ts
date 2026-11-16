@@ -54,6 +54,8 @@ import '@fontsource/rufina/700.css';
 import '@fontsource/kaisei-tokumin/400.css';
 import '@fontsource/kaisei-tokumin/800.css';
 import '@fontsource-variable/grenze-gotisch';
+import '@fontsource/shrikhand/400.css';
+import '@fontsource-variable/epilogue';
 import '@fontsource/pirata-one/400.css';
 import '@fontsource/im-fell-english/400.css';
 import '@fontsource/im-fell-english/400-italic.css';
@@ -72,11 +74,31 @@ export type HeadlineFont = {
   scale?: number; // size multiplier for very wide faces
   requiresKit?: boolean; // commercial font that needs the Adobe Fonts kit
   group?: string; // section on /fonts
+  /** Served by the Fontshare API (ITF Free Font License: free for commercial web use; files must not be redistributed, so they are not committed). Value: '<slug>@<weights>' (401/701 = italics). */
+  fontshare?: string;
   /** Optional emphasis style for the swapping names (e.g. a heavy true italic, Swear-style). */
   em?: { family?: string; weight?: number; style?: 'normal' | 'italic'; vars?: string };
 };
 
 export const fonts: HeadlineFont[] = [
+  // ---------- Fontshare (Indian Type Foundry, free for commercial use; loaded from their API)
+  { group: 'fontshare', id: 'zodiak', name: 'Zodiak + Bold Italic', note: 'Sharp, high-contrast serif with wedge serifs and a juicy italic. The closest free thing to Swear Display.', family: "'Zodiak'", weight: 400, tracking: '-0.03em', lh: 0.92, em: { weight: 700, style: 'italic' }, fontshare: 'zodiak@400,401,700,701' },
+  { group: 'fontshare', id: 'zodiak-bold', name: 'Zodiak Bold', note: 'Zodiak at full weight: chunky, sculpted and confident.', family: "'Zodiak'", weight: 700, tracking: '-0.035em', lh: 0.9, fontshare: 'zodiak@400,401,700,701' },
+  { group: 'fontshare', id: 'boska', name: 'Boska + Bold Italic', note: 'Expressive, calligraphic serif. The italic has real flourish.', family: "'Boska'", weight: 400, tracking: '-0.025em', lh: 0.92, em: { weight: 700, style: 'italic' }, fontshare: 'boska@400,401,700,701' },
+  { group: 'fontshare', id: 'melodrama', name: 'Melodrama', note: 'Tall, condensed display serif. Theatrical, fashion-masthead energy.', family: "'Melodrama'", weight: 500, tracking: '-0.01em', lh: 0.86, scale: 1.12, fontshare: 'melodrama@500,700' },
+  { group: 'fontshare', id: 'gambetta', name: 'Gambetta + Bold Italic', note: 'Contemporary serif with crisp, slightly quirky details. Editorial and warm.', family: "'Gambetta'", weight: 400, tracking: '-0.03em', lh: 0.92, em: { weight: 700, style: 'italic' }, fontshare: 'gambetta@400,401,600,701' },
+  { group: 'fontshare', id: 'erode', name: 'Erode + Bold Italic', note: 'Robust, sharp-edged serif. Feels like a modern newspaper with attitude.', family: "'Erode'", weight: 400, tracking: '-0.025em', lh: 0.94, em: { weight: 700, style: 'italic' }, fontshare: 'erode@400,401,600,701' },
+  { group: 'fontshare', id: 'sentient', name: 'Sentient + Bold Italic', note: 'Calm, bookish serif with soft contrast. Thoughtful and grown-up.', family: "'Sentient'", weight: 400, tracking: '-0.025em', lh: 0.94, em: { weight: 700, style: 'italic' }, fontshare: 'sentient@400,401,700,701' },
+  { group: 'fontshare', id: 'bespoke-serif', name: 'Bespoke Serif ExtraBold', note: 'Heavy, high-contrast serif with a bold italic for the names. Very poster-ready.', family: "'Bespoke Serif'", weight: 800, tracking: '-0.035em', lh: 0.9, em: { weight: 700, style: 'italic' }, fontshare: 'bespoke-serif@400,401,800,701' },
+  { group: 'fontshare', id: 'recia', name: 'Recia + Bold Italic', note: 'Elegant transitional serif with sharp terminals. Refined, a touch luxurious.', family: "'Recia'", weight: 400, tracking: '-0.025em', lh: 0.93, em: { weight: 700, style: 'italic' }, fontshare: 'recia@400,401,600,701' },
+  { group: 'fontshare', id: 'rowan', name: 'Rowan + Bold Italic', note: 'Soft-edged serif with gentle curves. Friendly and quietly characterful.', family: "'Rowan'", weight: 400, tracking: '-0.025em', lh: 0.93, em: { weight: 700, style: 'italic' }, fontshare: 'rowan@400,401,600,701' },
+  { group: 'fontshare', id: 'clash-display', name: 'Clash Display', note: 'Sharp, slightly condensed grotesk with sliced curves. Bold and very current.', family: "'Clash Display'", weight: 600, tracking: '-0.03em', lh: 0.88, fontshare: 'clash-display@600' },
+  { group: 'fontshare', id: 'cabinet-grotesk', name: 'Cabinet Grotesk ExtraBold', note: 'Chunky, quirky grotesk with personality in every curve.', family: "'Cabinet Grotesk'", weight: 800, tracking: '-0.035em', lh: 0.88, fontshare: 'cabinet-grotesk@800' },
+  { group: 'fontshare', id: 'chillax', name: 'Chillax', note: 'Rounded, relaxed geometric sans. Laid-back and friendly.', family: "'Chillax'", weight: 600, tracking: '-0.03em', lh: 0.9, fontshare: 'chillax@600' },
+  { group: 'fontshare', id: 'panchang', name: 'Panchang Bold', note: 'Extra-wide sans. Loud and graphic, a statement at any size.', family: "'Panchang'", weight: 700, tracking: '-0.03em', lh: 0.95, scale: 0.6, fontshare: 'panchang@700' },
+  // ---------- more Google Fonts
+  { group: 'more', id: 'shrikhand', name: 'Shrikhand', note: 'A fat, upright-italic display face with retro swing. Very fun, very loud.', family: "'Shrikhand'", weight: 400, tracking: '-0.01em', lh: 0.98, scale: 0.85 },
+  { group: 'more', id: 'epilogue', name: 'Epilogue ExtraBold', note: 'Sturdy, slightly quirky grotesk with tight curves. Confident and clean.', family: "'Epilogue Variable'", weight: 800, tracking: '-0.04em', lh: 0.88 },
   // ---------- blackletter / antique (after spencerandjordan.com: Gothicus Roman + BlackBeard)
   { group: 'gothic', id: 'grenze-gotisch', name: 'Grenze Gotisch', note: 'Readable blackletter: gothic capitals and sharp, broken curves. The closest free match to Gothicus Roman (the Spencer & Jordan logo font).', family: "'Grenze Gotisch Variable'", weight: 600, tracking: '-0.01em', lh: 0.9 },
   { group: 'gothic', id: 'grenze-gotisch-light', name: 'Grenze Gotisch Light', note: 'The same blackletter at a lighter weight. More elegant, less heavy-metal.', family: "'Grenze Gotisch Variable'", weight: 350, tracking: '-0.01em', lh: 0.9 },
@@ -199,3 +221,10 @@ export const pairings: Pairing[] = [
   { head: 'young-serif', body: 'onest', why: 'Chunky 70s serif with a soft, round sans. Warm and full of personality.' },
   { head: 'fraunces-sharp', body: 'hanken', why: 'Swear-style sharp serif with a black-italic kick, over a quiet, even grotesk.' },
 ];
+
+/** Fontshare stylesheet URL for a font (the API serves one family per request). */
+export const fontshareUrl = (spec: string) => `https://api.fontshare.com/v2/css?f[]=${spec}&display=swap`;
+/** id -> stylesheet URL, for fonts that load from Fontshare. */
+export const fontshareMap: Record<string, string> = Object.fromEntries(
+  fonts.filter((f) => f.fontshare).map((f) => [f.id, fontshareUrl(f.fontshare!)]),
+);

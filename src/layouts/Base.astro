@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import Wordmark from '../components/Wordmark.astro';
 import { site } from '../data/site';
-import { fontCss, bodyCss } from '../data/fonts';
+import { fontCss, bodyCss, fontshareMap } from '../data/fonts';
 
 interface Props {
   title?: string;
@@ -20,7 +20,7 @@ const isActive = (href: string) =>
 <!doctype html>
 <html lang="en-CA">
   <head>
-    <script is:inline>
+    <script is:inline define:vars={{ __FSMAP__: fontshareMap }}>
       // Night theme: /night switches it on for this browser, / switches it off.
       try {
         var p = location.pathname;
@@ -33,6 +33,9 @@ const isActive = (href: string) =>
         // dark theme headline font: Familjen Grotesk unless another one is being previewed
         var cur = localStorage.getItem('dm-font') || (document.documentElement.classList.contains('theme-night') ? 'familjen' : null);
         if (cur) document.documentElement.setAttribute('data-font', cur);
+        // fonts served by Fontshare load only when one is being previewed
+        var fsm = __FSMAP__;
+        if (cur && fsm[cur]) { var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = fsm[cur]; document.head.appendChild(l); }
         var bq = new URLSearchParams(location.search).get('body');
         if (bq === 'none') localStorage.removeItem('dm-body'); else if (bq) localStorage.setItem('dm-body', bq);
         var bcur = localStorage.getItem('dm-body');

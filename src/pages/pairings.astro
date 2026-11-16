@@ -2,12 +2,13 @@
 /** Serif headline + sans body pairings on the dark theme. Not linked from the site. */
 import Base from '../layouts/Base.astro';
 import Swap from '../components/Swap.astro';
-import { fonts, bodyFonts, pairings } from '../data/fonts';
+import { fonts, bodyFonts, pairings, fontshareMap } from '../data/fonts';
 const H = new Map(fonts.map((f) => [f.id, f]));
 const B = new Map(bodyFonts.map((b) => [b.id, b]));
 ---
 <Base title="Font pairings">
   <meta name="robots" content="noindex" slot="head" />
+  {Object.values(fontshareMap).map((href) => <link rel="stylesheet" href={href} slot="head" />)}
   <script is:inline slot="head">document.documentElement.classList.add('theme-night');</script>
 
   <section class="page intro">
