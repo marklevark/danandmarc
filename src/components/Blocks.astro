@@ -84,20 +84,30 @@ let section = d.title;
       // `wide: true/false` on an image in the YAML overrides this.
       const cols = n === 1 ? 1 : portrait && n >= 6 && n % 4 === 0 ? 4 : 2;
       const autoWide = (i: (typeof imgs)[number]) => i.src.width > i.src.height * 1.1 && i.src.width >= 1200;
+      const isWide = imgs.map((img) => cols > 1 && (img.wide ?? autoWide(img)));
+      // A run of exactly three side-by-side images sits on one line (thirds) instead of 2 + 1.
+      const third = imgs.map(() => false);
+      for (let i = 0; i < n; ) {
+        if (isWide[i]) { i++; continue; }
+        let j = i; while (j < n && !isWide[j]) j++;
+        if (j - i === 3 && cols === 2) for (let k = i; k < j; k++) third[k] = true;
+        i = j;
+      }
       return (
         <div class="media" style={`--cols:${cols}`}>
           {imgs.map((img, i) => {
-            const wide = cols > 1 && (img.wide ?? autoWide(img));
-            const sizes = cols === 1 || wide ? '100vw' : `(min-width: 768px) ${Math.round(100 / cols)}vw, 100vw`;
+            const wide = isWide[i];
+            const sizes = cols === 1 || wide ? '100vw' : `(min-width: 768px) ${third[i] ? 33 : Math.round(100 / cols)}vw, 100vw`;
+            const cls = ['m', { wide, third: third[i] }];
             return img.loop ? (
-              <Loop src={img.loop} poster={img.src} label={img.alt ?? `${section}, animation ${i + 1}`} class:list={['m', { wide }]} />
+              <Loop src={img.loop} poster={img.src} label={img.alt ?? `${section}, animation ${i + 1}`} class:list={cls} />
             ) : (
               <Image
                 src={img.src}
                 alt={img.alt ?? `${section}, image ${i + 1}`}
                 widths={cols === 1 || wide ? [640, 1024, 1600, 2400] : [400, 720, 1100, 1500]}
                 sizes={sizes}
-                class:list={['m', { wide }]}
+                class:list={cls}
               />
             );
           })}
@@ -141,7 +151,10 @@ let section = d.title;
   .media :global(.m) { width: 100%; height: auto; border-radius: 3px; background: var(--surface); }
   @media (min-width: 768px) {
     .intro { grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); }
-    .media { grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); }
-    .media :global(.wide) { grid-column: 1 / -1; }
+    /* 12-track grid so halves, quarters and thirds can share a block */
+    .media { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+    .media > :global(*) { grid-column: span calc(12 / var(--cols)); }
+    .media > :global(.third) { grid-column: span 4; }
+    .media > :global(.wide) { grid-column: 1 / -1; }
   }
 </style>
