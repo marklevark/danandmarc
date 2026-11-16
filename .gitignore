@@ -5,3 +5,4 @@ dist/
 .DS_Store
 .dist-tmp/
 .dist-tmp.stamp*
+.claude/settings.local.json
