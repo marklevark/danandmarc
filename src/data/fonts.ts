@@ -1,6 +1,6 @@
 /**
  * Headline font exploration for the night theme.
- * Default on the dark theme: Familjen Grotesk. Try another across the whole site with /night?font=<id>;
+ * Default on the dark theme: Outfit. Try another across the whole site with /night?font=<id>;
  * /night?font=none goes back to the default.
  */
 import '@fontsource-variable/fraunces/full.css';

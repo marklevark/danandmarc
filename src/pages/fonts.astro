@@ -12,8 +12,8 @@ import { site } from '../data/site';
 
   <section class="page intro">
     <p class="lab">Headline font exploration · {fonts.length} options</p>
-    <p class="lead">Each option is the real homepage headline at full size. Body text stays Figtree. Click “Try it on the site” to see one across every page; “Back to the default” resets it to Familjen Grotesk.</p>
-    <p><a class="btn" href="/night?font=none">Back to the default (Familjen Grotesk)</a></p>
+    <p class="lead">Each option is the real homepage headline at full size. Body text stays Figtree. Click “Try it on the site” to see one across every page; “Back to the default” resets it to Outfit.</p>
+    <p><a class="btn" href="/night?font=none">Back to the default (Outfit)</a></p>
   </section>
 
   {fonts.map((f, i) => (
@@ -22,7 +22,7 @@ import { site } from '../data/site';
         <span class="lab">{String(i + 1).padStart(2, '0')} — {f.name}</span>
         <a class="btn" href={`/night?font=${f.id}`}>Try it on the site →</a>
       </div>
-      <h2 class="hd">We’re <span class="nw"><Swap a="Dan and Marc" b="Marc and Dan" />.</span><br />But you can call us <span class="nw"><Swap a="Marc and Dan" b="Dan and Marc" />.</span></h2>
+      <h2 class="hd">We’re <span class="nw"><Swap a="Dan & Marc" b="Marc & Dan" />.</span><br />But you can call us <span class="nw"><Swap a="Marc & Dan" b="Dan & Marc" />.</span></h2>
       <p class="sub">We’re an award-winning freelance creative team based out of Toronto.</p>
       <div class="sample">
         <span class="hd t">The #Unignorable Tower</span>

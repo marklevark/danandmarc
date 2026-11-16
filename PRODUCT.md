@@ -37,9 +37,9 @@ A senior duo, not a solo freelancer or an agency: two hybrid creatives who both 
 
 ## Brand Commitments
 
-- **Name and running joke:** "We're Dan and Marc. But you can call us Marc and Dan." The names swap; the wordmark flips Dan&Marc ↔ Marc&Dan.
+- **Name and running joke:** "We're Dan & Marc. But you can call us Marc & Dan." The names swap; the wordmark flips Dan&Marc ↔ Marc&Dan.
 - **Voice:** dry, self-deprecating, confident without bragging ("a combined height of 12'5"", "Dan's the one that's tall", "Say hi to neither"). Short sentences; jokes land in the details.
-- **Binding visual preferences stated by the client:** they like the dark theme (near-black `#010101`, warm off-white `#fbefe0`); **no all-caps headlines**; Familjen Grotesk is the current headline stand-in for Degular.
+- **Binding visual preferences stated by the client:** they like the dark theme (near-black `#010101`, warm off-white `#fbefe0`); **no all-caps headlines**; Outfit is the current headline stand-in for Degular.
 
 ## Evidence on Hand
 
