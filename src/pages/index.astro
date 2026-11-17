@@ -30,9 +30,9 @@ const work = await getWork();
   h1 { font-size: calc(var(--fs-hero) * 0.8 * var(--hd-scale, 1)); line-height: var(--hd-lh, 0.88); max-width: 9em; }
   .hero p { margin-top: 0.9rem; font-size: var(--fs-lead); }
 
-  /* thumbnails sized like spencerandjordan.com: full bleed, no gaps, 4:3 tiles, 3-up desktop / 1-up phone */
+  /* 4:3 tiles, no gaps between them, 3-up desktop / 1-up phone; side gutters line up with the nav */
   .grid {
-    list-style: none; margin: 0; padding: 0;
+    list-style: none; margin: 0; padding: 0 var(--pad);
     display: grid; gap: 0; grid-template-columns: 1fr;
   }
   .grid :global(.card) { border-radius: 0; aspect-ratio: 4 / 3; }
