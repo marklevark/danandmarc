@@ -66,6 +66,8 @@ p { margin: 0 0 1.1em; text-wrap: pretty; }
 p:last-child { margin-bottom: 0; }
 
 .page { padding-inline: var(--pad); }
+/* very wide screens: like spencerandjordan.com, the site stops at 1600px and centres */
+html.capped main, html.capped .site-header { max-width: 1600px; margin-inline: auto; }
 main { padding-bottom: 60px; }
 .label { color: var(--muted); }
 .sr-only {

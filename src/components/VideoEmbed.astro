@@ -11,6 +11,8 @@ interface Props {
 const { provider, id, project, src, poster, title, fallbackTitle } = Astro.props;
 // Squarespace kept export filenames as titles ("..._v14mp4"); don't show those to screen readers.
 const label = title && !/[_]|mp4$/i.test(title) ? title : fallbackTitle;
+// Poster: /media/<project>/<id>.jpg (scripts/make-posters.sh makes any that are missing).
+// If it's missing anyway, preload=metadata + #t=1 makes the browser show the frame at 1s instead of black.
 const embed =
   provider === 'vimeo'
     ? `https://player.vimeo.com/video/${id}?dnt=1&title=0&byline=0&portrait=0`
@@ -19,11 +21,11 @@ const embed =
 <div class="embed">
   {provider === 'file' ? (
     <video
-      src={src ?? `/media/${project}/${id}.mp4`}
+      src={`${src ?? `/media/${project}/${id}.mp4`}#t=1`}
       poster={poster ?? `/media/${project}/${id}.jpg`}
       controls
       playsinline
-      preload="none"
+      preload="metadata"
       aria-label={label}
     ></video>
   ) : (

@@ -9,8 +9,10 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  /** alternate full-bleed homepage designs opt out of the 1600px cap */
+  full?: boolean;
 }
-const { title, description = site.description, image } = Astro.props;
+const { title, description = site.description, image, full = false } = Astro.props;
 const fullTitle = title ? `${title} — ${site.name}` : site.name;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = image ? new URL(image, Astro.site).href : undefined;
@@ -19,7 +21,7 @@ const isActive = (href: string) =>
   href === '/' ? path === '/' || path.startsWith('/work') : path.startsWith(href);
 ---
 <!doctype html>
-<html lang="en-CA">
+<html lang="en-CA" class:list={{ capped: !full }}>
   <head>
     <script is:inline define:vars={{ __FSMAP__: fontshareMap, __FONTIDS__: fontIds }}>
       // Night (dark) theme is the default. /light switches to the light theme for this browser; / switches back.
