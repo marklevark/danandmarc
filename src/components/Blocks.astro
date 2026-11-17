@@ -87,6 +87,8 @@ let section = d.title;
       const isWide = imgs.map((img) => cols > 1 && (img.wide ?? autoWide(img)));
       // A run of exactly three side-by-side images sits on one line (thirds) instead of 2 + 1.
       const third = imgs.map(() => false);
+      // A lone tall image (e.g. one poster) sits in the middle third, as if it were a set of 3.
+      const solo = n === 1 && portrait;
       for (let i = 0; i < n; ) {
         if (isWide[i]) { i++; continue; }
         let j = i; while (j < n && !isWide[j]) j++;
@@ -97,8 +99,8 @@ let section = d.title;
         <div class="media" style={`--cols:${cols}`}>
           {imgs.map((img, i) => {
             const wide = isWide[i];
-            const sizes = cols === 1 || wide ? '100vw' : `(min-width: 768px) ${third[i] ? 33 : Math.round(100 / cols)}vw, 100vw`;
-            const cls = ['m', { wide, third: third[i] }];
+            const sizes = solo ? '(min-width: 768px) 33vw, 100vw' : cols === 1 || wide ? '100vw' : `(min-width: 768px) ${third[i] ? 33 : Math.round(100 / cols)}vw, 100vw`;
+            const cls = ['m', { wide, third: third[i], solo }];
             return img.loop ? (
               <Loop src={img.loop} poster={img.src} label={img.alt ?? `${section}, animation ${i + 1}`} class:list={cls} />
             ) : (
@@ -155,6 +157,7 @@ let section = d.title;
     .media { grid-template-columns: repeat(12, minmax(0, 1fr)); }
     .media > :global(*) { grid-column: span calc(12 / var(--cols)); }
     .media > :global(.third) { grid-column: span 4; }
+    .media > :global(.solo) { grid-column: 5 / span 4; }
     .media > :global(.wide) { grid-column: 1 / -1; }
   }
 </style>
