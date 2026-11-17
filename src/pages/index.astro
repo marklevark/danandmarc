@@ -32,7 +32,9 @@ const work = await getWork();
 
   .grid {
     list-style: none; margin: 0; padding: 0 var(--pad);
-    display: grid; gap: var(--gap); grid-template-columns: 1fr;
+    display: grid; gap: 0; grid-template-columns: 1fr;
   }
+  /* thumbnails butt up against each other: no gaps, square corners */
+  .grid :global(.card) { border-radius: 0; }
   @media (min-width: 768px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 </style>
