@@ -30,13 +30,11 @@ const work = await getWork();
   h1 { font-size: calc(var(--fs-hero) * 0.8 * var(--hd-scale, 1)); line-height: var(--hd-lh, 0.88); max-width: 9em; }
   .hero p { margin-top: 0.9rem; font-size: var(--fs-lead); }
 
+  /* thumbnails sized like spencerandjordan.com: full bleed, no gaps, 4:3 tiles, 3-up desktop / 1-up phone */
   .grid {
-    list-style: none; margin: 0; padding: 0 var(--pad);
+    list-style: none; margin: 0; padding: 0;
     display: grid; gap: 0; grid-template-columns: 1fr;
   }
-  /* thumbnails butt up against each other: no gaps, square corners */
-  .grid :global(.card) { border-radius: 0; }
-  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid :global(.card) { border-radius: 0; aspect-ratio: 4 / 3; }
   @media (min-width: 768px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-  @media (min-width: 1100px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 </style>
