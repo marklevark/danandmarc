@@ -17,10 +17,27 @@ blocks:
     id: smashed
     title: Smashed case study
 - images:
-  - src: ../../assets/work/smashed/smashed-case-board.jpg
-    alt: Smashed case board, the smashed A&W restaurant on Queen Street with lineups out front
-  - src: ../../assets/work/smashed/smashed-objects.jpg
-    alt: Smashed A&W mugs, trays, stools, napkin holder, booth seat and menu stand on orange
+  - src: ../../assets/work/smashed/smashed-storefront.jpg
+    alt: The smashed A&W on Queen Street West, with a lineup out front and a streetcar passing
+- images:
+  - src: ../../assets/work/smashed/smashed-interior.jpg
+    alt: Inside the smashed A&W, with squashed stools, booth, menu boards and a Root Bear cut-out
+- images:
   - src: ../../assets/work/smashed/smashed-press.jpg
     alt: Smash Burgers poster surrounded by press and social reactions
+  - src: ../../assets/work/smashed/smashed-objects.jpg
+    alt: Smashed A&W mugs, trays, stools, napkin holder, booth seat and menu stand on orange
+  - src: ../../assets/work/smashed/rethink-x-aw-smash.jpg
+    alt: Four hanging Smash Burgers banners on orange
+- videos:
+  - provider: file          # kept in the repo: public/video/smashed/
+    id: napkins-anyone
+    src: /video/smashed/napkins-anyone.mp4
+    poster: /video/smashed/napkins-anyone.jpg
+    title: Napkins anyone?
+  - provider: file
+    id: smashed-it
+    src: /video/smashed/smashed-it.mp4
+    poster: /video/smashed/smashed-it.jpg
+    title: Smashed it
 press: Little Black Book, PR Newswire
