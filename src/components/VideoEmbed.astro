@@ -26,12 +26,19 @@ const embed =
       controls
       playsinline
       preload="metadata"
+      data-rewind
       aria-label={label}
     ></video>
   ) : (
     <iframe src={embed} title={label} loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
   )}
 </div>
+<script>
+  // #t=1 is only there so a frame shows before play; start playback from the top.
+  document.querySelectorAll<HTMLVideoElement>('video[data-rewind]').forEach((v) => {
+    v.addEventListener('play', () => { if (v.currentTime <= 1.05) v.currentTime = 0; }, { once: true });
+  });
+</script>
 <style>
   .embed { position: relative; aspect-ratio: 16 / 9; background: #000; overflow: hidden; }
   iframe, video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
