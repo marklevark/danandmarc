@@ -12,10 +12,11 @@ blocks:
     So we turned the launch campaign into an embodiment of the burger itself, by smashing everything. And we mean everything. An entire A&W restaurant (and everything in it), our commercials, OOH, social posts, and more.
 
     +13.5 sales growth. 26M earned impressions.
-- videos:
-  - provider: file          # self-hosted: /media/smashed/smashed.mp4 (poster: smashed.jpg)
-    id: smashed
-    title: Smashed case study
+# Case study video hidden for now; to bring it back, uncomment:
+# - videos:
+#   - provider: file          # self-hosted: /media/smashed/smashed.mp4 (poster: smashed.jpg)
+#     id: smashed
+#     title: Smashed case study
 - images:
   - src: ../../assets/work/smashed/smashed-storefront.jpg
     alt: The smashed A&W on Queen Street West, with a lineup out front and a streetcar passing
