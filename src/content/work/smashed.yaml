@@ -22,6 +22,7 @@ blocks:
 - images:
   - src: ../../assets/work/smashed/smashed-interior.jpg
     alt: Inside the smashed A&W, with squashed stools, booth, menu boards and a Root Bear cut-out
+    wide: true   # full width even though it's tall
 - images:
   - src: ../../assets/work/smashed/smashed-press.jpg
     alt: Smash Burgers poster surrounded by press and social reactions
@@ -35,6 +36,7 @@ blocks:
     src: /video/smashed/napkins-anyone.mp4
     poster: /video/smashed/napkins-anyone.jpg
     title: Napkins anyone?
+- videos:
   - provider: file
     id: smashed-it
     src: /video/smashed/smashed-it.mp4

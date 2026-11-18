@@ -88,7 +88,7 @@ let section = d.title;
       // A run of exactly three side-by-side images sits on one line (thirds) instead of 2 + 1.
       const third = imgs.map(() => false);
       // A lone tall image (e.g. one poster) sits in the middle third, as if it were a set of 3.
-      const solo = n === 1 && portrait;
+      const solo = n === 1 && portrait && imgs[0].wide !== true;   // `wide: true` keeps it full width
       for (let i = 0; i < n; ) {
         if (isWide[i]) { i++; continue; }
         let j = i; while (j < n && !isWide[j]) j++;
