@@ -15,6 +15,8 @@
 # Private videos also need your logged-in Vimeo cookies: export them from your browser
 # (e.g. the "Get cookies.txt LOCALLY" extension) and save as scripts/vimeo-cookies.txt.
 # Delete that file afterwards; it is ignored by git.
+# REFETCH=1 (docker run -e REFETCH=1 ...) re-downloads everything that came via yt-dlp, e.g. to swap
+# streaming copies for originals once cookies are in place; the old copy is kept if that fails.
 #
 # Output: /mnt/cache/appdata/danandmarc-media/vimeo-archive/
 #   <id> - <title>.<ext>   the original upload (or the best rendition if no original is offered)
@@ -58,8 +60,8 @@ ytdl() {  # $1 = video page link, $2 = id, $3 = output path without extension
              "https://player.vimeo.com/video/$2|"; do
     u=${try%%|*}; ref=${try#*|}
     yt-dlp ${COOKIES:+--cookies "$COOKIES"} --impersonate chrome ${ref:+--referer "$ref"} \
-      -f "bv*+ba/b" --merge-output-format mp4 --no-overwrites --continue --no-progress --no-warnings \
-      -o "$3.%(ext)s" "$u" >/dev/null 2>"$OUT/.ytdl.err" && [ -s "$3.mp4" ] && return 0
+      -f "original/bv*+ba/b" --merge-output-format mp4 --no-overwrites --continue --no-progress --no-warnings \
+      -o "$3.%(ext)s" "$u" >/dev/null 2>"$OUT/.ytdl.err" && ls "$3".* 2>/dev/null | grep -qv '\.\(jpg\|part\|ytdl\)$' && return 0
   done
   return 1
 }
@@ -87,14 +89,18 @@ while [ -n "$next" ] && [ "$next" != null ]; do
     thumb=$(echo "$v" | jq -r '(.pictures.sizes // []) | sort_by(.width) | last | .link // empty')
     [ -n "$thumb" ] && [ ! -s "$OUT/$id - $title.jpg" ] && curl -fsSL -o "$OUT/$id - $title.jpg" "$thumb" || true
     if [ -z "$pick" ]; then
-      file="$id - $title.mp4"; view=$(echo "$v" | jq -r '.privacy.view // "?"')
-      if [ -s "$OUT/$file" ] && [ ! -e "$OUT/$file.part" ]; then
+      view=$(echo "$v" | jq -r '.privacy.view // "?"')
+      file=$(cd "$OUT" && ls "$id - $title".* 2>/dev/null | grep -v '\.\(jpg\|part\|ytdl\)$' | head -1 || true)
+      if [ -n "$file" ] && [ ! -e "$OUT/$file.part" ] && [ "${REFETCH:-0}" != 1 ]; then
         echo "  [$n] $file  (already have it)"; skip=$((skip + 1)); st=kept
-      elif ytdl "$(echo "$v" | jq -r .link)" "$id" "$OUT/$id - $title"; then
-        echo "  [$n] $file  (streaming copy, $(( $(wc -c < "$OUT/$file") / 1048576 )) MB)"; ok=$((ok + 1)); st=streamed
+      elif { [ -n "$file" ] && mv "$OUT/$file" "$OUT/.$file.old"; } ; ytdl "$(echo "$v" | jq -r .link)" "$id" "$OUT/$id - $title"; then
+        [ -n "$file" ] && rm -f "$OUT/.$file.old"
+        file=$(cd "$OUT" && ls -t "$id - $title".* | grep -v '\.\(jpg\|part\|ytdl\)$' | head -1)
+        echo "  [$n] $file  (via yt-dlp, $(( $(wc -c < "$OUT/$file") / 1048576 )) MB)"; ok=$((ok + 1)); st=yt-dlp
       else
         echo "  [$n] $id  $title  -> COULDN'T DOWNLOAD (privacy: $view)$( [ -z "$COOKIES" ] && [ "$view" != anybody ] && echo '  needs cookies, see top of script')"
         tail -1 "$OUT/.ytdl.err" 2>/dev/null | sed 's/^/      /'
+        [ -n "$file" ] && [ -e "$OUT/.$file.old" ] && mv "$OUT/.$file.old" "$OUT/$file" && echo "      (kept the copy you already had)"
         fail=$((fail + 1)); st=failed; file=""
       fi
       printf '%s\t%s\t%s\t\t%s\n' "$id" "$title" "$file" "$st" >> "$OUT/manifest.tsv"; continue
