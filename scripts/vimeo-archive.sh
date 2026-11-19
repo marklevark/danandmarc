@@ -51,8 +51,13 @@ case " $scope " in *" video_files "*) ;; *) echo "  (no video_files scope: origi
 # fallback: yt-dlp grabs the best streaming version from the video page (link includes the unlisted hash)
 ytdl() {  # $1 = video page link, $2 = id, $3 = output path without extension
   command -v yt-dlp >/dev/null || return 1
-  for u in "$1" "https://player.vimeo.com/video/$2"; do
-    yt-dlp ${COOKIES:+--cookies "$COOKIES"} --impersonate chrome --referer "https://danandmarc.ca/" \
+  # the vimeo.com page first, then the embed player with the referers these videos were embedded on
+  # (many are locked to the old sites' domains)
+  for try in "$1|" "https://player.vimeo.com/video/$2|https://danandmarc.ca/" "https://player.vimeo.com/video/$2|https://www.danandmarc.ca/" \
+             "https://player.vimeo.com/video/$2|https://danandmarc.squarespace.com/" "https://player.vimeo.com/video/$2|https://vimeo.com/" \
+             "https://player.vimeo.com/video/$2|"; do
+    u=${try%%|*}; ref=${try#*|}
+    yt-dlp ${COOKIES:+--cookies "$COOKIES"} --impersonate chrome ${ref:+--referer "$ref"} \
       -f "bv*+ba/b" --merge-output-format mp4 --no-overwrites --continue --no-progress --no-warnings \
       -o "$3.%(ext)s" "$u" >/dev/null 2>"$OUT/.ytdl.err" && [ -s "$3.mp4" ] && return 0
   done
