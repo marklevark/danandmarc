@@ -60,7 +60,7 @@ ytdl() {  # $1 = video page link, $2 = id, $3 = output path without extension
              "https://player.vimeo.com/video/$2|"; do
     u=${try%%|*}; ref=${try#*|}
     yt-dlp ${COOKIES:+--cookies "$COOKIES"} --impersonate chrome ${ref:+--referer "$ref"} \
-      -f "original/bv*+ba/b" --merge-output-format mp4 --no-overwrites --continue --no-progress --no-warnings \
+      -f "source/original/bv*+ba/b" --merge-output-format mp4 --no-overwrites --continue --no-progress --no-warnings \
       -o "$3.%(ext)s" "$u" >/dev/null 2>"$OUT/.ytdl.err" && ls "$3".* 2>/dev/null | grep -qv '\.\(jpg\|part\|ytdl\)$' && return 0
   done
   return 1
