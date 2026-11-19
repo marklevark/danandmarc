@@ -1,0 +1,78 @@
+#!/bin/sh
+# Archive EVERY video on your Vimeo account (public, unlisted and private) at original quality,
+# so the account can be emptied or closed. Uses the Vimeo API with your own access token.
+#
+# 1. Make a token: developer.vimeo.com/apps -> Create an app -> Generate an access token,
+#    "Authenticated (you)", scopes: Public, Private, Video Files.
+# 2. Run on Unraid (no install needed):
+#      docker run --rm -e VIMEO_TOKEN=xxxxxxxx \
+#        -v /mnt/cache/appdata/danandmarc-media:/media \
+#        -v /mnt/cache/appdata/danandmarc/scripts:/s \
+#        alpine sh /s/vimeo-archive.sh
+#
+# Output: /mnt/cache/appdata/danandmarc-media/vimeo-archive/
+#   <id> - <title>.<ext>   the original upload (or the best rendition if no original is offered)
+#   <id> - <title>.jpg     the largest thumbnail
+#   <id>.json              Vimeo's details for that video (title, description, date, link, ...)
+#   manifest.tsv           one line per video: id, title, file, bytes, status
+# Safe to re-run: finished files are skipped, half-finished ones resume.
+set -eu
+: "${VIMEO_TOKEN:?Set VIMEO_TOKEN (see the top of this script)}"
+OUT=${OUT:-/media/vimeo-archive}
+command -v jq >/dev/null && command -v curl >/dev/null || apk add --no-cache curl jq >/dev/null
+mkdir -p "$OUT"
+API=${VIMEO_API:-https://api.vimeo.com}
+auth="Authorization: bearer $VIMEO_TOKEN"
+accept="Accept: application/vnd.vimeo.*+json;version=3.4"
+
+who=$(curl -fsS -H "$auth" -H "$accept" "$API/me?fields=name,link") || { echo "Token rejected: check it and its scopes."; exit 1; }
+echo "Vimeo account: $(echo "$who" | jq -r '.name + "  " + .link')"
+
+fields='uri,name,description,link,created_time,duration,width,height,privacy.view,download,files,pictures.sizes'
+next="/me/videos?per_page=50&fields=$fields"
+printf 'id\ttitle\tfile\tbytes\tstatus\n' > "$OUT/manifest.tsv"
+n=0; ok=0; skip=0; fail=0
+
+while [ -n "$next" ] && [ "$next" != null ]; do
+  page=$(curl -fsS -H "$auth" -H "$accept" "$API$next")
+  [ "$n" = 0 ] && echo "Videos on account: $(echo "$page" | jq -r .total)"
+  next=$(echo "$page" | jq -r '.paging.next // empty')
+  echo "$page" | jq -c '.data[]' > "$OUT/.page.jsonl"
+  while IFS= read -r v; do
+    n=$((n + 1))
+    id=$(echo "$v" | jq -r '.uri | split("/") | last')
+    title=$(echo "$v" | jq -r '.name // "untitled"' | tr '/\\:*?"<>|' '-' | tr -s ' ' | cut -c1-80 | sed 's/[ .]*$//')
+    echo "$v" | jq . > "$OUT/$id.json"
+    # best file: the original upload ("source") if offered, otherwise the biggest rendition
+    pick=$(echo "$v" | jq -c '
+      ([.download[]? | select(.quality == "source")] | first)
+      // ([(.download // [])[], (.files // [])[] | select(.link != null and (.type // "video/mp4") != "hls")] | sort_by(.size // 0) | last)
+      // empty')
+    if [ -z "$pick" ]; then
+      echo "  [$n] $id  $title  -> NO DOWNLOAD LINK (check the video's download settings or token scopes)"
+      printf '%s\t%s\t\t\tno-link\n' "$id" "$title" >> "$OUT/manifest.tsv"; fail=$((fail + 1)); continue
+    fi
+    url=$(echo "$pick" | jq -r .link)
+    size=$(echo "$pick" | jq -r '.size // 0')
+    ext=$(echo "$url" | sed 's/[?#].*//; s/.*\.//' | tr 'A-Z' 'a-z')
+    case "$ext" in mp4|mov|m4v|mkv|webm|avi|mxf|prores) ;; *) ext=mp4 ;; esac
+    file="$id - $title.$ext"
+    have=$( [ -f "$OUT/$file" ] && wc -c < "$OUT/$file" | tr -d ' ' || echo 0)
+    if [ "$size" != 0 ] && [ "$have" = "$size" ]; then
+      echo "  [$n] $file  (already have it)"; skip=$((skip + 1)); st=kept
+    else
+      echo "  [$n] $file  ($(( size / 1048576 )) MB)"
+      if curl -fL --progress-bar --retry 3 -C - -o "$OUT/$file" "$url"; then ok=$((ok + 1)); st=downloaded
+      else echo "      download failed"; fail=$((fail + 1)); st=failed; fi
+    fi
+    thumb=$(echo "$v" | jq -r '(.pictures.sizes // []) | sort_by(.width) | last | .link // empty')
+    [ -n "$thumb" ] && [ ! -s "$OUT/$id - $title.jpg" ] && curl -fsSL -o "$OUT/$id - $title.jpg" "$thumb" || true
+    printf '%s\t%s\t%s\t%s\t%s\n' "$id" "$title" "$file" "$size" "$st" >> "$OUT/manifest.tsv"
+  done < "$OUT/.page.jsonl"
+done
+rm -f "$OUT/.page.jsonl"
+chmod -R a+rX "$OUT"
+echo
+echo "Done: $n videos. $ok downloaded, $skip already had, $fail problems."
+[ "$fail" = 0 ] || echo "See manifest.tsv for the ones marked no-link/failed before deleting anything on Vimeo.
+For no-link ones: turn on downloads for that video in Vimeo, or grab it with scripts/download-vimeo.sh."
