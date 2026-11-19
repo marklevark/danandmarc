@@ -6,3 +6,6 @@ dist/
 .dist-tmp/
 .dist-tmp.stamp*
 .claude/settings.local.json
+
+# browser cookies for scripts/vimeo-archive.sh (never commit)
+scripts/vimeo-cookies.txt

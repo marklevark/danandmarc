@@ -8,7 +8,13 @@
 #      docker run --rm -e VIMEO_TOKEN=xxxxxxxx \
 #        -v /mnt/cache/appdata/danandmarc-media:/media \
 #        -v /mnt/cache/appdata/danandmarc/scripts:/s \
-#        alpine sh /s/vimeo-archive.sh
+#        python:3.12-slim sh /s/vimeo-archive.sh
+#
+# If Vimeo won't hand over the file (plans without download access, or downloads switched off),
+# the script falls back to yt-dlp, which saves the best streaming version (usually 1080p).
+# Private videos also need your logged-in Vimeo cookies: export them from your browser
+# (e.g. the "Get cookies.txt LOCALLY" extension) and save as scripts/vimeo-cookies.txt.
+# Delete that file afterwards; it is ignored by git.
 #
 # Output: /mnt/cache/appdata/danandmarc-media/vimeo-archive/
 #   <id> - <title>.<ext>   the original upload (or the best rendition if no original is offered)
@@ -19,7 +25,17 @@
 set -eu
 : "${VIMEO_TOKEN:?Set VIMEO_TOKEN (see the top of this script)}"
 OUT=${OUT:-/media/vimeo-archive}
-command -v jq >/dev/null && command -v curl >/dev/null || apk add --no-cache curl jq >/dev/null
+if ! command -v jq >/dev/null || ! command -v curl >/dev/null || ! command -v ffmpeg >/dev/null; then
+  echo "Installing curl, jq, ffmpeg..."
+  if command -v apk >/dev/null; then apk add --no-cache curl jq ffmpeg >/dev/null
+  else apt-get update -qq >/dev/null && apt-get install -y -qq curl jq ffmpeg >/dev/null; fi
+fi
+if ! command -v yt-dlp >/dev/null && command -v pip >/dev/null; then
+  echo "Installing yt-dlp..."
+  pip install --quiet --root-user-action=ignore -U "yt-dlp[default,curl-cffi]" || true
+fi
+COOKIES=""
+for c in /s/vimeo-cookies.txt "${VIMEO_COOKIES:-}"; do [ -n "$c" ] && [ -s "$c" ] && COOKIES="$c"; done
 mkdir -p "$OUT"
 API=${VIMEO_API:-https://api.vimeo.com}
 auth="Authorization: bearer $VIMEO_TOKEN"
@@ -27,6 +43,21 @@ accept="Accept: application/vnd.vimeo.*+json;version=3.4"
 
 who=$(curl -fsS -H "$auth" -H "$accept" "$API/me?fields=name,link") || { echo "Token rejected: check it and its scopes."; exit 1; }
 echo "Vimeo account: $(echo "$who" | jq -r '.name + "  " + .link')"
+scope=$(curl -fsS -H "$auth" -H "$accept" "$API/oauth/verify" | jq -r '.scope // ""' 2>/dev/null || true)
+echo "Token scopes: ${scope:-unknown}"
+case " $scope " in *" video_files "*) ;; *) echo "  (no video_files scope: originals can't be fetched, using streaming copies instead)";; esac
+[ -n "$COOKIES" ] && echo "Using browser cookies for private videos: $COOKIES"
+
+# fallback: yt-dlp grabs the best streaming version from the video page (link includes the unlisted hash)
+ytdl() {  # $1 = video page link, $2 = id, $3 = output path without extension
+  command -v yt-dlp >/dev/null || return 1
+  for u in "$1" "https://player.vimeo.com/video/$2"; do
+    yt-dlp ${COOKIES:+--cookies "$COOKIES"} --impersonate chrome --referer "https://danandmarc.ca/" \
+      -f "bv*+ba/b" --merge-output-format mp4 --no-overwrites --continue --no-progress --no-warnings \
+      -o "$3.%(ext)s" "$u" >/dev/null 2>"$OUT/.ytdl.err" && [ -s "$3.mp4" ] && return 0
+  done
+  return 1
+}
 
 fields='uri,name,description,link,created_time,duration,width,height,privacy.view,download,files,pictures.sizes'
 next="/me/videos?per_page=50&fields=$fields"
@@ -48,9 +79,20 @@ while [ -n "$next" ] && [ "$next" != null ]; do
       ([.download[]? | select(.quality == "source")] | first)
       // ([(.download // [])[], (.files // [])[] | select(.link != null and (.type // "video/mp4") != "hls")] | sort_by(.size // 0) | last)
       // empty')
+    thumb=$(echo "$v" | jq -r '(.pictures.sizes // []) | sort_by(.width) | last | .link // empty')
+    [ -n "$thumb" ] && [ ! -s "$OUT/$id - $title.jpg" ] && curl -fsSL -o "$OUT/$id - $title.jpg" "$thumb" || true
     if [ -z "$pick" ]; then
-      echo "  [$n] $id  $title  -> NO DOWNLOAD LINK (check the video's download settings or token scopes)"
-      printf '%s\t%s\t\t\tno-link\n' "$id" "$title" >> "$OUT/manifest.tsv"; fail=$((fail + 1)); continue
+      file="$id - $title.mp4"; view=$(echo "$v" | jq -r '.privacy.view // "?"')
+      if [ -s "$OUT/$file" ] && [ ! -e "$OUT/$file.part" ]; then
+        echo "  [$n] $file  (already have it)"; skip=$((skip + 1)); st=kept
+      elif ytdl "$(echo "$v" | jq -r .link)" "$id" "$OUT/$id - $title"; then
+        echo "  [$n] $file  (streaming copy, $(( $(wc -c < "$OUT/$file") / 1048576 )) MB)"; ok=$((ok + 1)); st=streamed
+      else
+        echo "  [$n] $id  $title  -> COULDN'T DOWNLOAD (privacy: $view)$( [ -z "$COOKIES" ] && [ "$view" != anybody ] && echo '  needs cookies, see top of script')"
+        tail -1 "$OUT/.ytdl.err" 2>/dev/null | sed 's/^/      /'
+        fail=$((fail + 1)); st=failed; file=""
+      fi
+      printf '%s\t%s\t%s\t\t%s\n' "$id" "$title" "$file" "$st" >> "$OUT/manifest.tsv"; continue
     fi
     url=$(echo "$pick" | jq -r .link)
     size=$(echo "$pick" | jq -r '.size // 0')
@@ -65,14 +107,11 @@ while [ -n "$next" ] && [ "$next" != null ]; do
       if curl -fL --progress-bar --retry 3 -C - -o "$OUT/$file" "$url"; then ok=$((ok + 1)); st=downloaded
       else echo "      download failed"; fail=$((fail + 1)); st=failed; fi
     fi
-    thumb=$(echo "$v" | jq -r '(.pictures.sizes // []) | sort_by(.width) | last | .link // empty')
-    [ -n "$thumb" ] && [ ! -s "$OUT/$id - $title.jpg" ] && curl -fsSL -o "$OUT/$id - $title.jpg" "$thumb" || true
     printf '%s\t%s\t%s\t%s\t%s\n' "$id" "$title" "$file" "$size" "$st" >> "$OUT/manifest.tsv"
   done < "$OUT/.page.jsonl"
 done
-rm -f "$OUT/.page.jsonl"
+rm -f "$OUT/.page.jsonl" "$OUT/.ytdl.err"
 chmod -R a+rX "$OUT"
 echo
-echo "Done: $n videos. $ok downloaded, $skip already had, $fail problems."
-[ "$fail" = 0 ] || echo "See manifest.tsv for the ones marked no-link/failed before deleting anything on Vimeo.
-For no-link ones: turn on downloads for that video in Vimeo, or grab it with scripts/download-vimeo.sh."
+echo "Done: $n videos. $ok downloaded, $skip already had, $fail couldn't be downloaded."
+[ "$fail" = 0 ] || echo "Check manifest.tsv (status 'failed') before deleting anything on Vimeo. Private ones usually need cookies (see top of script)."
