@@ -28,7 +28,7 @@ OUT=${OUT:-/media/vimeo-archive}
 if ! command -v jq >/dev/null || ! command -v curl >/dev/null || ! command -v ffmpeg >/dev/null; then
   echo "Installing curl, jq, ffmpeg..."
   if command -v apk >/dev/null; then apk add --no-cache curl jq ffmpeg >/dev/null
-  else apt-get update -qq >/dev/null && apt-get install -y -qq curl jq ffmpeg >/dev/null; fi
+  else export DEBIAN_FRONTEND=noninteractive; apt-get update -qq >/dev/null && apt-get install -y -qq curl jq ffmpeg >/dev/null 2>&1; fi
 fi
 if ! command -v yt-dlp >/dev/null && command -v pip >/dev/null; then
   echo "Installing yt-dlp..."
