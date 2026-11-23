@@ -7,6 +7,11 @@ cover: ../../assets/work/who-are-you-reading/giller-posters---11x173.jpg
 keyImage: ../../assets/work/who-are-you-reading/cover-mockup.jpg   # landscape image for the /stack page
 agency: Rethink
 client: Scotiabank
+awards:
+- show: ADCC
+  result: 1 x Silver, 1 x Bronze
+- show: Marketing Awards
+  result: 1 x Silver
 press: Little Black Book, Fashion Magazine
 blocks:
 - text: |-

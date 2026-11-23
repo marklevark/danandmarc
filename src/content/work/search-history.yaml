@@ -5,6 +5,8 @@ order: 7
 cover: ../../assets/work/search-history/posters.jpg
 keyImage: ../../assets/work/search-history/wide-cov.jpg   # landscape image for the /stack page
 awards:
+- show: WPPed Cream Awards
+  result: 1 x Bronze
 - show: ADCC
   result: 2 x Gold, 2 x Silver, 4 x Merit
 - show: Marketing Awards
