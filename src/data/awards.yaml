@@ -203,8 +203,14 @@
   region: Canadian
   shows:
   - show: ADCC
-    tally: 6🥇, 16🥈, 7🥉, 15 Merit
+    tally: 6🥇, 17🥈, 8🥉, 15 Merit, 1 Shortlist
     entries:
+    - year: 2026
+      award: Silver - Promo Single (A&W "Smashed")
+    - year: 2026
+      award: Bronze - PR Stunt / Event (A&W "Smashed")
+    - year: 2026
+      award: Shortlist - Direct - Physical Items (A&W "Smashed")
     - year: 2024
       award: Silver - Print - Business Press (Who are you reading?)
     - year: 2024

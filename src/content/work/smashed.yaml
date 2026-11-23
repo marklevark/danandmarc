@@ -5,6 +5,9 @@ order: 1
 cover: ../../assets/work/smashed/smashed-thumbnail.jpg
 agency: Rethink
 client: A&W
+awards:
+- show: ADCC
+  result: 1 x Silver, 1 x Bronze, 1 x Shortlist
 blocks:
 - text: |-
     A&W was the first quick-service restaurant in Canada to launch a Smash Burger. But we had a problem: our marketing budget was much smaller than the competitors’.
