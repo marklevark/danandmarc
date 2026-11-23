@@ -30,7 +30,8 @@ const work = defineCollection({
       z.object({ heading: z.string(), level: z.number().int().min(2).max(4).default(2) }),
       z.object({ text: z.string() }),
       z.object({ credits }),
-      z.object({ images: z.array(media).min(1) }),
+      /** `zoom: true` makes the images clickable to open full screen. */
+      z.object({ images: z.array(media).min(1), zoom: z.boolean().optional() }),
       z.object({ videos: z.array(video).min(1) }),
     ]);
     return z.object({

@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import Loop from './Loop.astro';
 import VideoEmbed from './VideoEmbed.astro';
@@ -21,7 +21,7 @@ type Intro = { kind: 'intro'; heading?: string; credits?: Credits; texts: string
 type Item =
   | Intro
   | { kind: 'label'; text: string }
-  | { kind: 'images'; block: Extract<Block, { images: unknown }> }
+  | { kind: 'images'; block: Extract<Block, { images: unknown }>; full?: string[] }
   | { kind: 'videos'; block: Extract<Block, { videos: unknown }> };
 
 const items: Item[] = [];
@@ -47,6 +47,16 @@ hero.credits ??= { agency: d.agency, client: d.client, role: d.role };
 
 const creditRows = (c?: Credits) =>
   c ? ([['Role', c.role], ['Agency', c.agency], ['Client', c.client]].filter(([, v]) => v) as [string, string][]) : [];
+
+// Blocks with `zoom: true` get a large copy of each image for the lightbox.
+for (const it of items) {
+  if (it.kind === 'images' && it.block.zoom) {
+    it.full = await Promise.all(
+      it.block.images.map(async (i) => (await getImage({ src: i.src, width: Math.min(i.src.width, 2000), format: 'webp' })).src),
+    );
+  }
+}
+const hasZoom = items.some((it) => it.kind === 'images' && it.full);
 
 let section = d.title;
 ---
@@ -101,17 +111,15 @@ let section = d.title;
             const wide = isWide[i];
             const sizes = solo ? '(min-width: 768px) 33vw, 100vw' : cols === 1 || wide ? '100vw' : `(min-width: 768px) ${third[i] ? 33 : Math.round(100 / cols)}vw, 100vw`;
             const cls = ['m', { wide, third: third[i], solo }];
-            return img.loop ? (
-              <Loop src={img.loop} poster={img.src} label={img.alt ?? `${section}, animation ${i + 1}`} class:list={cls} />
-            ) : (
-              <Image
-                src={img.src}
-                alt={img.alt ?? `${section}, image ${i + 1}`}
-                widths={cols === 1 || wide ? [640, 1024, 1600, 2400] : [400, 720, 1100, 1500]}
-                sizes={sizes}
-                class:list={cls}
-              />
+            const alt = img.alt ?? `${section}, image ${i + 1}`;
+            const widths = cols === 1 || wide ? [640, 1024, 1600, 2400] : [400, 720, 1100, 1500];
+            if (img.loop) return <Loop src={img.loop} poster={img.src} label={img.alt ?? `${section}, animation ${i + 1}`} class:list={cls} />;
+            if (it.full) return (
+              <a href={it.full[i]} class:list={['zoom', { wide, third: third[i], solo }]} data-zoom aria-label={`Enlarge: ${alt}`}>
+                <Image src={img.src} alt={alt} widths={widths} sizes={sizes} class="m" />
+              </a>
             );
+            return <Image src={img.src} alt={alt} widths={widths} sizes={sizes} class:list={cls} />;
           })}
         </div>
       );
@@ -126,6 +134,49 @@ let section = d.title;
     }
   })}
 </div>
+
+{hasZoom && (
+  <dialog class="lightbox" aria-label="Enlarged image">
+    <img alt="" />
+    <button type="button" class="lb-btn lb-close" aria-label="Close">&times;</button>
+    <button type="button" class="lb-btn lb-prev" aria-label="Previous image">&lsaquo;</button>
+    <button type="button" class="lb-btn lb-next" aria-label="Next image">&rsaquo;</button>
+  </dialog>
+)}
+
+<script>
+  const dlg = document.querySelector<HTMLDialogElement>('dialog.lightbox');
+  if (dlg) {
+    const img = dlg.querySelector('img')!;
+    let group: HTMLAnchorElement[] = [];
+    let idx = 0;
+    const show = (i: number) => {
+      idx = (i + group.length) % group.length;
+      const a = group[idx];
+      img.src = a.href;
+      img.alt = a.querySelector('img')?.alt ?? '';
+    };
+    document.addEventListener('click', (e) => {
+      const a = (e.target as Element).closest<HTMLAnchorElement>('a[data-zoom]');
+      if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;   // let modified clicks open a tab
+      e.preventDefault();
+      group = [...(a.parentElement?.querySelectorAll<HTMLAnchorElement>('a[data-zoom]') ?? [a])];
+      dlg.classList.toggle('single', group.length < 2);
+      show(group.indexOf(a));
+      dlg.showModal();
+    });
+    dlg.querySelector('.lb-prev')!.addEventListener('click', () => show(idx - 1));
+    dlg.querySelector('.lb-next')!.addEventListener('click', () => show(idx + 1));
+    dlg.querySelector('.lb-close')!.addEventListener('click', () => dlg.close());
+    // Clicking the backdrop or the image closes it.
+    dlg.addEventListener('click', (e) => { if (e.target === dlg || e.target === img) dlg.close(); });
+    dlg.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(idx - 1);
+      if (e.key === 'ArrowRight') show(idx + 1);
+    });
+    dlg.addEventListener('close', () => img.removeAttribute('src'));
+  }
+</script>
 
 <style>
   .blocks { display: grid; gap: var(--gap); }
@@ -151,6 +202,37 @@ let section = d.title;
     grid-template-columns: 1fr;
   }
   .media :global(.m) { width: 100%; height: auto; border-radius: 3px; background: var(--surface); }
+  .zoom { display: block; cursor: zoom-in; }
+  .zoom:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+  .lightbox {
+    padding: 0; border: 0; background: transparent;
+    width: 100vw; height: 100dvh; max-width: none; max-height: none;
+  }
+  .lightbox[open] { display: grid; place-items: center; animation: lb-in 180ms ease-out; }
+  .lightbox::backdrop { background: rgba(0, 0, 0, 0.9); }
+  .lightbox img {
+    max-width: calc(100vw - 2 * var(--pad) - 96px); max-height: calc(100dvh - 2 * var(--pad));
+    width: auto; height: auto; object-fit: contain; border-radius: 3px; cursor: zoom-out;
+  }
+  .lb-btn {
+    position: fixed; width: 44px; height: 44px; border: 0; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12); color: #fff; font-size: 28px; line-height: 1; cursor: pointer;
+  }
+  .lb-btn:hover, .lb-btn:focus-visible { background: rgba(255, 255, 255, 0.25); }
+  .lb-close { top: var(--pad); right: var(--pad); }
+  .lb-prev, .lb-next { top: 50%; translate: 0 -50%; }
+  .lb-prev { left: var(--pad); }
+  .lb-next { right: var(--pad); }
+  .lightbox.single .lb-prev, .lightbox.single .lb-next { display: none; }
+  @media (max-width: 767px) {
+    .lightbox img { max-width: 100vw; max-height: calc(100dvh - 140px); border-radius: 0; }
+    .lb-prev, .lb-next { top: auto; bottom: var(--pad); translate: none; }
+  }
+  @keyframes lb-in { from { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .lightbox[open] { animation: none; } }
+  :global(html:has(dialog.lightbox[open])) { overflow: hidden; }
+
   @media (min-width: 768px) {
     .intro { grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); }
     /* 12-track grid so halves, quarters and thirds can share a block */

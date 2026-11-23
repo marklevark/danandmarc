@@ -54,7 +54,8 @@ blocks:
   - src: ../../assets/work/unignorable/uwtsa.jpg
 - heading: The Posters
   level: 4
-- images:
+- zoom: true
+  images:
   - src: ../../assets/work/unignorable/domestic.jpg
   - src: ../../assets/work/unignorable/mental_health.jpg
   - src: ../../assets/work/unignorable/unemployment.jpg

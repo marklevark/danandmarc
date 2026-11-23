@@ -50,6 +50,9 @@ blocks:                  # rendered top to bottom
         alt: Optional alt text
       - src: ../../assets/work/top-comic/b-poster.jpg
         loop: ../../assets/work/top-comic/b.mp4   # GIF replacement
+  - zoom: true            # optional: click an image to open it full screen (arrows step through the set)
+    images:
+      - src: ../../assets/work/top-comic/c.jpg
   - videos:
       - { provider: vimeo, id: '301642758', title: Dick's Pizza }
 ```
